@@ -1,10 +1,11 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
-from morphism import *
+from typing import TYPE_CHECKING, Optional, List, Dict, Any, Mapping
+from morphism import *  # type: ignore
 
 if TYPE_CHECKING:
     from anathema.typedefs import *
-    from anathema.state import State
+    from anathema.screen import State
+    from anathema.views.view import View
 
 
 class Layout:
@@ -35,45 +36,45 @@ class Layout:
             }
 
     @classmethod
-    def centered(cls, width, height):
+    def centered(cls, width: Number, height: Number) -> Layout:
         return Layout(
             top=None, bottom=None, left=None, right=None,
             width=width, height=height)
 
     @classmethod
-    def column_left(cls, width):
+    def column_left(cls, width: Number) -> Layout:
         return Layout(
             top=0, bottom=0, left=0, right=None,
             width=width, height=None)
 
     @classmethod
-    def column_right(cls, width):
+    def column_right(cls, width: Number) -> Layout:
         return Layout(
             top=0, bottom=0, left=None, right=0,
             width=width, height=None)
 
     @classmethod
-    def row_top(cls, height):
+    def row_top(cls, height: Number) -> Layout:
         return Layout(
             top=0, bottom=None, left=0, right=0,
             width=None, height=height)
 
     @classmethod
-    def row_bottom(cls, height):
+    def row_bottom(cls, height: Number) -> Layout:
         return Layout(
             top=None, bottom=0, left=0, right=0,
             width=None, height=height)
 
     # Convenience modifiers ###
 
-    def with_updates(self, **kwargs):
+    def with_updates(self, kwargs: Mapping[str, Optional[float]]) -> Layout:
         opts = self.opts
         opts.update(kwargs)
         return Layout(**opts)
 
     # Semi-internal layout API ###
 
-    def get_type(self, k):
+    def get_type(self, k: str) -> str:
         val = getattr(self, k)
         if val is None:
             return 'none'
@@ -90,13 +91,13 @@ class Layout:
             raise ValueError(
                 "Unknown type for option {}: {}".format(k, type(k)))
 
-    def get_is_defined(self, k):
+    def get_is_defined(self, k: str) -> bool:
         return getattr(self, k) is not None
 
-    def get_debug_string_for_keys(self, keys):
+    def get_debug_string_for_keys(self, keys: List[str]) -> str:
         return ','.join(["{}={}".format(k, self.get_type(k)) for k in keys])
 
-    def get_value(self, k, view):
+    def get_value(self, k: str, view: View) -> Any:
         if getattr(self, k) is None:
             raise ValueError("Superview isn't relevant to this value")
 

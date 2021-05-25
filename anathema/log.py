@@ -34,6 +34,6 @@ def configure() -> None:
             logger.setLevel(log_level)
             log_handler = logging.StreamHandler(sys.stdout)
             log_handler.setLevel(log_level)
-            log_handler.setFormatter(logging.Formatter("%(asctime)s - $(name)s - " "%(levelname)s - %(message)s"))
+            log_handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - " "%(levelname)s - %(message)s"))
             logger.addHandler(log_handler)
             loggers[logger_name] = logger

@@ -82,7 +82,7 @@ def get_defaults() -> OrderedDict[str, Any]:
             ),
             (
                 "logging",
-                OrderedDict((("loggers", "all"), ("debug_logging", True), ("debug_level", "error")))
+                OrderedDict((("loggers", "all"), ("debug_logging", True), ("debug_level", "info")))
             ),
         )
     )

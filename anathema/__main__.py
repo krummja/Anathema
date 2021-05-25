@@ -1,3 +1,4 @@
+"""This is the main entrypoint of the application."""
 from typing import List, Any, Optional
 import getopt
 import sys

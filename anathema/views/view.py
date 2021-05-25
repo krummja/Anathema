@@ -6,7 +6,7 @@ from anathema.views.layout import Layout
 
 if TYPE_CHECKING:
     from tcod.event import KeyboardEvent
-    from anathema.state import State
+    from anathema.screen import Screen
 
 
 ZERO_RECT = Rect(Point(0, 0), Size(0, 0))
@@ -16,7 +16,7 @@ class View:
 
     def __init__(
             self,
-            state: Optional[State] = None,
+            screen: Optional[Screen] = None,
             layout: Optional[Layout] = None,
             subviews: Optional[List[View]] = None,
             frame: Optional[Rect] = None
@@ -26,7 +26,7 @@ class View:
         else:
             self.frame = frame
 
-        self.state = state
+        self.screen = screen
         self._superview: Optional[View] = None
 
         self.layout = layout or Layout()

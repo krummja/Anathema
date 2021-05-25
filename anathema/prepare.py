@@ -4,15 +4,23 @@ as display resolution, scale, etc.
 """
 
 from __future__ import annotations
-from typing import List, Any
+from typing import TYPE_CHECKING, Any, List, Optional
 import logging
 import os.path
 import re
 
-import tcod
+from functools import partial
 
+import ecstremity  # type: ignore
+import tcod
+import tcod.console
+
+import anathema.console
 import anathema.config as config
 import anathema.constants.paths as paths
+
+if TYPE_CHECKING:
+    import anathema.console
 
 
 if not os.path.isdir(paths.USER_STORAGE_DIR):
@@ -45,10 +53,42 @@ HP_COLOR = (112, 248, 168)
 XP_COLOR = (248, 245, 71)
 TILE_SIZE = [16, 16]
 TILESET = tcod.tileset.load_tilesheet(fetch_asset(CONFIG.tileset), 32, 8, tcod.tileset.CHARMAP_CP437)
+VSYNC = CONFIG.vsync
 
 SAVE_PATH = os.path.join(paths.USER_GAME_SAVE_DIR, "slot")
 SAVE_METHOD = ("JSON", "CBOR")[0]
 
 
+ENGINE: ecstremity.engine.Engine
+WORLD: ecstremity.world.World
+ROOT_CONSOLE: tcod.console.Console
+CONSOLE: anathema.console.Context
+CONTEXT: Optional[tcod.context.Context]
+
+
+def ecstremity_init() -> None:
+    """Set up important ECStremity globals."""
+    global ENGINE
+    global WORLD
+
+    ENGINE = ecstremity.engine.Engine()
+    WORLD = ENGINE.create_world()
+
+
+def anathema_init() -> None:
+    """Set up important Anathema globals."""
+    global ROOT_CONSOLE
+    global CONSOLE
+    global CONTEXT
+
+    ROOT_CONSOLE = tcod.console.Console(*CONSOLE_SIZE)
+    ROOT_CONSOLE.bg[:] = (21, 21, 21)
+
+    CONSOLE = anathema.console.Context(ROOT_CONSOLE)
+    CONTEXT = None
+
+
 def init() -> None:
     """Initialize the Anathema game framework."""
+    ecstremity_init()
+    anathema_init()
