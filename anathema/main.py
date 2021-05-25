@@ -14,6 +14,11 @@ logger = logging.getLogger(__file__)
 
 
 def main(load_slot: Optional[Screen] = None) -> None:
+    """
+    Application entrypoint. Sets up the Client instance and starts the
+    game loop.
+    """
+
     log.configure()
 
     logger.info("PREPARE: Initializing.")

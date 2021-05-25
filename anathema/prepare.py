@@ -62,8 +62,8 @@ SAVE_METHOD = ("JSON", "CBOR")[0]
 ENGINE: ecstremity.engine.Engine
 WORLD: ecstremity.world.World
 ROOT_CONSOLE: tcod.console.Console
-CONSOLE: anathema.console.Context
-CONTEXT: Optional[tcod.context.Context]
+CONSOLE: Optional[anathema.console.Context] = None
+CONTEXT: Optional[tcod.context.Context] = None
 
 
 def ecstremity_init() -> None:
@@ -85,7 +85,6 @@ def anathema_init() -> None:
     ROOT_CONSOLE.bg[:] = (21, 21, 21)
 
     CONSOLE = anathema.console.Context(ROOT_CONSOLE)
-    CONTEXT = None
 
 
 def init() -> None:

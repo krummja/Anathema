@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, Any, List, Dict, Optional, cast, Generator, Callable
+from typing import TYPE_CHECKING, Any, List, Dict, Optional, cast, Generator, Callable, Union, no_type_check
 from morphism import (Rect, Point, Size)  # type: ignore
 
 from anathema.views.layout import Layout
@@ -9,6 +9,7 @@ from anathema.prepare import CONSOLE
 if TYPE_CHECKING:
     from tcod.event import KeyboardEvent
     from anathema.screen import Screen
+    from anathema.typedefs import Number
 
 
 ZERO_RECT = Rect(Point(0, 0), Size(0, 0))
@@ -88,6 +89,7 @@ class View:
         if self.is_hidden:
             return
         self.draw()
+        assert CONSOLE is not None
         for view in self.subviews:
             with CONSOLE.translate(view.frame.origin):
                 view.perform_draw()
@@ -206,7 +208,9 @@ class View:
                 return view
         return None
 
+    @no_type_check
     def apply_springs_and_struts_layout_in_superview(self) -> None:
+
         options = self.layout_options
         spec = self.layout_spec
 
@@ -261,7 +265,7 @@ class View:
             elif matches == (False, True, False):  # magical centering!
                 # start, end            undefined
                 # size                  defined
-                size_val = options.get_value(field_size, self)
+                size_val: Union[Number, Size] = options.get_value(field_size, self)
                 setattr(final_frame, field_size, size_val)
                 setattr(
                     final_frame, field_coord,

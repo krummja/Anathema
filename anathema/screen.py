@@ -53,9 +53,17 @@ class Screen(metaclass=ABCMeta):
 
     @property
     def input_handlers(self) -> List[View]:
+        """
+        A list of :py:class:`View` objects that are sub-views capable
+        of handling input.
+        """
         return self._input_handlers
 
     def handle_input(self, event: KeyboardEvent) -> None:
+        """
+        Pass a :py:class:`KeyboardEvent` to the sub-views registered
+        as valid input handlers to this :py:class:`Screen`.
+        """
         for handler in self._input_handlers:
             handler.handle_input(event)
 
@@ -99,6 +107,11 @@ class Screen(metaclass=ABCMeta):
 
 
 class ScreenManager:
+    """Base ScreenManager.
+
+    This manager is inherited by Anathema's :py:class:`Client`, which
+    does the actual work at runtime.
+    """
 
     def __init__(self) -> None:
         self._stack: List[Screen] = []
