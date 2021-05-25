@@ -1,14 +1,19 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, List, Dict, Any, Mapping
-from morphism import *  # type: ignore
+from typing import TYPE_CHECKING, Optional, List, Dict, Any, Mapping, Union, cast
+from numbers import Real
+
+from morphism import (Point, Rect, Size)  # type: ignore
+
 
 if TYPE_CHECKING:
     from anathema.typedefs import *
-    from anathema.screen import State
+    from anathema.screen import Screen
     from anathema.views.view import View
+    from anathema.typedefs import Number
 
 
 class Layout:
+    """Base layout."""
 
     def __init__(
             self,
@@ -97,39 +102,44 @@ class Layout:
     def get_debug_string_for_keys(self, keys: List[str]) -> str:
         return ','.join(["{}={}".format(k, self.get_type(k)) for k in keys])
 
-    def get_value(self, k: str, view: View) -> Any:
+    def get_value(self, k: str, view: View) -> Optional[Union[Number, Size]]:
+
         if getattr(self, k) is None:
             raise ValueError("Superview isn't relevant to this value")
 
-        elif self.get_type(k) == 'constant':
+        if self.get_type(k) == 'constant':
             return getattr(self, k)
 
         elif self.get_type(k) == 'intrinsic':
+            intrinsic_size: Size = view.intrinsic_size
             if k == 'width':
-                return view.intrinsic_size[0]
+                return intrinsic_size[0]
             elif k == 'height':
-                return view.intrinsic_size[1]
+                return intrinsic_size[1]
             else:
                 raise KeyError(
                     "'intrinsic' can only be used with width or height.")
 
         elif self.get_type(k) == 'frame':
+            layout_spec: Rect = view.layout_spec
+            assert view.superview is not None
             if k == 'left':
-                return view.layout_spec.x
+                return layout_spec.x
             elif k == 'top':
-                return view.layout_spec.y
+                return layout_spec.y
             elif k == 'right':
-                return view.superview.bounds.width - view.layout_spec.right
+                return view.superview.bounds.width - layout_spec.right
             elif k == 'bottom':
-                return view.superview.bounds.height - view.layout_spec.bottom
+                return view.superview.bounds.height - layout_spec.bottom
             elif k == 'width':
-                return view.layout_spec.width
+                return layout_spec.width
             elif k == 'height':
-                return view.layout_spec.height
+                return layout_spec.height
             else:
                 raise KeyError("Unknown key:", k)
 
         elif self.get_type(k) == 'fraction':
+            assert view.superview is not None
             val = getattr(self, k)
             if k in ('left', 'width', 'right'):
                 return view.superview.bounds.width * val
@@ -137,3 +147,5 @@ class Layout:
                 return view.superview.bounds.height * val
             else:
                 raise KeyError("Unknown key:", k)
+        else:
+            return None
