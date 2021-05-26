@@ -8,7 +8,6 @@ from anathema.context_console import console
 if TYPE_CHECKING:
     from anathema.views.layout import Layout
     from anathema.screen import Screen
-    from morphism import Rect  # type: ignore
 
 
 class LabelView(View):
