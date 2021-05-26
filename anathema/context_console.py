@@ -23,14 +23,14 @@ class ContextConsole:
     def root(self) -> Console:
         return self.console
 
-    def set_fg(self, rect: Rect, value: ndarray) -> None:
+    def set_fg(self, rect: Rect, value: Tuple[int, int, int]) -> None:
         computed = Rect(rect.origin + self._offset, rect.size)
         self.console.fg[
             computed.y:computed.y + computed.height,
             computed.x:computed.x + computed.width
         ] = value
 
-    def set_bg(self, rect: Rect, value: ndarray) -> None:
+    def set_bg(self, rect: Rect, value: Tuple[int, int, int]) -> None:
         computed = Rect(rect.origin + self._offset, rect.size)
         self.console.bg[
             computed.y:computed.y + computed.height,

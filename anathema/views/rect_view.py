@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Tuple, List, Dict, Any, TYPE_CHECKING, Optional
 
 from anathema.views.view import View
-from anathema.prepare import CONSOLE
+from anathema.context_console import console
 
 if TYPE_CHECKING:
     from anathema.views.layout import Layout
@@ -30,4 +30,4 @@ class RectView(View):
         self.style = style
 
     def draw(self) -> None:
-        CONSOLE.draw_frame(self.bounds, fg=self.fg, bg=self.bg)
+        console.draw_frame(self.bounds, fg=self.fg, bg=self.bg)
