@@ -29,5 +29,7 @@ def main(load_slot: Optional[Screen] = None) -> None:
         logger.info("Save data found.")
         pass
 
+    client.initialize()
+
     logger.info("CLIENT: Running.")
     client.main()

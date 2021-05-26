@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING, List, Any, Optional
 from morphism import Size  # type: ignore
 
 import logging
-from abc import ABCMeta
 
 from anathema import prepare
 from anathema.views import FirstResponderContainerView
@@ -28,7 +27,7 @@ def remove_input_handler(screen: Screen, handler: View) -> None:
     screen.input_handlers.remove(handler)
 
 
-class Screen(metaclass=ABCMeta):
+class Screen:
     """Prototype class for Screens.
 
     All screens should inherit from this. No direct instances of this class
@@ -39,12 +38,14 @@ class Screen(metaclass=ABCMeta):
         self.client = client
         if not isinstance(views, list):
             views = [views]  # type: ignore
+
+        self._input_handlers: List[View] = []
+
         self.view = FirstResponderContainerView(subviews=views, screen=self)
         add_input_handler(self, self.view)
 
         self.start_time: float = 0.0
         self.current_time: float = 0.0
-        self._input_handlers: List[View] = []
         self.covers_screen: bool = True
 
     @property
