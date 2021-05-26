@@ -15,17 +15,15 @@ import ecstremity  # type: ignore
 import tcod
 import tcod.console
 
-import anathema.console
 import anathema.config as config
 import anathema.constants.paths as paths
 
 if TYPE_CHECKING:
-    import anathema.console
+    import anathema.context_console
 
 
 if not os.path.isdir(paths.USER_STORAGE_DIR):
     os.makedirs(paths.USER_STORAGE_DIR)
-
 
 # Create game dir if missing
 if not os.path.isdir(paths.USER_GAME_DATA_DIR):
@@ -57,37 +55,3 @@ VSYNC = CONFIG.vsync
 
 SAVE_PATH = os.path.join(paths.USER_GAME_SAVE_DIR, "slot")
 SAVE_METHOD = ("JSON", "CBOR")[0]
-
-
-ENGINE: ecstremity.engine.Engine
-WORLD: ecstremity.world.World
-ROOT_CONSOLE: tcod.console.Console
-CONSOLE: Optional[anathema.console.Context] = None
-CONTEXT: Optional[tcod.context.Context] = None
-
-
-def ecstremity_init() -> None:
-    """Set up important ECStremity globals."""
-    global ENGINE
-    global WORLD
-
-    ENGINE = ecstremity.engine.Engine()
-    WORLD = ENGINE.create_world()
-
-
-def anathema_init() -> None:
-    """Set up important Anathema globals."""
-    global ROOT_CONSOLE
-    global CONSOLE
-    global CONTEXT
-
-    ROOT_CONSOLE = tcod.console.Console(*CONSOLE_SIZE)
-    ROOT_CONSOLE.bg[:] = (21, 21, 21)
-
-    CONSOLE = anathema.console.Context(ROOT_CONSOLE)
-
-
-def init() -> None:
-    """Initialize the Anathema game framework."""
-    ecstremity_init()
-    anathema_init()

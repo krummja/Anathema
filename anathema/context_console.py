@@ -1,16 +1,19 @@
 from __future__ import annotations
 from typing import *
-
-import tcod.constants
-from morphism import (Rect, Point, Size)  # type: ignore
-from tcod import Console
 from contextlib import contextmanager
 
+import tcod
+import tcod.constants
+from morphism import (Rect, Point, Size)  # type: ignore
+
+import anathema.prepare as prepare
+
 if TYPE_CHECKING:
+    from tcod import Console
     from numpy import ndarray
 
 
-class Context:
+class ContextConsole:
 
     def __init__(self, console: Console) -> None:
         self._offset = Point(0, 0)
@@ -232,3 +235,8 @@ class Context:
     def tiles_rgb(self, point: Point, width: int, height: int) -> ndarray:
         computed = point + self._offset
         return cast(ndarray, self.console.tiles_rgb[computed.y:computed.y+height, computed.x:computed.x+width])
+
+
+root_console = tcod.console.Console(*prepare.CONSOLE_SIZE)
+root_console.bg[:] = (21, 21, 21)
+console = ContextConsole(root_console)

@@ -3,8 +3,7 @@ from typing import TYPE_CHECKING, Any, List, Dict, Optional, cast, Generator, Ca
 from morphism import (Rect, Point, Size)  # type: ignore
 
 from anathema.views.layout import Layout
-
-from anathema.prepare import CONSOLE
+from anathema.context_console import console
 
 if TYPE_CHECKING:
     from tcod.event import KeyboardEvent, TextInput
@@ -89,9 +88,9 @@ class View:
         if self.is_hidden:
             return
         self.draw()
-        assert CONSOLE is not None
+        assert console is not None
         for view in self.subviews:
-            with CONSOLE.translate(view.frame.origin):
+            with console.translate(view.frame.origin):
                 view.perform_draw()
 
     def draw(self) -> None:
@@ -110,7 +109,7 @@ class View:
 
     @property
     def intrinsic_size(self) -> Optional[Size]:
-        raise NotImplementedError("Property intrinsic_size has no implementation!")
+        return None
 
     @property
     def frame(self) -> Rect:

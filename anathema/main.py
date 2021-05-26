@@ -21,12 +21,6 @@ def main(load_slot: Optional[Screen] = None) -> None:
 
     log.configure()
 
-    logger.info("PREPARE: Initializing.")
-    prepare.init()
-
-    logger.info("PREPARE: Loading configuration.")
-    config = prepare.CONFIG
-
     from anathema.client import Client
     logger.info("CLIENT: Initializing.")
     client: Client = Client()

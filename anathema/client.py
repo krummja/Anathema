@@ -4,12 +4,10 @@ from typing import TYPE_CHECKING
 import logging
 import tcod
 
+
 from anathema.screen import ScreenManager
 import anathema.prepare as prepare
-from anathema.prepare import CONSOLE, CONTEXT
-
-if TYPE_CHECKING:
-    pass
+from anathema.context_console import console
 
 logger = logging.getLogger(__file__)
 
@@ -19,6 +17,8 @@ class Client(ScreenManager):
 
     Inherits the base ScreenManager and handles the game loop.
     """
+
+    context: tcod.context.Context
 
     def __init__(self) -> None:
         super().__init__()
@@ -31,10 +31,10 @@ class Client(ScreenManager):
             title="Anathema",
             renderer=tcod.RENDERER_SDL2,
             vsync=prepare.VSYNC,
-        ) as CONTEXT:
+        ) as self.context:
             while self.should_continue:
                 self.update()
-                CONTEXT.present(CONSOLE.root)
+                self.context.present(console.root)
 
     def update(self) -> None:
         i = 0
