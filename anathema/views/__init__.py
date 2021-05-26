@@ -1,4 +1,4 @@
-from .first_responder_container import FirstResponderContainerView
+from .first_responder_container_view import FirstResponderContainerView
 from .layout import Layout
 
 

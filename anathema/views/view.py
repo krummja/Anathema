@@ -7,7 +7,7 @@ from anathema.views.layout import Layout
 from anathema.prepare import CONSOLE
 
 if TYPE_CHECKING:
-    from tcod.event import KeyboardEvent
+    from tcod.event import KeyboardEvent, TextInput
     from anathema.screen import Screen
     from anathema.typedefs import Number
 
@@ -34,7 +34,7 @@ class View:
         self._bounds = self._frame.with_origin(Point(0, 0))
         self.needs_layout: bool = True
 
-        self.first_responder = None
+        self.first_responder: Optional[View] = None
         self.is_first_responder: bool = False
         self.is_hidden: bool = False
 
@@ -156,7 +156,7 @@ class View:
             return self
         for view in self.ancestors:
             if view.first_responder:
-                return cast(View, view)
+                return view
         return None
 
     def did_become_first_responder(self) -> None:
@@ -174,11 +174,11 @@ class View:
         pass
 
     # noinspection PyMethodMayBeStatic
-    def handle_input(self, _event: KeyboardEvent) -> bool:
+    def handle_input(self, event: KeyboardEvent) -> bool:
         return False
 
     # noinspection PyMethodMayBeStatic
-    def handle_textinput(self, _text: str) -> bool:
+    def handle_textinput(self, event: TextInput) -> bool:
         return False
 
     @property
