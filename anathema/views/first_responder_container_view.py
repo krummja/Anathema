@@ -12,6 +12,9 @@ if TYPE_CHECKING:
 
 
 class FirstResponderContainerView(View):
+    """
+    Root container view for all subview types.
+    """
 
     def __init__(
             self,
