@@ -1,14 +1,12 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional, List, Dict, Any, Mapping, Union, cast
-from numbers import Real
+from typing import TYPE_CHECKING
 
 from morphism import (Point, Rect, Size)  # type: ignore
 
 
 if TYPE_CHECKING:
     from anathema.typedefs import *
-    from anathema.screen import Screen
-    from anathema.views.view import View
+    from view import View
     from anathema.typedefs import Number
 
 

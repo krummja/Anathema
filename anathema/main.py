@@ -6,6 +6,7 @@ import logging
 
 from anathema import log
 from anathema import prepare
+from anathema.commander import Commander
 
 if TYPE_CHECKING:
     from anathema.screen import Screen

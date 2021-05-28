@@ -19,7 +19,7 @@ import anathema.config as config
 import anathema.constants.paths as paths
 
 if TYPE_CHECKING:
-    import anathema.context_console
+    import anathema.console
 
 
 if not os.path.isdir(paths.USER_STORAGE_DIR):

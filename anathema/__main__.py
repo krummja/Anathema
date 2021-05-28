@@ -1,10 +1,15 @@
-"""This is the main entrypoint of the application."""
+"""
+This is the main entrypoint of the application.
+The game's `main` is in `main.py`.
+
+Use command line opt -h to list running options.
+"""
 from typing import List, Any, Optional
 import getopt
 import sys
 
 
-def main(args: Optional[List[Any]] = None) -> None:
+def main(_args: Optional[List[Any]] = None) -> None:
     opts, args = getopt.getopt(sys.argv[1:], "h", ["help"])
     for opt, arg in opts:
         if opt == "-h":

@@ -9,18 +9,17 @@ from morphism import (Rect, Point, Size)  # type: ignore
 import anathema.prepare as prepare
 
 if TYPE_CHECKING:
-    from tcod import Console
     from numpy import ndarray
 
 
-class ContextConsole:
+class Console:
 
-    def __init__(self, console: Console) -> None:
+    def __init__(self, console: tcod.console.Console) -> None:
         self._offset = Point(0, 0)
         self.console = console
 
     @property
-    def root(self) -> Console:
+    def root(self) -> tcod.console.Console:
         return self.console
 
     def set_fg(self, rect: Rect, value: Tuple[int, int, int]) -> None:
@@ -239,4 +238,4 @@ class ContextConsole:
 
 root_console = tcod.console.Console(*prepare.CONSOLE_SIZE)
 root_console.bg[:] = (21, 21, 21)
-console = ContextConsole(root_console)
+console = Console(root_console)

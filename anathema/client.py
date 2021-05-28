@@ -7,8 +7,9 @@ import tcod
 
 from anathema.screen import ScreenManager
 import anathema.prepare as prepare
-from anathema.context_console import console
+from anathema.console import console
 from anathema.screens.main_menu import MainMenu
+from anathema.commander import Commander
 
 logger = logging.getLogger(__file__)
 
@@ -23,6 +24,7 @@ class Client(ScreenManager):
 
     def __init__(self) -> None:
         super().__init__()
+        self.commander: Commander = Commander(self)
 
     def initialize(self) -> None:
         self.push_screen(MainMenu(self))
@@ -38,6 +40,7 @@ class Client(ScreenManager):
         ) as self.context:
             while self.should_continue:
                 self.update()
+                self.commander.update()
                 self.context.present(console.root)
 
     def update(self) -> None:

@@ -1,8 +1,8 @@
 from __future__ import annotations
-from typing import Tuple, List, Dict, Any, TYPE_CHECKING, Optional
+from typing import Tuple, List, TYPE_CHECKING, Optional
 
-from anathema.views.view import View
-from anathema.context_console import console
+from view import View
+from anathema.console import console
 
 if TYPE_CHECKING:
     from anathema.views.layout import Layout

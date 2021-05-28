@@ -1,9 +1,9 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, Any, List, Dict, Optional, Generator, Iterator, cast
+from typing import TYPE_CHECKING, List, Optional, Iterator, cast
 from morphism import (Rect, Point, Size)  # type: ignore
 import tcod
 
-from anathema.views.view import View
+from view import View
 from anathema.views.layout import Layout
 
 if TYPE_CHECKING:

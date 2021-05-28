@@ -7,11 +7,12 @@ import logging
 
 from anathema import prepare
 from anathema.views import FirstResponderContainerView
+from anathema.input.command_set import CommandSet
 
 if TYPE_CHECKING:
     from anathema.client import Client
-    from anathema.views.view import View
-    from tcod.event import KeyboardEvent
+    from anathema.view import View
+    from tcod.event import KeyboardEvent, TextInput
 
 
 logger = logging.getLogger(__name__)
@@ -36,6 +37,8 @@ class Screen:
 
     def __init__(self, client: Client, views: List[View]) -> None:
         self.client = client
+        self.client.commander.register(CommandSet(self))
+
         if not isinstance(views, list):
             views = [views]  # type: ignore
 
@@ -59,6 +62,10 @@ class Screen:
         of handling input.
         """
         return self._input_handlers
+
+    def handle_textinput(self, event: TextInput) -> None:
+        for handler in self._input_handlers:
+            handler.handle_textinput(event)
 
     def handle_input(self, event: KeyboardEvent) -> None:
         """

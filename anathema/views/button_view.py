@@ -1,12 +1,11 @@
 from __future__ import annotations
-from typing import Tuple, List, Dict, Any, TYPE_CHECKING, Optional, Callable
+from typing import Tuple, Any, TYPE_CHECKING, Optional, Callable
 
 from morphism import Point, Size, Rect  # type: ignore
 import tcod
 
-from anathema.views.view import View
+from view import View
 from anathema.views.label_view import LabelView
-from anathema.context_console import console
 
 if TYPE_CHECKING:
     from tcod.event import KeyboardEvent
@@ -79,9 +78,9 @@ class ButtonView(View):
         return True
 
     def handle_input(self, event: KeyboardEvent) -> bool:
-        if event.sym == tcod.event.K_RETURN:
-            self.callback(None)
-            return True
+        # if event.sym == tcod.event.K_RETURN:
+        #     self.callback(None)
+        #     return True
         return False
 
 

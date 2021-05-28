@@ -1,9 +1,9 @@
 from __future__ import annotations
 from typing import Optional, List, Tuple, TYPE_CHECKING
 from morphism import Point, Size, Rect  # type: ignore
-from anathema.views.view import View
+from view import View
 
-from anathema.context_console import console
+from anathema.console import console
 
 if TYPE_CHECKING:
     from anathema.views.layout import Layout

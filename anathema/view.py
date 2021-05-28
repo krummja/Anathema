@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Any, List, Dict, Optional, cast, Generator, Ca
 from morphism import (Rect, Point, Size)  # type: ignore
 
 from anathema.views.layout import Layout
-from anathema.context_console import console
+from anathema.console import console
 
 if TYPE_CHECKING:
     from tcod.event import KeyboardEvent, TextInput
