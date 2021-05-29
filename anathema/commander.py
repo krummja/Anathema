@@ -9,33 +9,47 @@ from typing import (
     TypeVar,
     Callable
 )
-from enum import Enum, auto
 
 import tcod
 
 if TYPE_CHECKING:
+    from tcod.event import TextInput, KeyDown
     from anathema.client import Client
     from anathema.view import View
+    from anathema.screen import Screen
     from anathema.input.command_set import CommandSet
 
 
 T = TypeVar("T")
 
 
-class Domain(Enum):
-    DEFAULT = auto()
-    MAIN_MENU = auto()
-    STAGE = auto()
-
-
 class Commander(tcod.event.EventDispatch[Any]):
 
     def __init__(self, client: Client) -> None:
         self.client = client
-        self._commands: Dict[str, CommandSet] = {}
+        self._commands: Dict[str, Dict[int, str]] = {
+            'MainMenu': {
+                tcod.event.K_RETURN: "confirm",
+                tcod.event.K_ESCAPE: "cancel"
+            },
+            'Stage': {},
+        }
 
-    def commands_for(self, key: str) -> CommandSet:
-        return self._commands[key]
+    def ev_textinput(self, event: TextInput) -> None:
+        if self.client.active_screen:
+            self.client.active_screen.handle_textinput(event)
+
+    def ev_keydown(self, event: KeyDown) -> Any:
+        if self.client.active_screen:
+            self.client.active_screen.handle_input(event)
+
+            command_set = self._commands[self.client.active_screen.name]
+            if event.sym in command_set:
+                try:
+                    func = getattr(self.client.active_screen, f"cmd_{command_set[event.sym]}")
+                    return func()
+                except AttributeError:
+                    pass
 
     def update(self) -> Optional[Any]:
         for event in tcod.event.get():
@@ -43,21 +57,3 @@ class Commander(tcod.event.EventDispatch[Any]):
             if value is not None:
                 return value
         return None
-
-    def ev_textinput(self, event: tcod.event.TextInput) -> None:
-        if self.client.active_screen is not None:
-            self.client.active_screen.handle_textinput(event)
-
-    def ev_keydown(self, event: tcod.event.KeyDown) -> Any:
-        if self.client.active_screen is not None:
-            self.client.active_screen.handle_input(event)
-
-            command_set = self._commands[self.client.active_screen.name]
-            if event.sym in command_set.commands:
-                try:
-                    return command_set.execute(event.sym)
-                except AttributeError:
-                    pass
-
-    def register(self, command_set: CommandSet) -> None:
-        self._commands[command_set.name] = command_set

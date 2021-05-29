@@ -37,7 +37,6 @@ class Screen:
 
     def __init__(self, client: Client, views: List[View]) -> None:
         self.client = client
-        self.client.commander.register(CommandSet(self))
 
         if not isinstance(views, list):
             views = [views]  # type: ignore

@@ -13,25 +13,16 @@ from anathema.prepare import CONSOLE_SIZE
 from anathema.input.command_set import Command, CommandSet
 
 if TYPE_CHECKING:
-    import anathema.client
+    from anathema.client import Client
     from anathema.view import View
 
 
 POSITION_RECT = Rect(Point(0, 0), Size(*CONSOLE_SIZE))
 
 
-class CMD_Test(Command):
-
-    def __init__(self) -> None:
-        super().__init__(tcod.event.K_RETURN)
-
-    def func(self) -> None:
-        print("Test!")
-
-
 class MainMenu(Screen):
 
-    def __init__(self, client: anathema.client.Client) -> None:
+    def __init__(self, client: Client) -> None:
 
         self.start_button = ButtonView(
             "Start", callback = (lambda: print("Start!")),
@@ -55,8 +46,6 @@ class MainMenu(Screen):
 
         self.views: List[View] = [self.logo_rect, self.button_box]
         super().__init__(client=client, views=self.views)
-
-        self.client.commander.commands_for(self.name).register(CMD_Test())
 
     def pre_update(self) -> None:
         self.test_label.update("Test Label")
