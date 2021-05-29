@@ -120,7 +120,7 @@ class FirstResponderContainerView(View):
                     break
                 if view.handle_textinput(event):
                     return True
-        assert False
+        return False
 
     def handle_input(self, event: KeyboardEvent) -> bool:
         handled = self.first_responder and self.first_responder.handle_input(event)

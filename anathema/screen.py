@@ -7,7 +7,6 @@ import logging
 
 from anathema import prepare
 from anathema.views import FirstResponderContainerView
-from anathema.input.command_set import CommandSet
 
 if TYPE_CHECKING:
     from anathema.client import Client
@@ -37,7 +36,6 @@ class Screen:
 
     def __init__(self, client: Client, views: List[View]) -> None:
         self.client = client
-        self.client.commander.register(CommandSet(self))
 
         if not isinstance(views, list):
             views = [views]  # type: ignore
