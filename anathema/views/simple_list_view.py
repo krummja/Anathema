@@ -1,10 +1,12 @@
 from __future__ import annotations
-from typing import Optional, View
-from morphism import (Rect, Point, Size)  # type: ignore
+from typing import Optional, View, TYPE_CHECKING
 
 from anathema.view import View
 from anathema.views.rect_view import RectView
 from anathema.views.label_view import LabelView
+
+if TYPE_CHECKING:
+    from morphism import Rect  # type: ignore
 
 
 class SimpleListView(View):
