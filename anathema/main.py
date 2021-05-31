@@ -1,7 +1,6 @@
 """Module responsible for booting the different parts of the game engine."""
 from __future__ import annotations
 from typing import TYPE_CHECKING, Optional
-
 import logging
 
 from anathema import log
@@ -15,22 +14,21 @@ logger = logging.getLogger(__file__)
 
 
 def main(load_slot: Optional[Screen] = None) -> None:
-    """
-    Application entrypoint. Sets up the Client instance and starts the
+    """Application entrypoint. Sets up the Client instance and starts the
     game loop.
     """
-
     log.configure()
 
-    from anathema.client import Client
     logger.info("CLIENT: Initializing.")
+    from anathema.client import Client
     client: Client = Client()
 
     if load_slot:
         logger.info("Save data found.")
         pass
-
-    client.initialize()
+    else:
+        logger.info("No save data found.")
 
     logger.info("CLIENT: Running.")
+    client.initialize()
     client.main()

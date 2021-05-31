@@ -46,5 +46,11 @@ class MainMenu(Screen):
         self.views: List[View] = [self.logo_rect, self.button_box]
         super().__init__(client=client, views=self.views)
 
+    def cmd_confirm(self):
+        pass
+
+    def cmd_cancel(self):
+        pass
+
     def cmd_move(self, delta: Tuple[int, int]) -> None:
-        print(delta)
+        pass

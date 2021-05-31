@@ -16,7 +16,6 @@ logger = logging.getLogger(__file__)
 
 class Client(ScreenManager):
     """Client class for the entire application.
-
     Inherits the base ScreenManager and handles the game loop.
     """
 
