@@ -11,15 +11,18 @@ if TYPE_CHECKING:
 
 
 class LabelView(View):
+    """Draws the given string inside its bounds. Supports multi-line strings."""
 
     def __init__(
             self,
+            # LabelView parameters.
             text: str = "<unset>",
             fg: Tuple[int, int, int] = (255, 255, 255),
             bg: Tuple[int, int, int] = (21, 21, 21),
             align_horz: str = 'center',
             align_vert: str = 'center',
             size: Optional[Size] = None,
+            # Superclass parameters.
             screen: Optional[Screen] = None,
             layout: Optional[Layout] = None,
             subviews: Optional[List[View]] = None,

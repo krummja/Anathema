@@ -14,9 +14,16 @@ if TYPE_CHECKING:
 
 
 class ButtonView(View):
+    """Contains a label. Can be first responder. When a button is the first
+    responder:
+
+    * The label is drawn black-on-white instead of white-on-black.
+    * Pressing the ENTER key calls *callback*.
+    """
 
     def __init__(
             self,
+            # ButtonView parameters.
             text: str,
             callback: Callable[..., Optional[Any]],
             fg: Tuple[int, int, int] = (255, 255, 255),
@@ -24,6 +31,7 @@ class ButtonView(View):
             align_horz: str = 'center',
             align_vert: str = 'center',
             size: Optional[Size] = None,
+            # Superview parameters.
             screen: Optional[Screen] = None,
             layout: Optional[Layout] = None,
             frame: Optional[Rect] = None
@@ -78,9 +86,10 @@ class ButtonView(View):
         return True
 
     def handle_input(self, event: KeyboardEvent) -> bool:
-        # if event.sym == tcod.event.K_RETURN:
-        #     self.callback(None)
-        #     return True
+        if self.callback:
+            if event.sym == tcod.event.K_RETURN:
+                self.callback()
+                return True
         return False
 
 

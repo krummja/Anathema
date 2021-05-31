@@ -11,13 +11,17 @@ if TYPE_CHECKING:
 
 
 class RectView(View):
+    """Draws a rectangle in its bounds using ASCII line art."""
 
     def __init__(
             self,
+            # RectView parameters.
             fg: Tuple[int, int, int] = (255, 255, 255),
             bg: Tuple[int, int, int] = (21, 21, 21),
             fill: bool = False,
             style: str = 'single',
+
+            # Superclass parameters.
             screen: Optional[Screen] = None,
             layout: Optional[Layout] = None,
             subviews: Optional[List[View]] = None,

@@ -12,8 +12,18 @@ if TYPE_CHECKING:
 
 
 class FirstResponderContainerView(View):
-    """
-    Root container view for all subview types.
+    """Root container view for all subview types.
+
+    The First Responder Container View manages the "first responder" system.
+    The control that receives input events at a given time is the first
+    responder.
+
+    This container view listens for the TAB key. When it is pressed, the
+    subview tree is walked until another candidate is found, or there are
+    no others. That new subview is the new first responder.
+
+    You do not need to create this class yourself. :py:class:`Screen` makes
+    it for you.
     """
 
     def __init__(
@@ -29,13 +39,18 @@ class FirstResponderContainerView(View):
 
     @property
     def intrinsic_size(self) -> Optional[Size]:
+        """No direct function for this view. Added to satisfy inheritance."""
         return None
 
     @property
     def contains_first_responders(self) -> bool:
+        """Check if this view has eligible first responders in its subview
+        tree.
+        """
         return True
 
     def first_responder_traversal(self) -> Iterator[View]:
+        """Return an iterator of all of the subviews of this view."""
         for subview in self.subviews:
             yield from self._first_responder_traversal(subview)
 
@@ -53,6 +68,7 @@ class FirstResponderContainerView(View):
                 if v != self and v.can_become_first_responder]
 
     def remove_subviews(self, subviews: List[View]) -> None:
+        """Remove a subview and then try to find an eligible responder."""
         super().remove_subviews(subviews)
         for view in subviews:
             for subview in self._first_responder_traversal(view):
@@ -62,6 +78,7 @@ class FirstResponderContainerView(View):
                     return
 
     def set_first_responder(self, value: Optional[View]) -> None:
+        """Resign the active responder and set a new one."""
         if self.first_responder:
             self.first_responder.did_resign_first_responder()
             for ancestor in self.first_responder.ancestors:
@@ -75,6 +92,7 @@ class FirstResponderContainerView(View):
                 ancestor.descendant_did_become_first_responder(self.first_responder)
 
     def find_next_responder(self) -> None:
+        """Resign the active responder and switch to the next one."""
         existing_responder = self.first_responder
         if self.first_responder is None:
             existing_responder = self.leftmost_leaf
@@ -94,6 +112,7 @@ class FirstResponderContainerView(View):
                 self.set_first_responder(None)
 
     def find_prev_responder(self) -> None:
+        """Resign active first responder and switch to the previous one."""
         existing_responder = self.first_responder
         if self.first_responder is None:
             existing_responder = self.leftmost_leaf
@@ -113,6 +132,7 @@ class FirstResponderContainerView(View):
                 self.set_first_responder(None)
 
     def handle_textinput(self, event: TextInput) -> bool:
+        """Handle text input by passing it up the ancestor tree."""
         handled = self.first_responder and self.first_responder.handle_textinput(event)
         if self.first_responder and not handled:
             for view in self.first_responder.ancestors:
@@ -123,6 +143,7 @@ class FirstResponderContainerView(View):
         return False
 
     def handle_input(self, event: KeyboardEvent) -> bool:
+        """Handle key inputs by passing them up the ancestor tree."""
         handled = self.first_responder and self.first_responder.handle_input(event)
         if self.first_responder and not handled:
             for v in self.first_responder.ancestors:
@@ -135,6 +156,11 @@ class FirstResponderContainerView(View):
         return self.handle_input_after_first_responder(event, can_resign)
 
     def handle_input_after_first_responder(self, event: KeyboardEvent, can_resign: bool) -> bool:
+        """
+        If writing a custom first responder container view, override this to
+        customize input behavior. For example, if writing a list view, you
+        might want to use the arrows to change the first responder.
+        """
         if can_resign and event.sym == tcod.event.K_TAB:
             if event.mod & tcod.event.KMOD_LSHIFT:
                 self.find_prev_responder()

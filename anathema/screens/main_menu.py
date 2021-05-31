@@ -23,25 +23,33 @@ class MainMenu(Screen):
 
     def __init__(self, client: Client) -> None:
 
-        # Main Menu
+        # region LOGO
+        self.logo_rect = RectView(
+            layout = Layout(
+                bottom=POSITION_RECT.relative_point(1.0, 0.33)[1]))
+        # endregion
+
+        # region MAIN MENU
         self.start_button = ButtonView(
-            "Start", callback = (lambda: print("Start!")),
-            align_horz = "left", align_vert = "bottom",
+            "Start",
+            callback = (lambda: print("Start!")),
+            align_horz = "left",
+            align_vert = "bottom",
             layout = Layout(bottom = 8, left = 2))
 
         self.new_button = ButtonView(
-            "New", callback = (lambda: print("New!")),
-            align_horz = "left", align_vert = "bottom",
+            "New",
+            callback = (lambda: print("New!")),
+            align_horz = "left",
+            align_vert = "bottom",
             layout = Layout(bottom = 6, left = 2))
 
         self.button_box = RectView(
-            layout = Layout(top = POSITION_RECT.relative_point(1.0, 0.66)[1] + 1,
-                            right = POSITION_RECT.relative_point(0.66, 1.0)[0] + 1),
+            layout = Layout(
+                top = POSITION_RECT.relative_point(1.0, 0.66)[1] + 1,
+                right = POSITION_RECT.relative_point(0.66, 1.0)[0] + 1),
             subviews = [self.start_button, self.new_button])
-
-        # Logo Box
-        self.logo_rect = RectView(
-            layout = Layout(bottom=POSITION_RECT.relative_point(1.0, 0.33)[1]))
+        # endregion
 
         self.views: List[View] = [self.logo_rect, self.button_box]
         super().__init__(client=client, views=self.views)
