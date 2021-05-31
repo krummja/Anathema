@@ -168,4 +168,3 @@ class ScreenManager:
         print("Exiting...")
         while self._stack:
             self.pop_screen(may_exit=True)
-

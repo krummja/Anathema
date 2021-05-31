@@ -62,9 +62,10 @@ class Commander(tcod.event.EventDispatch[Any]):
 
     def ev_keydown(self, event: KeyDown) -> Any:
         if self.client.active_screen:
+            command_set = self._commands[self.client.active_screen.name]
+
             self.client.active_screen.handle_input(event)
 
-            command_set = self._commands[self.client.active_screen.name]
             if event.sym in command_set:
                 try:
                     func = getattr(self.client.active_screen, f"cmd_{command_set[event.sym]}")
@@ -82,6 +83,6 @@ class Commander(tcod.event.EventDispatch[Any]):
     def update(self) -> Optional[Any]:
         for event in tcod.event.get():
             value = self.dispatch(event)
-            if value is not None:
+            if value:
                 return value
         return None

@@ -26,7 +26,7 @@ class Client(ScreenManager):
         self.commander: Commander = Commander(self)
 
     def initialize(self) -> None:
-        self.push_screen(MainMenu(self))
+        self.replace_screen(MainMenu(self))
 
     def main(self) -> None:
         with tcod.context.new(

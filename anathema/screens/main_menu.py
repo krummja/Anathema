@@ -32,14 +32,14 @@ class MainMenu(Screen):
         # region MAIN MENU
         self.start_button = ButtonView(
             "Start",
-            callback = (lambda: print("Start!")),
+            callback = self.ui_start,
             align_horz = "left",
             align_vert = "bottom",
             layout = Layout(bottom = 8, left = 2))
 
         self.new_button = ButtonView(
-            "New",
-            callback = (lambda: print("New!")),
+            "Quit",
+            callback = self.ui_quit,
             align_horz = "left",
             align_vert = "bottom",
             layout = Layout(bottom = 6, left = 2))
@@ -54,6 +54,15 @@ class MainMenu(Screen):
         self.views: List[View] = [self.logo_rect, self.button_box]
         super().__init__(client=client, views=self.views)
 
+    # region UI COMMANDS
+    def ui_start(self) -> None:
+        print("Start!")
+
+    def ui_quit(self) -> None:
+        self.client.quit()
+    # endregion
+
+    # region SCREEN COMMANDS
     def cmd_confirm(self):
         pass
 
@@ -62,3 +71,4 @@ class MainMenu(Screen):
 
     def cmd_move(self, delta: Tuple[int, int]) -> None:
         pass
+    # endregion
