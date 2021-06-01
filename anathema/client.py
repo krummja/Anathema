@@ -1,15 +1,17 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 import logging
 import tcod
-
 
 from anathema.screen import ScreenManager
 import anathema.prepare as prepare
 from anathema.console import console
 from anathema.screens.main_menu import MainMenu
 from anathema.commander import Commander
+
+if TYPE_CHECKING:
+    from anathema.session import Session
 
 logger = logging.getLogger(__file__)
 
@@ -24,8 +26,10 @@ class Client(ScreenManager):
     def __init__(self) -> None:
         super().__init__()
         self.commander: Commander = Commander(self)
+        self.session: Optional[Session] = None
 
-    def initialize(self) -> None:
+    def initialize(self, session: Session) -> None:
+        self.session = session
         self.replace_screen(MainMenu(self))
 
     def main(self) -> None:

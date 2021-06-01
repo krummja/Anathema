@@ -38,7 +38,7 @@ config.generate_default_config()
 
 
 def fetch_asset(path: str) -> str:
-    return os.path.join(paths.ASSET_DIR, path)
+    return os.path.join(paths.ASSETDIR, path)
 
 
 CONFIG = config.AnathemaConfig(paths.USER_CONFIG_PATH)

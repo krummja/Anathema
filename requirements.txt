@@ -1,8 +1,10 @@
 bearlibterminal~=0.15.7
-ecstremity~=1.0.4
+ecstremity~=1.1.0
 morphism~=0.0.1
 nocterminal~=0.0.1
-numpy~=1.19.5
-setuptools~=45.2.0
-tcod~=11.19.3
+numpy~=1.20.2
+setuptools~=56.0.0
+tcod~=12.2.0
 uuid~=1.30
+DateTime~=4.3
+cbor
