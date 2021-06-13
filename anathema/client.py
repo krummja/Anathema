@@ -27,11 +27,13 @@ class Client(ScreenManager):
     def __init__(self) -> None:
         super().__init__()
         self.commander: Commander = Commander(self)
-        self.loop = EngineLoop(self)
+        self.loop: Optional[EngineLoop] = None
         self.session: Optional[Session] = None
 
     def initialize(self, session: Session) -> None:
+        self.loop = EngineLoop(self, session)
         self.session = session
+        self.loop.session = session
         self.replace_screen(MainMenu(self))
 
     def main(self) -> None:

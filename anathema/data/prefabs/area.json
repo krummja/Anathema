@@ -1,0 +1,9 @@
+{
+  "name": "Area",
+  "inherit": [],
+  "components": [
+    {
+      "type": "EnvTileMap"
+    }
+  ]
+}

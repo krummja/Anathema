@@ -3,6 +3,9 @@
   "inherit": ["GameObject"],
   "components": [
     {
+      "type": "Actor"
+    },
+    {
       "type": "Eyes"
     }
   ]

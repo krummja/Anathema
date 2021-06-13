@@ -42,6 +42,7 @@ class Commander(tcod.event.EventDispatch[Any]):
                 tcod.event.K_ESCAPE: "cancel",
             },
         }
+
         self._move_keys: Dict[int, Tuple[int, int]] = {
             # Arrow keys.
             tcod.event.K_LEFT    : (-1, 0),

@@ -11,7 +11,7 @@ class Player:
 
     def __init__(self, loop: EngineLoop) -> None:
         self.loop = loop
-        self._uid = None
+        self._uid = "PLAYER"
         self._action_queue = deque([])
 
     @property

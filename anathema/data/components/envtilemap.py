@@ -4,6 +4,8 @@ from ecstremity import Component
 import numpy as np
 
 from anathema.engine.environments.tile import tile_dt
+from anathema.engine.environments.tile_defs import Tiles
+
 
 if TYPE_CHECKING:
     from numpy.lib.index_tricks import IndexExpression
@@ -58,6 +60,9 @@ class EnvTilemap(Component):
         self._visible = np.zeros(self.shape, dtype=bool)
         self.actors = set()
 
+        tile_data = Tiles.unformed.make()
+        self._tiles[:] = tile_data[1]
+
     @property
     def shape(self) -> Tuple[int, int]:
         return self.height, self.width
@@ -70,9 +75,17 @@ class EnvTilemap(Component):
     def explored(self) -> np.ndarray:
         return self._explored
 
+    @explored.setter
+    def explored(self, value: np.ndarray) -> None:
+        self._explored = value
+
     @property
     def visible(self) -> np.ndarray:
         return self._visible
+
+    @visible.setter
+    def visible(self, value: np.ndarray) -> None:
+        self._visible = value
 
     def is_blocked(self, x: int, y: int) -> bool:
         if not (0 <= x < self.width and 0 <= y < self.height):

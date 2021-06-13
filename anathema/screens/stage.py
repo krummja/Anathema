@@ -12,7 +12,7 @@ from anathema.views.rect_view import RectView
 from anathema.views.label_view import LabelView
 from anathema.prepare import CONSOLE_SIZE
 
-from anathema.console import Console
+from anathema.console import console
 
 if TYPE_CHECKING:
     from anathema.client import Client
@@ -39,8 +39,10 @@ class Stage(Screen):
         super().__init__(client=client, views=self.views)
 
     def on_enter(self, *args: List[Any]) -> None:
-        console.clear()
-        # self.client.loop.camera.camera_pos = (0, 0)
+        self.client.loop.is_running = True
+
+        console.root.clear()
+        self.client.loop.camera.camera_pos = self.client.loop.player.position
         self.client.loop.fov_system.update_fov()
         self.client.loop.render_system.update()
 
@@ -55,5 +57,5 @@ class Stage(Screen):
         self.client.pop_screen()
 
     def cmd_move(self, delta: Tuple[int, int]) -> None:
-        pass
+        self.client.loop.player.move(delta)
     # endregion

@@ -23,7 +23,7 @@ class Renderer:
 
     def render_tile_map(self, tile_map: EnvTilemap) -> None:
         screen_view, world_view = self.loop.camera.camera_view(tile_map.width, tile_map.height)
-        self.console.tiles_rgb[screen_view] = self.select_area_mask(tile_map, world_view)
+        self.console.root.tiles_rgb[screen_view] = self.select_area_mask(tile_map, world_view)
 
     @staticmethod
     def select_area_mask(tile_map: EnvTilemap, world_view: Tuple[slice, slice]) -> np.ndarray:

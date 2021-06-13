@@ -15,17 +15,20 @@ from anathema.engine.systems.render_system import RenderSystem
 from anathema.engine.systems.fov_system import FOVSystem
 
 if TYPE_CHECKING:
+    from anathema.session import Session
     from anathema.client import Client
 
 
 class EngineLoop:
 
-    def __init__(self, client: Client) -> None:
+    def __init__(self, client: Client, session: Session) -> None:
         """Core engine class.
         Handles the actual game modules and runs the game loop.
         """
+        self.is_running = False
         self.client = client
-        self.session = self.client.session
+        self.session = session
+        self.world = session.world
 
         self.camera = Camera(self)
         self.renderer = Renderer(self)
@@ -46,18 +49,15 @@ class EngineLoop:
     def ecs(self):
         return engine
 
-    @property
-    def world(self):
-        return self.session.world
-
     def update(self) -> None:
-        for _ in range(20):
-            self.clock.update()
-            player_turn = self.action_system.update()
+        if self.is_running:
+            for _ in range(20):
+                self.clock.update()
+                player_turn = self.action_system.update()
 
-            # self.path_system.update()
+                # self.path_system.update()
 
-            if player_turn:
-                self.fov_system.update()
-                self.render_system.update()
-                return
+                if player_turn:
+                    self.fov_system.update()
+                    self.render_system.update()
+                    return

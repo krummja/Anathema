@@ -11,7 +11,8 @@ class ActionSystem(BaseSystem):
 
     def update(self):
         entities = self.queries["actors"].result
-        # current_area = self.queries["area"].result[0]
+        # current_area = self.queries["area"].result[0]["EnvTilemap"]
+        # current_area.actors.update(set(entities))
 
         sorted_entities = deque(sorted(entities, key=(lambda e: e["Actor"]), reverse = True))
         entity = sorted_entities[0]
