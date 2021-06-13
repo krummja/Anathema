@@ -11,11 +11,16 @@ if TYPE_CHECKING:
 
 class AreaSystem(BaseSystem):
 
+    _needs_update: bool = True
     current_area = None
 
     def initialize(self):
         self.query("current", all_of=[ "EnvIsCurrent" ])
-        self.current_area = self.queries["current"].result[0]
 
     def update(self):
-        raise NotImplementedError
+        if self._needs_update:
+            self.current_area = self.queries["current"].result[0]
+            self._needs_update = False
+
+    def needs_update(self) -> None:
+        self._needs_update = True

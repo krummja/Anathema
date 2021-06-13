@@ -13,6 +13,7 @@ from anathema.engine.player import Player
 from anathema.engine.systems.action_system import ActionSystem
 from anathema.engine.systems.render_system import RenderSystem
 from anathema.engine.systems.fov_system import FOVSystem
+from anathema.engine.systems.area_system import AreaSystem
 
 if TYPE_CHECKING:
     from anathema.session import Session
@@ -35,6 +36,7 @@ class EngineLoop:
         self.clock = Clock(self)
         self.player = Player(self)
 
+        self.area_system = AreaSystem(self)
         self.action_system = ActionSystem(self)
         self.fov_system = FOVSystem(self)
         self.render_system = RenderSystem(self)
@@ -51,6 +53,9 @@ class EngineLoop:
 
     def update(self) -> None:
         if self.is_running:
+
+            self.area_system.update()
+
             for _ in range(20):
                 self.clock.update()
                 player_turn = self.action_system.update()

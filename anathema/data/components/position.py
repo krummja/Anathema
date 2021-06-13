@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Tuple
 import numpy as np
 
 # type: Component
@@ -16,8 +16,12 @@ class Position(Component):
         self.y = y
 
     @property
-    def xy(self):
+    def xy(self) -> Tuple[int, int]:
         return self.x, self.y
+
+    @xy.setter
+    def xy(self, value: Tuple[int, int]) -> None:
+        self.x, self.y = value
 
     @property
     def ij(self):

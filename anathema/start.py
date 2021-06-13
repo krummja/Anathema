@@ -24,6 +24,13 @@ def start() -> None:
     # Configure the log.
     log.configure()
 
+    # Import the Client and create a new instance.
+    logger.info(cprint(bcolors.OKBLUE, "CLIENT: Initializing."))
+    from anathema.client import Client
+
+    client: Client = Client()
+    engine.client = client
+
     # Load ECS stuff.
     logger.info(cprint(bcolors.OKBLUE, "ECS: Registering Component definitions."))
     load_components(engine)
@@ -31,11 +38,6 @@ def start() -> None:
     logger.info(cprint(bcolors.OKBLUE, "ECS: Registering Prefab definitions."))
     load_prefabs(engine)
 
-    # Import the Client and create a new instance.
-    logger.info(cprint(bcolors.OKBLUE, "CLIENT: Initializing."))
-    from anathema.client import Client
-
-    client: Client = Client()
     session = Session.new()
     session = storage.setup_session(session)
     client.initialize(session)

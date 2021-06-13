@@ -7,7 +7,7 @@ class ActionSystem(BaseSystem):
 
     def initialize(self):
         self.query("actors", all_of = [ "Actor" ])
-        self.query("area", all_of = [ "EnvTilemap", "EnvIsCurrent" ])
+        # self.query("area", all_of = [ "EnvTilemap", "EnvIsCurrent" ])
 
     def update(self):
         entities = self.queries["actors"].result

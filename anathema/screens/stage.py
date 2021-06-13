@@ -43,6 +43,7 @@ class Stage(Screen):
 
         console.root.clear()
         self.client.loop.camera.camera_pos = self.client.loop.player.position
+        self.client.loop.area_system.update()
         self.client.loop.fov_system.update_fov()
         self.client.loop.render_system.update()
 
