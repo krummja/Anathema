@@ -9,6 +9,7 @@ import anathema.prepare as prepare
 from anathema.console import console
 from anathema.screens.main_menu import MainMenu
 from anathema.commander import Commander
+from anathema.engine.engine import EngineLoop
 
 if TYPE_CHECKING:
     from anathema.session import Session
@@ -18,7 +19,7 @@ logger = logging.getLogger(__file__)
 
 class Client(ScreenManager):
     """Client class for the entire application.
-    Inherits the base ScreenManager and handles the game loop.
+    Inherits the base ScreenManager and handles the screen loop.
     """
 
     context: tcod.context.Context
@@ -26,6 +27,7 @@ class Client(ScreenManager):
     def __init__(self) -> None:
         super().__init__()
         self.commander: Commander = Commander(self)
+        self.loop = EngineLoop(self)
         self.session: Optional[Session] = None
 
     def initialize(self, session: Session) -> None:
@@ -44,12 +46,5 @@ class Client(ScreenManager):
             while self.should_continue:
                 self.update()
                 self.commander.update()
+                self.loop.update()
                 self.context.present(console.root)
-
-    def update(self) -> None:
-        i = 0
-        for j, screen in enumerate(self._stack):
-            if screen.covers_screen:
-                i = j
-        for screen in self._stack[i:]:
-            screen.on_update(screen == self._stack[-1])

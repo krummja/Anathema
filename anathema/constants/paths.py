@@ -9,7 +9,7 @@ logger = logging.getLogger(__file__)
 LIBDIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 logger.debug("libdir: %s", LIBDIR)
 
-# This is the root src directory containing main.py
+# This is the root src directory containing start.py
 BASEDIR = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 logger.debug("basedir: %s", BASEDIR)
 

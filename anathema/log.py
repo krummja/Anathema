@@ -2,6 +2,7 @@ import logging
 import sys
 
 from anathema import prepare
+from print_utils import cprint, bcolors
 
 
 def configure() -> None:
@@ -24,16 +25,29 @@ def configure() -> None:
 
     if config.debug_logging:
         for logger_name in config.loggers:
+
             if logger_name == "all":
-                print("Enabling logging of all modules.")
+                print(f"Enabling logging of all modules [{log_level}] \n")
                 logger = logging.getLogger()
             else:
-                print("Enabling logging for module: %s" % logger_name)
+                print(f"Enabling logging for module: {logger_name} [{log_level}] \n")
                 logger = logging.getLogger(logger_name)
 
             logger.setLevel(log_level)
             log_handler = logging.StreamHandler(sys.stdout)
             log_handler.setLevel(log_level)
-            log_handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - " "%(levelname)s - %(message)s"))
+
+            if log_level >= 30:
+                log_color = bcolors.FAIL
+            elif log_level >= 20:
+                log_color = bcolors.WARNING
+            else:
+                log_color = bcolors.HEADER
+
+            mod_string = cprint(log_color, "%(module)-8s")  + " :: "
+            level_string = cprint(log_color, "%(levelname)-8s")  + " :: "
+            formatter = logging.Formatter(mod_string + level_string + "%(message)s")
+
+            log_handler.setFormatter(formatter)
             logger.addHandler(log_handler)
             loggers[logger_name] = logger

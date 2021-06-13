@@ -44,7 +44,6 @@ class AreaLocation(Location):
         super().__init__(x, y)
 
 
-# type: Component
 class EnvTilemap(Component):
 
     def __init__(
@@ -86,4 +85,3 @@ class EnvTilemap(Component):
 
     def __getitem__(self, key: Tuple[int, int]) -> AreaLocation:
         return AreaLocation(self, *key)
-

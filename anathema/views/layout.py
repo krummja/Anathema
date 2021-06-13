@@ -1,7 +1,11 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
-from morphism import (Point, Rect, Size)  # type: ignore
+from morphism import (
+    Point,  # type: Point
+    Rect,   # type: Rect
+    Size    # type: Size
+)
 
 
 if TYPE_CHECKING:

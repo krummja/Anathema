@@ -1,5 +1,9 @@
 {
   "name": "Being",
   "inherit": ["GameObject"],
-  "components": []
+  "components": [
+    {
+      "type": "Eyes"
+    }
+  ]
 }

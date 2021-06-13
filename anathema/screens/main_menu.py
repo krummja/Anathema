@@ -11,6 +11,8 @@ from anathema.views.rect_view import RectView
 from anathema.views.label_view import LabelView
 from anathema.prepare import CONSOLE_SIZE
 
+from anathema.screens.character_creation import CharacterCreation
+
 if TYPE_CHECKING:
     from anathema.client import Client
     from anathema.view import View
@@ -44,19 +46,28 @@ class MainMenu(Screen):
             align_vert = "bottom",
             layout = Layout(bottom = 6, left = 2))
 
-        self.button_box = RectView(
+        self.main_menu = RectView(
             layout = Layout(
-                top = POSITION_RECT.relative_point(1.0, 0.66)[1] + 1,
+                top = POSITION_RECT.relative_point(1.0, 0.66)[1] + 2,
                 right = POSITION_RECT.relative_point(0.66, 1.0)[0] + 1),
             subviews = [self.start_button, self.new_button])
         # endregion
 
-        self.views: List[View] = [self.logo_rect, self.button_box]
+        # region SESSION INFO
+        self.session_info = RectView(
+            layout = Layout(
+                top = POSITION_RECT.relative_point(1.0, 0.66)[1] + 2,
+                left = POSITION_RECT.relative_point(0.33, 1.0)[0] + 1),
+            subviews = []
+        )
+        # endregion
+
+        self.views: List[View] = [self.logo_rect, self.main_menu, self.session_info]
         super().__init__(client=client, views=self.views)
 
     # region UI COMMANDS
     def ui_start(self) -> None:
-        print("Start!")
+        self.client.push_screen(CharacterCreation(self.client))
 
     def ui_quit(self) -> None:
         self.client.quit()

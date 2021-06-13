@@ -31,9 +31,16 @@ class Commander(tcod.event.EventDispatch[Any]):
         self._commands: Dict[str, Dict[int, str]] = {
             'MainMenu': {
                 tcod.event.K_RETURN: "confirm",
-                tcod.event.K_ESCAPE: "cancel"
+                tcod.event.K_ESCAPE: "cancel",
             },
-            'Stage': {},
+            "CharacterCreation": {
+                tcod.event.K_RETURN: "confirm",
+                tcod.event.K_ESCAPE: "cancel",
+            },
+            'Stage': {
+                tcod.event.K_RETURN: "confirm",
+                tcod.event.K_ESCAPE: "cancel",
+            },
         }
         self._move_keys: Dict[int, Tuple[int, int]] = {
             # Arrow keys.

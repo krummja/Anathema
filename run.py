@@ -1,7 +1,5 @@
-from argparse import ArgumentParser
-
 
 if __name__ == '__main__':
-    from anathema import prepare, main
+    from anathema import prepare, start
     config = prepare.CONFIG
-    main.main(load_slot = 0)
+    start.start()

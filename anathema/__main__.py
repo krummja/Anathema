@@ -1,6 +1,6 @@
 """
 This is the main entrypoint of the application.
-The game's `main` is in `main.py`.
+The game's `main` is in `start.py`.
 
 Use command line opt -h to list running options.
 """
@@ -17,8 +17,8 @@ def main(_args: Optional[List[Any]] = None) -> None:
             print("  -h          Display this help message")
             sys.exit()
 
-    from anathema.main import main  # type: ignore
-    main(load_slot=0)
+    from anathema.start import start  # type: ignore
+    start(load_slot=0)
     sys.exit()
 
 
