@@ -41,6 +41,10 @@ class Commander(tcod.event.EventDispatch[Any]):
                 tcod.event.K_RETURN: "confirm",
                 tcod.event.K_ESCAPE: "cancel",
             },
+            'EscapeMenu': {
+                tcod.event.K_RETURN: "confirm",
+                tcod.event.K_ESCAPE: "cancel",
+            }
         }
 
         self._move_keys: Dict[int, Tuple[int, int]] = {

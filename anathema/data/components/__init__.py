@@ -2,7 +2,7 @@ import os
 import importlib
 import pprint
 
-tree = os.listdir("./anathema/data/components")
+tree = os.listdir(os.path.dirname(os.path.abspath(__file__)))
 tree.remove("__init__.py")
 tree.remove("__pycache__")
 

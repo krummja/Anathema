@@ -24,10 +24,14 @@ def load_components(engine: Engine) -> None:
 
 def load_prefabs(engine: Engine) -> None:
     prefabs = [f for f in os.listdir(PREFABS) if f.endswith(".json")]
+    definitions = []
     for prefab in prefabs:
         with open(PREFABS + prefab) as json_def:
             definition = json.load(json_def)
-            engine.prefabs.register(definition)
+            definitions.append(definition)
+    definitions.sort(key = (lambda definition: len(definition["inherit"])))
+    for definition in definitions:
+        engine.prefabs.register(definition)
 
 
 def new_world() -> World:

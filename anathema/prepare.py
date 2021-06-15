@@ -48,7 +48,7 @@ with open(paths.USER_CONFIG_PATH, "w") as fp:
 
 
 CONSOLE_SIZE = CONFIG.console_dims
-STAGE_PANEL_WIDTH = math.floor(CONSOLE_SIZE[0] * 0.6)
+STAGE_PANEL_WIDTH = math.floor(CONSOLE_SIZE[0] * 0.7)
 STAGE_PANEL_HEIGHT = math.floor(CONSOLE_SIZE[1] * 0.8)
 HP_COLOR = (112, 248, 168)
 XP_COLOR = (248, 245, 71)

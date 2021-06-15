@@ -45,7 +45,7 @@ class TileType:
         self._opaque = True
         return self
 
-    def make(self) -> Tuple[str, np.ndarray]:
+    def make(self) -> np.ndarray:
         move_cost = 1 if self._passable else 0
         transparent = not self._opaque
         back = self.back if self.back else (21, 21, 21)

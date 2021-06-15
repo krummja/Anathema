@@ -38,8 +38,9 @@ def start() -> None:
     logger.info(cprint(bcolors.OKBLUE, "ECS: Registering Prefab definitions."))
     load_prefabs(engine)
 
+    # Set up Session
     session = Session.new()
-    session = storage.setup_session(session)
+    # session = storage.setup_session(session)
     client.initialize(session)
 
     # Let 'er rip!

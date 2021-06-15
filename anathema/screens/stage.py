@@ -31,10 +31,10 @@ class Stage(Screen):
         self.player_name = self.player["Moniker"].name
 
         self.views: List[View] = [
-            LabelView(
-                self.player_name,
-                layout = Layout(top = 2, left = 2)
-            )
+            # LabelView(
+            #     self.player_name,
+            #     layout = Layout(top = 2, left = 2)
+            # )
         ]
         super().__init__(client=client, views=self.views)
 
@@ -55,8 +55,48 @@ class Stage(Screen):
         pass
 
     def cmd_cancel(self):
-        self.client.pop_screen()
+        self.client.push_screen(EscapeMenu(self.client))
 
     def cmd_move(self, delta: Tuple[int, int]) -> None:
         self.client.loop.player.move(delta)
     # endregion
+
+
+class EscapeMenu(Screen):
+
+    def __init__(self, client: Client) -> None:
+        views = [
+            RectView(
+                layout = Layout.centered(width = 30, height = 10),
+                subviews = [
+
+                    ButtonView(
+                        "Options",
+                        callback = (lambda: print("Options")),
+                        align_vert = "top",
+                        layout = Layout(left = 2, right = 2, top = 2)
+                    ),
+
+                    ButtonView(
+                        "Quit to Main",
+                        callback = self.ui_quit_to_menu,
+                        align_vert = "top",
+                        layout = Layout(left = 2, right = 2, top = 4)
+                    )
+
+                ]
+            )
+        ]
+        super().__init__(client, views = views)
+        self.covers_screen = True
+
+    def ui_quit_to_menu(self):
+        self.client.session.save()
+        self.client.replace_screen(self.client.main_menu)
+        self.client.loop.teardown()
+
+    def ui_exit_game(self):
+        pass
+
+    def cmd_cancel(self):
+        self.client.pop_screen()

@@ -1,0 +1,9 @@
+{
+  "name": "ForestArea",
+  "inherit": ["Area"],
+  "components": [
+    {
+      "type": "EnvTerrain"
+    }
+  ]
+}

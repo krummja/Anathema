@@ -67,15 +67,19 @@ class MainMenu(Screen):
 
     # region UI COMMANDS
     def ui_start(self) -> None:
-        area = self.client.loop.world.create_prefab("Area", {
+        area = self.client.loop.world.create_prefab("ForestArea", {
             "EnvTilemap": {
                 "width": 120,
                 "height": 120,
-            }
+            },
+            "EnvTerrain": {}
         }, uid="TEST_AREA")
 
         area.add("EnvIsCurrent", {})
 
+        area["EnvTilemap"].setup_terrain()
+
+        self.client.loop.initialize()
         self.client.push_screen(CharacterCreation(self.client))
 
     def ui_quit(self) -> None:

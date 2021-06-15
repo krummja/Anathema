@@ -4,7 +4,7 @@ import numpy as np
 
 
 tile_graphic = np.dtype([
-    ("ch", np.uint8),
+    ("ch", np.int),
     ("fg", "3B"),
     ("bg", "3B"),
 ])
@@ -25,8 +25,8 @@ def define_tile(
         char: int,
         color: Tuple[int, int, int],
         bg: Tuple[int, int, int],
-    ) -> Tuple[str, np.ndarray]:
+    ) -> np.ndarray:
     light = (char, color, bg)
     dark = (char, (color[0] // 2, color[1] // 2, color[2] // 2), (21, 21, 21))
     tile_data = np.array((move_cost, transparent, light, dark), dtype=tile_dt)
-    return uid, tile_data
+    return tile_data

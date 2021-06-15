@@ -20,17 +20,45 @@ if TYPE_CHECKING:
     from anathema.client import Client
 
 
-class EngineLoop:
+class IEngine:
+
+    def __init__(self, client: Client, session: Session) -> None:
+        self.is_running: bool = False
+        self.client = client
+        self.session = session
+        self.world = session.world
+
+        self.camera = None
+        self.renderer = None
+        self.clock = None
+        self.player = None
+
+        self.area_system = None
+        self.action_system = None
+        self.fov_system = None
+        self.render_system = None
+        self.interaction_system = None
+        self.path_system = None
+
+    def initialize(self):
+        raise NotImplementedError
+
+    def teardown(self):
+        raise NotImplementedError
+
+    def update(self):
+        raise NotImplementedError
+
+
+class EngineLoop(IEngine):
 
     def __init__(self, client: Client, session: Session) -> None:
         """Core engine class.
         Handles the actual game modules and runs the game loop.
         """
-        self.is_running = False
-        self.client = client
-        self.session = session
-        self.world = session.world
+        super().__init__(client, session)
 
+    def initialize(self):
         self.camera = Camera(self)
         self.renderer = Renderer(self)
         self.clock = Clock(self)
@@ -40,6 +68,23 @@ class EngineLoop:
         self.action_system = ActionSystem(self)
         self.fov_system = FOVSystem(self)
         self.render_system = RenderSystem(self)
+        self.interaction_system = None
+        self.path_system = None
+
+        self.is_running = True
+
+    def teardown(self):
+        self.is_running = False
+
+        self.camera = None
+        self.renderer = None
+        self.clock = None
+        self.player = None
+
+        self.area_system = None
+        self.action_system = None
+        self.fov_system = None
+        self.render_system = None
         self.interaction_system = None
         self.path_system = None
 

@@ -98,7 +98,7 @@ class CharacterCreation(Screen):
             }
         }, uid = "PLAYER")
 
-        self.client.push_screen(Stage(self.client))
+        self.client.replace_screen(Stage(self.client))
 
     def ui_cancel(self):
         self.client.pop_screen()

@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import Tuple, TYPE_CHECKING
 from ecstremity import Component
 import numpy as np
+import json
 
 from anathema.engine.environments.tile import tile_dt
 from anathema.engine.environments.tile_defs import Tiles
@@ -46,6 +47,13 @@ class AreaLocation(Location):
         super().__init__(x, y)
 
 
+class NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return json.JSONEncoder.default(self, obj)
+
+
 class EnvTilemap(Component):
 
     def __init__(
@@ -58,10 +66,20 @@ class EnvTilemap(Component):
         self._tiles = np.zeros(self.shape, dtype=tile_dt)
         self._explored = np.zeros(self.shape, dtype=bool)
         self._visible = np.zeros(self.shape, dtype=bool)
-        self.actors = set()
+        self._actors = set()
 
-        tile_data = Tiles.unformed.make()
-        self._tiles[:] = tile_data[1]
+    def __getstate__(self):
+        state = super().__getstate__()
+        state["tiles"] = json.dumps(self._tiles, cls=NumpyEncoder)
+        return state
+
+    def __setstate__(self, state):
+        super().__setstate__(state)
+        self._tiles = np.array(state["tiles"])
+
+    @property
+    def actors(self):
+        return self._actors
 
     @property
     def shape(self) -> Tuple[int, int]:
@@ -96,5 +114,25 @@ class EnvTilemap(Component):
             return True
         return False
 
+    def setup_terrain(self):
+        evt = self.entity.fire_event("setup_terrain", data = {
+            "tiles": self.tiles,
+            "width": self.width,
+            "height": self.height
+        })
+
+    def on_finalize(self, evt):
+        self._tiles = evt.data.tiles
+
     def __getitem__(self, key: Tuple[int, int]) -> AreaLocation:
         return AreaLocation(self, *key)
+
+
+# TODO Make a tile rebuilder from deserialized tile data
+if __name__ == '__main__':
+    tile = Tiles.tall_grass.make()
+    json_tile = json.dumps(tile, cls=NumpyEncoder)
+    print(json_tile)
+    json_load = json.loads(json_tile)
+    restored = np.asarray(json_load)
+    print(restored)

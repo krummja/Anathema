@@ -16,16 +16,8 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-TIME_FORMAT = "%Y/%m/%d %H:%M:%S"
-
-
-class SaveTable:
-
-    def __init__(self, slots, characters, times) -> None:
-        self.slots = slots
-        self.characters = characters
-        self.times = times
-        self.row_format = "{:>15}"
+TIME_FORMAT = "%Y%m%d_%H_%M_%S"
+SAVE_PATH = paths.USER_GAME_SAVE_DIR
 
 
 def list_save_files() -> Optional[List[str]]:
@@ -51,17 +43,18 @@ def get_save_data(session: Session) -> Dict[str, Any]:
     return save_data
 
 
-def write_to_file(save_data: Dict[str, Any], slot: int) -> None:
+def write_to_file(save_data: Dict[str, Any]) -> None:
     save_data["time"] = datetime.datetime.now().strftime(TIME_FORMAT)
-    save_path: str = SAVE_PATH + str(slot) + ".save"
+    save_data["name"] = save_data["time"]
+    file_name: str = save_data["name"] + ".save"
 
     if SAVE_METHOD == "CBOR":
         text = cbor.dumps(save_data)
     else:
         text = json.dumps(save_data, indent=4, separators=(",", ": "))
 
-    with open(save_path, "w") as f:
-        logger.info(f"Saving data to save file: {save_path}")
+    with open(os.path.join(SAVE_PATH, file_name), "w") as f:
+        logger.info(f"Saving data to save file: {SAVE_PATH}/{file_name}")
         f.write(text)
         f.close()
 

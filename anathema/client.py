@@ -29,12 +29,15 @@ class Client(ScreenManager):
         self.commander: Commander = Commander(self)
         self.loop: Optional[EngineLoop] = None
         self.session: Optional[Session] = None
+        self.main_menu = MainMenu(self)
 
     def initialize(self, session: Session) -> None:
         self.loop = EngineLoop(self, session)
         self.session = session
-        self.loop.session = session
-        self.replace_screen(MainMenu(self))
+        self.replace_screen(self.main_menu)
+
+    def teardown(self):
+        pass
 
     def main(self) -> None:
         with tcod.context.new(
@@ -48,5 +51,4 @@ class Client(ScreenManager):
             while self.should_continue:
                 self.update()
                 self.commander.update()
-                self.loop.update()
                 self.context.present(console.root)

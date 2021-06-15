@@ -43,9 +43,14 @@ class Session:
     #     session = cls(world, date_time)
     #     return session
 
+    def save(self):
+        save_data = storage.get_save_data(self)
+        storage.write_to_file(save_data)
+
     def serialize(self) -> Dict[str, Any]:
         """Serialize ECS Data and return as a dict."""
         return {
+            "name": "",
+            "time": "",
             "world": self.world.serialize(),
-            "player": self.player.serialize(),
         }
