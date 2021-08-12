@@ -12,6 +12,7 @@ from anathema.views.label_view import LabelView
 from anathema.prepare import CONSOLE_SIZE
 
 from anathema.screens.character_creation import CharacterCreation
+from anathema import session
 
 if TYPE_CHECKING:
     from anathema.client import Client

@@ -36,4 +36,3 @@ class Tiles:
     tall_grass = tile("Tall Grass", "√", Color.pea_green).obfuscated()
     tree_1 = tile("Evergreen Tree", "▲", Color.sherwood).solid()
     shallow_water = tile("Shallow Water", "≈", Color.light_blue).open()
-

@@ -9,7 +9,7 @@ from anathema.engine.environments.tile import define_tile
 
 @dataclass
 class TileType:
-    name: str
+    tid: int
     char: str
     fore: Tuple[int, int, int]
     back: Tuple[int, int, int]
@@ -49,4 +49,4 @@ class TileType:
         move_cost = 1 if self._passable else 0
         transparent = not self._opaque
         back = self.back if self.back else (21, 21, 21)
-        return define_tile(self.name, move_cost, transparent, ord(self.char), self.fore, back)
+        return define_tile(self.tid, move_cost, transparent, ord(self.char), self.fore, back)

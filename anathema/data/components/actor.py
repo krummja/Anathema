@@ -15,7 +15,7 @@ class Actor(Component):
         self._dest_xy = None
         self._path = None
         self._can_take_turn = False
-        self.is_pathing = False
+        self._is_pathing = False
 
     def __lt__(self, other: Actor) -> bool:
         return self._energy < other._energy
@@ -50,6 +50,10 @@ class Actor(Component):
     @can_take_turn.setter
     def can_take_turn(self, value):
         self._can_take_turn = value
+
+    @property
+    def is_pathing(self):
+        return self._is_pathing
 
     @property
     def has_energy(self) -> bool:

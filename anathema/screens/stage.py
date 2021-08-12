@@ -91,7 +91,7 @@ class EscapeMenu(Screen):
         self.covers_screen = True
 
     def ui_quit_to_menu(self):
-        self.client.session.save()
+        # self.client.session.save()
         self.client.replace_screen(self.client.main_menu)
         self.client.loop.teardown()
 

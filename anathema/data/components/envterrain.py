@@ -6,6 +6,7 @@ import numpy as np
 
 from anathema.engine.environments.generation import array_tools, automata
 from anathema.engine.environments.tile_defs import Tiles
+from anathema.data.tiles import tile_registry
 
 if TYPE_CHECKING:
     from ecstremity import EntityEvent
@@ -19,16 +20,16 @@ class EnvTerrain(Component):
         _automata.generate(10)
 
         result = _automata.board
-        result = np.where(result == 1, Tiles.dirt_1.make(), Tiles.unformed.make())
+        result = np.where(result == 1, tile_registry["Loose Dirt"].make(), tile_registry["unformed"].make())
         tiles[:] = result
 
         tiles = array_tools.rng_selection(
             tiles,
-            Tiles.unformed,
-            Tiles.dirt_2,
-            [(10, Tiles.tree_1),
-             (20, Tiles.grass),
-             (40, Tiles.tall_grass)]
+            tile_registry["unformed"],
+            tile_registry["Packed Dirt"],
+            [(10, tile_registry["Evergreen Tree"]),
+             (20, tile_registry["Grass"]),
+             (40, tile_registry["Tall Grass"])]
         )
 
         self.entity.fire_event("finalize", data = {"tiles": tiles})

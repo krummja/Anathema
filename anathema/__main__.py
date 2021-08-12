@@ -18,7 +18,7 @@ def main(_args: Optional[List[Any]] = None) -> None:
             sys.exit()
 
     from anathema.start import start  # type: ignore
-    start(load_slot=0)
+    start()
     sys.exit()
 
 

@@ -1,11 +1,12 @@
 from __future__ import annotations
-from typing import Tuple, TYPE_CHECKING
+from typing import Tuple, Optional, TYPE_CHECKING
 from ecstremity import Component
 import numpy as np
 import json
 
 from anathema.engine.environments.tile import tile_dt
 from anathema.engine.environments.tile_defs import Tiles
+from anathema.data.tiles import tile_registry
 
 
 if TYPE_CHECKING:
@@ -47,20 +48,13 @@ class AreaLocation(Location):
         super().__init__(x, y)
 
 
-class NumpyEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, np.ndarray):
-            return obj.tolist()
-        return json.JSONEncoder.default(self, obj)
-
-
 class EnvTilemap(Component):
 
     def __init__(
             self,
             width: int,
             height: int,
-        ) -> None:
+    ) -> None:
         self.width = width
         self.height = height
         self._tiles = np.zeros(self.shape, dtype=tile_dt)
@@ -70,12 +64,22 @@ class EnvTilemap(Component):
 
     def __getstate__(self):
         state = super().__getstate__()
-        state["tiles"] = json.dumps(self._tiles, cls=NumpyEncoder)
+        tiles = []
+        for x in range(self.shape[0]):
+            for y in range(self.shape[1]):
+                tiles.append(int(self._tiles[x, y]["tid"]))
+        state["_tiles"] = tiles
         return state
 
     def __setstate__(self, state):
         super().__setstate__(state)
-        self._tiles = np.array(state["tiles"])
+        tile_list = state["_tiles"]
+        meta_list = []
+        for tile_index in tile_list:
+            meta_list.append(tile_registry[tile_index])
+        tile_array = np.array(meta_list, dtype=tile_dt)
+        tile_array.reshape(self.shape)
+        self._tiles = tile_array
 
     @property
     def actors(self):
@@ -126,13 +130,3 @@ class EnvTilemap(Component):
 
     def __getitem__(self, key: Tuple[int, int]) -> AreaLocation:
         return AreaLocation(self, *key)
-
-
-# TODO Make a tile rebuilder from deserialized tile data
-if __name__ == '__main__':
-    tile = Tiles.tall_grass.make()
-    json_tile = json.dumps(tile, cls=NumpyEncoder)
-    print(json_tile)
-    json_load = json.loads(json_tile)
-    restored = np.asarray(json_load)
-    print(restored)

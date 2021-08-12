@@ -5,9 +5,8 @@ import logging
 from anathema.print_utils import bcolors, cprint
 
 from anathema import log
-from anathema import storage
 from anathema.ecs import load_prefabs, load_components, engine
-from anathema.session import Session
+from anathema.session import Session, setup_session
 
 if TYPE_CHECKING:
     from anathema.session import Session
@@ -40,7 +39,7 @@ def start() -> None:
 
     # Set up Session
     session = Session.new()
-    # session = storage.setup_session(session)
+    # session = setup_session(session)
     client.initialize(session)
 
     # Let 'er rip!
