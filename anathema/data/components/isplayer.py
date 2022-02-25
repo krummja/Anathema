@@ -1,6 +1,4 @@
-
-# type: Component
-from ecstremity import Component
+from anathema.lib.ecstremity import Component
 
 
 class IsPlayer(Component):

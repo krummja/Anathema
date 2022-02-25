@@ -5,8 +5,7 @@ import json
 import importlib
 
 from anathema.data import components
-
-from ecstremity import Engine  # type: ignore
+from anathema.lib.ecstremity import Engine
 from anathema.constants.paths import COMPONENTS, PREFABS
 
 if TYPE_CHECKING:

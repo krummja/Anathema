@@ -1,9 +1,9 @@
 from __future__ import annotations
 from typing import Tuple, Optional, TYPE_CHECKING
-from ecstremity import Component
 import numpy as np
 import json
 
+from anathema.lib.ecstremity import Component
 from anathema.engine.environments.tile import tile_dt
 from anathema.engine.environments.tile_defs import Tiles
 from anathema.data.tiles import tile_registry

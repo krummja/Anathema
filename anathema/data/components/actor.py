@@ -2,10 +2,10 @@ from __future__ import annotations
 from typing import *
 import logging
 
-from ecstremity import Component
+from anathema.lib.ecstremity import Component
 
 if TYPE_CHECKING:
-    from ecstremity import EntityEvent
+    from anathema.lib.ecstremity import EntityEvent
 
 
 class Actor(Component):

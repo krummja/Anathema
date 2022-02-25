@@ -1,8 +1,7 @@
 from __future__ import annotations
 from typing import Tuple, Union
 
-# type: Component
-from ecstremity import Component
+from anathema.lib.ecstremity import Component
 
 
 class Renderable(Component):

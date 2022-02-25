@@ -12,7 +12,7 @@ import re
 
 from functools import partial
 
-import ecstremity  # type: ignore
+import ecstremity
 import tcod
 import tcod.console
 

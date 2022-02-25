@@ -1,15 +1,15 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
-from ecstremity import Component
 import numpy as np
 
+from anathema.lib.ecstremity import Component
 from anathema.engine.environments.generation import array_tools, automata
 from anathema.engine.environments.tile_defs import Tiles
 from anathema.data.tiles import tile_registry
 
 if TYPE_CHECKING:
-    from ecstremity import EntityEvent
+    from anathema.lib.ecstremity import EntityEvent
 
 
 class EnvTerrain(Component):

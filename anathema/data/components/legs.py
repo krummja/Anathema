@@ -1,10 +1,10 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
-from ecstremity import Component
+from anathema.lib.ecstremity import Component
 
 if TYPE_CHECKING:
-    from ecstremity import EntityEvent
+    from anathema.lib.ecstremity import EntityEvent
 
 
 class Legs(Component):

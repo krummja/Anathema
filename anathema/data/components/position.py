@@ -2,8 +2,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Tuple
 import numpy as np
 
-# type: Component
-from ecstremity import Component
+from anathema.lib.ecstremity import Component
 
 if TYPE_CHECKING:
     from numpy.lib.index_tricks import IndexExpression

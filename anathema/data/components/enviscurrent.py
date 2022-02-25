@@ -1,4 +1,4 @@
-from ecstremity import Component
+from anathema.lib.ecstremity import Component
 
 
 class EnvIsCurrent(Component):
