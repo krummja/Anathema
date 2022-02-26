@@ -1,16 +1,16 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, List, Tuple
 
-from morphism import (Rect, Size, Point)  # type: ignore
-
 import tcod
+
+from anathema.lib.morphism import (Rect, Size, Point)
+from anathema.prepare import CONSOLE_SIZE
 from anathema.screen import Screen
 from anathema.views.layout import Layout
 from anathema.views.button_view import ButtonView
 from anathema.views.rect_view import RectView
 from anathema.views.label_view import LabelView
 from anathema.views.text_input import TextInputView, TextInputConfig
-from anathema.prepare import CONSOLE_SIZE
 
 from anathema.screens.stage import Stage
 
@@ -31,23 +31,43 @@ class CharacterCreation(Screen):
         }
 
         # region CHARACTER NAME
-        self.text_input_box = RectView(
+        text_input_box = RectView(
             layout = Layout(
-                top = 2, right = None, bottom = None, left = 2,
-                width = 30, height = 3),
-            subviews = [
-                LabelView(
-                    "Name:",
-                    align_horz = "left",
-                    align_vert = "center",
-                    layout = Layout(top = 1, left = 1)
-                ),
-                TextInputView(
-                    config = TextInputConfig(),
-                    callback = self.ui_set_player_name,
-                    layout = Layout(top = 1, right = 1, bottom = 1, left = 7)
-                ),
-            ])
+                top = 2,
+                right = None,
+                bottom = None,
+                left = 2,
+                width = 30,
+                height = 3
+            )
+        )
+
+        text_input_box.add_subview(
+            LabelView(
+                "Name:",
+                align_horz = "left",
+                align_vert = "center",
+                layout = Layout(
+                    top = 1,
+                    left = 1
+                )
+            )
+        )
+
+        text_input_box.add_subview(
+            TextInputView(
+                config = TextInputConfig(),
+                callback = self.ui_set_player_name,
+                layout = Layout(
+                    top = 1,
+                    right = 1,
+                    bottom = 1,
+                    left = 7
+                )
+            )
+        )
+
+        self.text_input_box = text_input_box
         # endregion
 
         self.continue_button = ButtonView(
@@ -85,6 +105,18 @@ class CharacterCreation(Screen):
         self.character_info["name"] = name
 
     def ui_continue(self):
+        # TODO: Add checks here to ensure that no information is missing
+
+        # Check if the character's name is non-empty.
+        if len(self.character_info["name"]) < 1:
+            # Check that it meets minimum length requirement.
+            if len(self.character_info["name"]) < 3:
+                pass
+            # Check that it doesn't exceed maximum length requirement.
+            if len(self.character_info["name"]) > 21:
+                pass
+            pass
+
         self.client.session.world.create_prefab("Player", {
             "position": {
                 "x": 0, "y": 0
@@ -98,6 +130,7 @@ class CharacterCreation(Screen):
             }
         }, uid = "PLAYER")
 
+        # TODO: Potentially replace this with a boolean return, to be caught by the screen manager subprocess.
         self.client.replace_screen(Stage(self.client))
 
     def ui_cancel(self):

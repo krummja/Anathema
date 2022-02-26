@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Optional
 import logging
 import tcod
 
-from anathema.screen import ScreenManager
+from screen_manager import ScreenManager
 import anathema.prepare as prepare
 from anathema.console import console
 from anathema.screens.main_menu import MainMenu

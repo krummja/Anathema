@@ -28,8 +28,10 @@ class MainMenu(Screen):
 
         # region LOGO
         self.logo_rect = RectView(
+            fg = (21, 21, 21),
             layout = Layout(
-                bottom=POSITION_RECT.relative_point(1.0, 0.33)[1]))
+                bottom=POSITION_RECT.relative_point(1.0, 0.33)[1])
+        )
         # endregion
 
         # region MAIN MENU
@@ -38,24 +40,33 @@ class MainMenu(Screen):
             callback = self.ui_start,
             align_horz = "left",
             align_vert = "bottom",
-            layout = Layout(bottom = 8, left = 2))
+            layout = Layout(bottom = 8, left = 2)
+        )
 
         self.new_button = ButtonView(
             "Quit",
             callback = self.ui_quit,
             align_horz = "left",
             align_vert = "bottom",
-            layout = Layout(bottom = 6, left = 2))
+            layout = Layout(bottom = 6, left = 2),
+            alt_fg = (0xde, 0x9c, 0x21)
+        )
 
         self.main_menu = RectView(
+            fg = (21, 21, 21),
             layout = Layout(
                 top = POSITION_RECT.relative_point(1.0, 0.66)[1] + 2,
                 right = POSITION_RECT.relative_point(0.66, 1.0)[0] + 1),
-            subviews = [self.start_button, self.new_button])
+            subviews = [
+                self.start_button,
+                self.new_button
+            ]
+        )
         # endregion
 
         # region SESSION INFO
         self.session_info = RectView(
+            fg = (21, 21, 21),
             layout = Layout(
                 top = POSITION_RECT.relative_point(1.0, 0.66)[1] + 2,
                 left = POSITION_RECT.relative_point(0.33, 1.0)[0] + 1),
@@ -63,7 +74,12 @@ class MainMenu(Screen):
         )
         # endregion
 
-        self.views: List[View] = [self.logo_rect, self.main_menu, self.session_info]
+        self.views: List[View] = [
+            self.logo_rect,
+            self.main_menu,
+            self.session_info
+        ]
+
         super().__init__(client=client, views=self.views)
 
     # region UI COMMANDS

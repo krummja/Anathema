@@ -34,5 +34,5 @@ setup(
           'anathema = anathema.__main__:main'
       ]
     },
-    zip_safe="false"
+    zip_safe=False
 )

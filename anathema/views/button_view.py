@@ -23,6 +23,7 @@ class ButtonView(View):
 
     def __init__(
             self,
+
             # ButtonView parameters.
             text: str,
             callback: Callable[..., Optional[Any]],
@@ -31,11 +32,15 @@ class ButtonView(View):
             align_horz: str = 'center',
             align_vert: str = 'center',
             size: Optional[Size] = None,
+            alt_fg: Tuple[int, int, int] | None = None,
+
             # Superview parameters.
             screen: Optional[Screen] = None,
             layout: Optional[Layout] = None,
-            frame: Optional[Rect] = None
+            frame: Optional[Rect] = None,
+
         ) -> None:
+
         self.label_view = LabelView(
             text,
             align_horz=align_horz,
@@ -49,14 +54,18 @@ class ButtonView(View):
         self.fg = fg
         self.bg = bg
         self.callback = callback
+        self.alt = alt_fg
 
     def set_needs_layout(self, val: bool = True) -> None:
         super().set_needs_layout(val)
         self.label_view.set_needs_layout(val)
 
     def did_become_first_responder(self) -> None:
-        self.label_view.fg = self.bg
-        self.label_view.bg = self.fg
+        if self.alt is not None:
+            self.label_view.fg = self.alt
+        else:
+            self.label_view.fg = self.bg
+            self.label_view.bg = self.fg
 
     def did_resign_first_responder(self) -> None:
         self.label_view.fg = self.fg

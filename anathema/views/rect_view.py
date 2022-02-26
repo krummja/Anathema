@@ -7,7 +7,7 @@ from anathema.console import console
 if TYPE_CHECKING:
     from anathema.views.layout import Layout
     from anathema.screen import Screen
-    from morphism import Rect  # type: Rect
+    from morphism import Rect
 
 
 class RectView(View):

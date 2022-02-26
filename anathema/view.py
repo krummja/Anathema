@@ -207,7 +207,6 @@ class View:
                 return view
         return None
 
-    @no_type_check
     def apply_springs_and_struts_layout_in_superview(self) -> None:
 
         options = self.layout_options
