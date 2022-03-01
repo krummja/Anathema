@@ -6,6 +6,7 @@ import tcod
 from anathema.lib.morphism import (Rect, Size, Point)
 from anathema.prepare import CONSOLE_SIZE
 from anathema.screen import Screen
+from anathema.view import add_subview
 from anathema.views.layout import Layout
 from anathema.views.button_view import ButtonView
 from anathema.views.rect_view import RectView
@@ -42,7 +43,8 @@ class CharacterCreation(Screen):
             )
         )
 
-        text_input_box.add_subview(
+        add_subview(
+            text_input_box,
             LabelView(
                 "Name:",
                 align_horz = "left",
@@ -54,7 +56,8 @@ class CharacterCreation(Screen):
             )
         )
 
-        text_input_box.add_subview(
+        add_subview(
+            text_input_box,
             TextInputView(
                 config = TextInputConfig(),
                 callback = self.ui_set_player_name,

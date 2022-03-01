@@ -14,6 +14,26 @@ if TYPE_CHECKING:
 ZERO_RECT = Rect(Point(0, 0), Size(0, 0))
 
 
+def add_subviews(view: View, subviews: List[View]) -> None:
+    for v in subviews:
+        v.superview = view
+    view.subviews.extend(subviews)
+
+
+def remove_subviews(view: View, subviews: List[View]) -> None:
+    for v in subviews:
+        v.superview = None
+    view.subviews = [v for v in view.subviews if v not in subviews]
+
+
+def add_subview(view: View, subview: View) -> None:
+    add_subviews(view, [subview])
+
+
+def remove_subview(view: View, subview: View) -> None:
+    remove_subviews(view, [subview])
+
+
 class View:
 
     def __init__(
@@ -38,7 +58,7 @@ class View:
         self.is_hidden: bool = False
 
         self.subviews: List[View] = []
-        self.add_subviews(subviews if subviews else [])
+        add_subviews(self, subviews if subviews else [])
         self.layout_spec = frame
 
         if not layout:
@@ -67,22 +87,6 @@ class View:
 
     def set_needs_layout(self, value: bool = True) -> None:
         self.needs_layout = value
-
-    def add_subviews(self, subviews: List[View]) -> None:
-        for v in subviews:
-            v.superview = self
-        self.subviews.extend(subviews)
-
-    def remove_subviews(self, subviews: List[View]) -> None:
-        for v in subviews:
-            v.superview = None
-        self.subviews = [v for v in self.subviews if v not in subviews]
-
-    def add_subview(self, subview: View) -> None:
-        self.add_subviews([subview])
-
-    def remove_subview(self, subview: View) -> None:
-        self.remove_subviews([subview])
 
     def perform_draw(self) -> None:
         if self.is_hidden:
