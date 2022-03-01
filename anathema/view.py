@@ -34,6 +34,12 @@ def remove_subview(view: View, subview: View) -> None:
     remove_subviews(view, [subview])
 
 
+class ViewItem:
+
+    def __init__(self) -> None:
+        self.superview: ViewItem | None = None
+
+
 class View:
 
     def __init__(
@@ -301,4 +307,4 @@ class View:
         assert (final_frame.y != -1000)
         assert (final_frame.width != -1000)
         assert (final_frame.height != -1000)
-        self.frame = final_frame.floored
+        self._frame = final_frame.floored
