@@ -1,8 +1,8 @@
 from typing import Dict, Any
 from deepmerge import always_merger
 
-from ecstremity.entity import Entity
-from ecstremity.component import Component
+from .entity import Entity
+from .component import Component
 
 
 class PrefabComponent:

@@ -12,7 +12,7 @@ import re
 
 from functools import partial
 
-import ecstremity
+import anathema.lib.ecstremity
 import tcod
 import tcod.console
 

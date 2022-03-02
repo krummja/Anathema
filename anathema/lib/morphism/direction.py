@@ -3,7 +3,7 @@ from typing import Tuple
 
 from enum import Enum
 
-from morphism.util import classproperty
+from .util import classproperty
 
 
 class Direction(Enum):

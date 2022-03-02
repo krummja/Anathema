@@ -4,7 +4,7 @@ from contextlib import contextmanager
 
 import tcod
 import tcod.constants
-from morphism import (Rect, Point, Size)  # type: ignore
+from anathema.lib.morphism import (Rect, Point, Size)  # type: ignore
 
 import anathema.prepare as prepare
 

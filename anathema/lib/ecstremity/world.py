@@ -8,17 +8,18 @@ import pickletools
 import math
 
 from uuid import uuid1
-from collections import OrderedDict, deque, ValuesView
+from collections import OrderedDict, deque
+from collections.abc import ValuesView
 
-from ecstremity.entity import Entity
-from ecstremity.query import Query
-from ecstremity.component import Component
+from .entity import Entity
+from .query import Query
+from .component import Component
 
 from uuid import UUID
 
 if TYPE_CHECKING:
-    from ecstremity.query import QueryType
-    from ecstremity.engine import Engine
+    from .query import QueryType
+    from .engine import Engine
 
 
 def deque_filter(

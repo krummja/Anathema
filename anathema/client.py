@@ -7,9 +7,9 @@ import tcod
 from screen_manager import ScreenManager
 import anathema.prepare as prepare
 from anathema.console import console
-from anathema.screens.main_menu import MainMenu
 from anathema.commander import Commander
 from anathema.engine.engine import EngineLoop
+from anathema.screen import Screen
 
 if TYPE_CHECKING:
     from anathema.session import Session
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__file__)
 
 
-class Client(ScreenManager):
+class Client:
     """Client class for the entire application.
     Inherits the base ScreenManager and handles the screen loop.
     """
@@ -26,15 +26,15 @@ class Client(ScreenManager):
 
     def __init__(self) -> None:
         super().__init__()
+        self.screens = ScreenManager()
         self.commander: Commander = Commander(self)
         self.loop: Optional[EngineLoop] = None
         self.session: Optional[Session] = None
-        self.main_menu = MainMenu(self)
 
     def initialize(self, session: Session) -> None:
         self.loop = EngineLoop(self, session)
         self.session = session
-        self.replace_screen(self.main_menu)
+        self.screens.replace_screen(Screen(self, views = []))
 
     def teardown(self):
         pass
@@ -48,7 +48,7 @@ class Client(ScreenManager):
             renderer=tcod.RENDERER_SDL2,
             vsync=prepare.VSYNC,
         ) as self.context:
-            while self.should_continue:
-                self.update()
+            while self.screens.should_continue:
+                self.screens.update()
                 self.commander.update()
                 self.context.present(console.root)

@@ -3,10 +3,6 @@ from typing import TYPE_CHECKING, List, Any
 
 import logging
 
-from anathema import prepare
-from anathema.views import FirstResponderContainerView
-from anathema.lib.morphism import Size
-
 if TYPE_CHECKING:
     from anathema.client import Client
     from anathema.view import View
@@ -37,13 +33,9 @@ class Screen:
         self.client = client
 
         if not isinstance(views, list):
-            views = [views]  # type: ignore
+            views = [views]
 
         self._input_handlers: List[View] = []
-
-        self.view = FirstResponderContainerView(subviews=views, screen=self)
-        add_input_handler(self, self.view)
-
         self.start_time: float = 0.0
         self.current_time: float = 0.0
         self.covers_screen: bool = True
@@ -98,11 +90,11 @@ class Screen:
         In general, do not override this method.
         """
         self.pre_update()
-        self.view.frame = self.view.frame.with_size(
-            Size(*prepare.CONSOLE_SIZE)
-        )
-        self.view.perform_layout()
-        self.view.perform_draw()
+        # self.view.frame = self.view.frame.with_size(
+        #     Size(*prepare.CONSOLE_SIZE)
+        # )
+        # self.view.perform_layout()
+        # self.view.perform_draw()
         self.post_update()
         return True
 

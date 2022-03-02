@@ -1,14 +1,14 @@
 from __future__ import annotations
 from typing import *
-from ecstremity.bit_util import *
+from .bit_util import *
 from functools import reduce
 
-from ecstremity.component import Component
+from .component import Component
 
 if TYPE_CHECKING:
-    from ecstremity.entity import Entity
-    from ecstremity.component import Component
-    from ecstremity.world import World
+    from .entity import Entity
+    from .component import Component
+    from .world import World
 
 
 def from_name(world: World, component_name: str) -> Component:

@@ -1,8 +1,8 @@
 from __future__ import annotations
 from typing import List, Dict, Any
 
-from ecstremity.entity import Entity
-from ecstremity.prefab_component import PrefabComponent
+from .entity import Entity
+from .prefab_component import PrefabComponent
 
 
 class Prefab:

@@ -5,10 +5,10 @@ import os
 import importlib
 from collections import OrderedDict
 
-from ecstremity.component import Component, ComponentMeta
+from .component import Component, ComponentMeta
 
 if TYPE_CHECKING:
-    from ecstremity.engine import Engine
+    from .engine import Engine
 
 
 class ComponentRegistry:

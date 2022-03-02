@@ -1,12 +1,12 @@
 from __future__ import annotations
 from typing import *
-from ecstremity.prefab import Prefab
-from ecstremity.prefab_component import PrefabComponent
+from .prefab import Prefab
+from .prefab_component import PrefabComponent
 
 if TYPE_CHECKING:
-    from ecstremity.world import World
-    from ecstremity.entity import Entity
-    from ecstremity.engine import Engine
+    from .world import World
+    from .entity import Entity
+    from .engine import Engine
 
 
 class PrefabRegistry:

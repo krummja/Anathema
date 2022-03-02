@@ -1,12 +1,12 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Optional
 
-from ecstremity.component_registry import ComponentRegistry
-from ecstremity.prefab_registry import PrefabRegistry
-from ecstremity.world import World
+from .component_registry import ComponentRegistry
+from .prefab_registry import PrefabRegistry
+from .world import World
 
 if TYPE_CHECKING:
-    from ecstremity.component import Component
+    from .component import Component
 
 
 class Client:

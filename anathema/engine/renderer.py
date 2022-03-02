@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING, Tuple
 
-from morphism import *
+from anathema.lib.morphism import *
 import numpy as np
 
 from anathema.engine.environments.tile import tile_graphic

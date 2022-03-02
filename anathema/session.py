@@ -1,11 +1,11 @@
 from __future__ import annotations
 from typing import Dict, Any, Optional, List, TYPE_CHECKING
 
-import ecstremity
+import anathema.lib.ecstremity as ecstremity
 import os
 import datetime
 import json
-import cbor  # type: ignore
+# import cbor  # type: ignore
 import logging
 
 from anathema import ecs
@@ -13,7 +13,7 @@ from anathema.constants import paths
 from anathema.prepare import SAVE_METHOD
 
 if TYPE_CHECKING:
-    from ecstremity import World, Entity
+    from anathema.lib.ecstremity import World, Entity
     from anathema.client import Client
 
 logger = logging.getLogger(__name__)

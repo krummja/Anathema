@@ -9,13 +9,13 @@ import pickletools
 import lzma
 import json
 
-from ecstremity.bit_util import *
-from ecstremity.entity_event import EntityEvent, EventData
+from .bit_util import *
+from .entity_event import EntityEvent, EventData
 
-from ecstremity.component import Component
+from .component import Component
 
 if TYPE_CHECKING:
-    from ecstremity.world import World
+    from .world import World
 
 
 def attach_component(entity: Entity, component: Component) -> None:
