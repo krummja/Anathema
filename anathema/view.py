@@ -34,12 +34,6 @@ def remove_subview(view: View, subview: View) -> None:
     remove_subviews(view, [subview])
 
 
-class ViewItem:
-
-    def __init__(self) -> None:
-        self.superview: ViewItem | None = None
-
-
 class View:
 
     def __init__(
