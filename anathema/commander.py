@@ -10,15 +10,13 @@ from typing import (
     TypeVar,
     Callable
 )
+from xml.dom.minidom import Attr
 
 import tcod
 
 if TYPE_CHECKING:
     from tcod.event import TextInput, KeyDown
     from anathema.client import Client
-    from anathema.view import View
-    from anathema.screen import Screen
-    from anathema.input.command_set import CommandSet
 
 
 T = TypeVar("T")
@@ -29,21 +27,8 @@ class Commander(tcod.event.EventDispatch[Any]):
     def __init__(self, client: Client) -> None:
         self.client = client
         self._commands: Dict[str, Dict[int, str]] = {
-            'MainMenu': {
-                tcod.event.K_RETURN: "confirm",
-                tcod.event.K_ESCAPE: "cancel",
-            },
-            "CharacterCreation": {
-                tcod.event.K_RETURN: "confirm",
-                tcod.event.K_ESCAPE: "cancel",
-            },
-            'Stage': {
-                tcod.event.K_RETURN: "confirm",
-                tcod.event.K_ESCAPE: "cancel",
-            },
-            'EscapeMenu': {
-                tcod.event.K_RETURN: "confirm",
-                tcod.event.K_ESCAPE: "cancel",
+            'TestScreen': {
+                tcod.event.K_ESCAPE: "quit"
             }
         }
 
@@ -69,29 +54,32 @@ class Commander(tcod.event.EventDispatch[Any]):
         }
 
     def ev_textinput(self, event: TextInput) -> None:
-        if self.client.active_screen:
-            self.client.active_screen.handle_textinput(event)
+        if self.client.screens.active_screen:
+            self.client.screens.active_screen.handle_textinput(event)
 
     def ev_keydown(self, event: KeyDown) -> Any:
-        if self.client.active_screen:
-            command_set = self._commands[self.client.active_screen.name]
+        if self.client.screens.active_screen:
+            self.client.screens.active_screen.handle_input(event)
+            self.process_global(event)
+            self.process_move_key(event)
+          
+    def process_global(self, event: KeyDown) -> Any:
+        screen = self.client.screens.active_screen
+        command_set = self._commands[screen.name]
+        if event.sym in command_set:
+            try:
+                func = getattr(screen, f"cmd_{command_set[event.sym]}")
+                return func()
+            except AttributeError as e:
+                print(e)
 
-            self.client.active_screen.handle_input(event)
-
-            if event.sym in command_set:
-                try:
-                    func = getattr(self.client.active_screen, f"cmd_{command_set[event.sym]}")
-                    return func()
-                except AttributeError:
-                    pass
-
-            elif event.sym in self._move_keys:
-                try:
-                    func = getattr(self.client.active_screen, "cmd_move")
-                    return func(self._move_keys[event.sym])
-                except AttributeError:
-                    pass
-
+    def process_move_key(self, event: KeyDown) -> Any:
+        try:
+            func = getattr(self.client.screens.active_screen, "cmd_move")
+            return func(self._move_keys[event.sym])
+        except AttributeError:
+            pass
+            
     def update(self) -> Optional[Any]:
         for event in tcod.event.get():
             value = self.dispatch(event)

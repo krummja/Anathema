@@ -1,16 +1,16 @@
 """Module responsible for booting the different parts of the game engine."""
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 import logging
 from anathema.print_utils import bcolors, cprint
 
 from anathema import log
 from anathema.ecs import load_prefabs, load_components, engine
-from anathema.session import Session, setup_session
+
+from anathema.session import Session
 
 if TYPE_CHECKING:
-    from anathema.session import Session
-    from anathema.screen import Screen
+    pass
 
 logger = logging.getLogger(__file__)
 

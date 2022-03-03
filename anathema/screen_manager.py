@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, Optional
 
-from screen import Screen
+from gui.screen import Screen
 
 
 class ScreenManager:
@@ -32,12 +32,8 @@ class ScreenManager:
             self.active_screen.resign_active()
         self._stack.append(screen)
         screen.on_enter()
-        screen.become_active()
 
     def pop_screen(self, may_exit: bool = False) -> None:
-        if self.active_screen:
-            self.active_screen.resign_active()
-
         if self._stack:
             last_screen = self._stack.pop()
             last_screen.on_leave()
@@ -59,7 +55,7 @@ class ScreenManager:
         for screen in self._stack[i:]:
             screen.on_update(screen == self._stack[-1])
 
-    def quit(self) -> None:
+    def on_quit(self) -> None:
         print("Exiting...")
         while self._stack:
             self.pop_screen(may_exit=True)

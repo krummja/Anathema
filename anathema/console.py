@@ -78,8 +78,8 @@ class Console:
             self,
             rect: Rect,
             ch: int,
-            fg: Optional[Tuple[int, int, int]] = None,
-            bg: Optional[Tuple[int, int, int]] = None,
+            fg: Tuple[int, int, int] = (255, 255, 255),
+            bg: Tuple[int, int, int] = (21, 21, 21),
             bg_blend: int = tcod.constants.BKGND_SET
         ) -> None:
         computed = Rect(rect.origin + self._offset, rect.size)
