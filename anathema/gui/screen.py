@@ -6,6 +6,8 @@ import logging
 import tcod.event
 
 from anathema.console import console
+from anathema.lib.morphism import *
+from anathema.prepare import CONSOLE_SIZE
 
 if TYPE_CHECKING:
     from anathema.gui.view import View
@@ -34,6 +36,10 @@ class Screen:
     @property
     def name(self) -> str:
         return self.__class__.__name__
+
+    @property
+    def bounds(self):
+        return Rect(Point(0, 0), Size(*CONSOLE_SIZE))
 
     def add_view_class(self, view: Type[View]) -> None:
         self.add_view(view(self))

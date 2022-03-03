@@ -11,7 +11,7 @@ import anathema.prepare as prepare
 from anathema.console import console
 from anathema.commander import Commander
 from anathema.engine.engine import EngineLoop
-from anathema.gui import TestScreen
+from anathema.gui.screens.test_screen import TestScreen
 from anathema.gui.views.text_field import TextField
 from anathema.gui.views.button import Button
 
@@ -44,24 +44,6 @@ class Client:
         self.session = session
         
         test_screen = TestScreen(self)
-        test_screen.add_view_class(TestView)
-        test_screen.add_view_class(TestView2)
-        test_screen.add_view(TextField(
-            screen = test_screen,
-            point = Point(42, 30),
-            text = "Testing the TextField view!",
-            fg = (255, 0, 255)
-        ))
-        test_screen.add_view(Button(
-            screen = test_screen,
-            point = Point(42, 35),
-            text = "Test Button",
-        ))
-        test_screen.add_view(Button(
-            screen = test_screen,
-            point = Point(42, 38),
-            text = "Test Button",
-        ))
         self.screens.replace_screen(test_screen)
 
     def teardown(self):

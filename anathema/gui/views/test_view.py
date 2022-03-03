@@ -27,9 +27,10 @@ class TestView2(View):
     
     def __init__(self, screen: Screen) -> None:
         super().__init__(screen, True)
-        
+        self._bounds = Rect(Point(21, 0), Size(20, 20))
+
     def perform_draw(self) -> None:
-        console.draw_frame(Rect(Point(21, 0), Size(20, 20)), title="Test Panel", fg=(255, 255, 255), bg=(21, 21, 21))
+        console.draw_frame(self.bounds, title="Test Panel", fg=(255, 255, 255), bg=(21, 21, 21))
         
     def handle_input(self, event: KeyboardEvent) -> bool:
         return True

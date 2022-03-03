@@ -37,6 +37,12 @@ class Button(View):
         self.callback = callback
 
     @property
+    def bounds(self) -> Rect:
+        point = Point(self.point.x - 1, self.point.y - 1)
+        size = Size(len(self.text) + 2, 3)
+        return Rect(point, size)
+
+    @property
     def can_become_responder(self) -> bool:
         return True
 
@@ -58,10 +64,8 @@ class Button(View):
 
     def perform_draw(self) -> None:
         if self.framed:
-            width = len(self.text) + 2
-            rect_pos = Point(self.point.x - 1, self.point.y - 1)
             console.draw_frame(
-                Rect(rect_pos, Size(width, 3)),
+                self.bounds,
                 fg=(255, 255, 255),
                 bg=(21, 21, 21))
         self.screen.console.print(self.point, self.text, self.fg, self.bg)

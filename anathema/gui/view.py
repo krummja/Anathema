@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import *
+from anathema.lib.morphism import *
 
 if TYPE_CHECKING:
     from gui.screen import Screen
@@ -12,6 +13,15 @@ class View:
         self.is_input_handler = handler
         self.screen = screen
         self.is_responder: bool = False
+        self._bounds: Rect = Rect(Point(0, 0), Size(0, 0))
+
+    @property
+    def bounds(self) -> Rect:
+        return self._bounds
+
+    @bounds.setter
+    def bounds(self, value: Rect) -> None:
+        self._bounds = value
 
     @property
     def can_become_responder(self) -> bool:

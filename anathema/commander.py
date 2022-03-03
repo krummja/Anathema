@@ -58,11 +58,12 @@ class Commander(tcod.event.EventDispatch[Any]):
             self.client.screens.active_screen.handle_textinput(event)
 
     def ev_keydown(self, event: KeyDown) -> Any:
+        self.process_global(event)
+        self.process_move_key(event)
+
         if self.client.screens.active_screen:
             self.client.screens.active_screen.handle_input(event)
-            self.process_global(event)
-            self.process_move_key(event)
-          
+
     def process_global(self, event: KeyDown) -> Any:
         screen = self.client.screens.active_screen
         command_set = self._commands[screen.name]
