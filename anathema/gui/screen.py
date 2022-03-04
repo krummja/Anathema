@@ -146,10 +146,10 @@ class Screen:
         In general, do not override this method.
         """
         self.pre_update()
-        # console.draw_frame(self.bounds.with_size(Size(*CONSOLE_SIZE)))
         console.clear_area(self.bounds.with_size(Size(*CONSOLE_SIZE)))
         for view in self.views:
             view.draw()
+            view.update()
         self.post_update()
         return True
 

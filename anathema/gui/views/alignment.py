@@ -3,47 +3,116 @@ from typing import *
 from enum import Enum
 import math
 
+from collections import defaultdict
+
 from anathema.console import console
 import anathema.prepare as prepare
 from anathema.lib.morphism import *
 
 if TYPE_CHECKING:
     from anathema.gui.view import View
-    from anathema.typedefs import Number, FieldDef
+    from anathema.typedefs import Number
+    from anathema.typedefs import FieldDef
 
 
 class LayoutType(Enum):
-    DEFAULT = 1
-    FRAME = 2
-    INTRINSIC = 3
-    CONSTANT = 4
-    FRACTION = 5
-    UNKNOWN = 6
+    FRAME = 1
+    INTRINSIC = 2
+
+
+class _Type(Enum):
+    NONE = 0
+    FRAME = 1
+    INTRINSIC = 2
+    CONSTANT = 3
+    FRACTION = 4
+    UNKNOWN = 5
 
 
 class Layout:
 
     def __init__(
-            self,
-            width: Optional[Number] = None,
-            height: Optional[Number] = None,
-            top: Optional[Number] = 0,
-            right: Optional[Number] = 0,
-            bottom: Optional[Number] = 0,
-            left: Optional[Number] = 0,
+            self, /,
+            top: Optional[Number | LayoutType] = 0,
+            right: Optional[Number | LayoutType] = 0,
+            bottom: Optional[Number | LayoutType] = 0,
+            left: Optional[Number | LayoutType] = 0,
+            width: Optional[Number | LayoutType] = None,
+            height: Optional[Number | LayoutType] = None,
     ) -> None:
-        self.width = width
-        self.height = height
         self.top = top
         self.right = right
         self.bottom = bottom
         self.left = left
+        self.width = width
+        self.height = height
 
-    def get_layout_value(self, key: str, view: View) -> Number | Size | None:
+    def get_value(self, key: str, view: View) -> Number | Size | None:
+        """ Get the value of the provided attribute key on this Layout.
+        Key will be one of {'top', 'right', 'bottom', 'left', 'width', 'height'}
+        """
+
+        # Map the key to its local attribute, then return the internal type (_Type):
+        _type = self._get_attribute_type(key)
+
+        # Then check each type case:
+        if _type == _Type.NONE:
+            raise ValueError("This value is not applicable to the current View.")
+        elif _type == _Type.FRAME:
+            frame: Rect = view.bounds
+            assert view.parent is not None
+            return {
+                'top': frame.y,
+                'bottom': view.parent.bounds.height - frame.bottom,
+                'left': frame.x,
+                'right': view.parent.bounds.width - frame.right,
+                'width': frame.width,
+                'height': frame.height
+            }.get(key)
+
+        elif _type == _Type.INTRINSIC:
+            pass
+        elif _type == _Type.CONSTANT:
+            return getattr(self, key)
+        elif _type == _Type.FRACTION:
+            assert view.parent is not None
+            value = getattr(self, key)
+            if key in ('left', 'width', 'right'):
+                return view.parent.bounds.width * value
+            elif key in ('top', 'height', 'bottom'):
+                return view.parent.bounds.height * value
+            else:
+                raise KeyError("Unknown key:", key)
         return None
 
-    def get_layout_type(self, key: str) -> LayoutType:
-        pass
+    def _get_attribute_type(self, key: str) -> _Type:
+        """ Map an attribute key to an internal type (_Type).
+
+        Valid keys can be from:
+            {'top', 'bottom', 'left', 'right', 'width', 'height'}
+
+        If the attribute exists on the Layout, check its value against expected
+        internal _Type enum.
+
+        Attribute values can be from:
+            {None, LayoutType, int, float}
+
+        Return an appropriate _Type based on the attribute value, or throw
+        a ValueError if the attribute is an unhandled type.
+        """
+        attribute: None | LayoutType | Number = getattr(self, key)
+
+        if attribute is None:
+            return _Type.NONE
+        elif attribute == LayoutType.FRAME:
+            return _Type.FRAME
+        elif attribute == LayoutType.INTRINSIC:
+            return _Type.INTRINSIC
+        elif isinstance(attribute, int) or isinstance(attribute, float):
+            if attribute >= 1:
+                return _Type.CONSTANT
+            return _Type.FRACTION
+        raise ValueError(f"Unknown type for option {key}: {type(key)}")
 
 
 class Snap:
@@ -132,33 +201,55 @@ class Snap:
 
             if matches == (True, True, True) or matches == (False, False, False):
                 # Invalid case
-                pass
+                raise ValueError("Invalid layout definition. Aborting.")
 
             elif matches == (True, False, False):
                 # START (LEFT or TOP)
-                #    final_frame.{field_coord} =
-                setattr(final_frame, field_coord, layout.get_layout_value(field_start, self.view))
+                coord_value = layout.get_value(field_start, self.view)
+                size_value = getattr(layout, field_size)
+                setattr(final_frame, field_coord, coord_value)
+                setattr(final_frame, field_size, size_value)
 
             elif matches == (True, True, False):
                 # START (LEFT or TOP) and SIZE (WIDTH or HEIGHT)
-                pass
+                start_value = layout.get_value(field_start, self.view)
+                size_value = layout.get_value(field_size, self.view)
+                setattr(final_frame, field_start, start_value)
+                setattr(final_frame, field_size, size_value)
 
             elif matches == (False, True, False):
                 # SIZE (WIDTH or HEIGHT)
-                pass
+                size_value = layout.get_value(field_size, self.view)
+                coord_value = getattr(parent_bounds, field_size) / 2 - size_value / 2
+                setattr(final_frame, field_size, size_value)
+                setattr(final_frame, field_coord, coord_value)
 
             elif matches == (False, True, True):
                 # SIZE (WIDTH or HEIGHT) and END (RIGHT or BOTTOM)
-                pass
+                size_value = layout.get_value(field_size, self.view)
+                coord_value = getattr(parent_bounds, field_size) - layout.get_value(field_end, self.view) - size_value
+                setattr(final_frame, field_size, size_value)
+                setattr(final_frame, field_coord, coord_value)
 
             elif matches == (False, False, True):
                 # END (RIGHT or BOTTOM)
-                pass
+                size_value = getattr(layout, field_size)
+                coord_value = getattr(parent_bounds, field_size) - layout.get_value(field_end, self.view)
+                setattr(final_frame, field_size, size_value)
+                setattr(final_frame, field_coord, coord_value)
 
             elif matches == (True, False, True):
-                # START (LEFT or TOP) and END (RIGHT or BOTTOM
-                pass
+                # START (LEFT or TOP) and END (RIGHT or BOTTOM)
+                start_value = layout.get_value(field_start, self.view)
+                end_value = getattr(parent_bounds, field_size) - start_value - layout.get_value(field_end, self.view)
+                setattr(final_frame, field_coord, start_value)
+                setattr(final_frame, field_size, end_value)
 
             else:
-                # Unhandled case
-                pass
+                raise ValueError("Unhandled case. Aborting.")
+
+        assert (final_frame.x != -1000)
+        assert (final_frame.y != -1000)
+        assert (final_frame.width != -1000)
+        assert (final_frame.height != -1000)
+        self.view.bounds = final_frame.floored

@@ -2,6 +2,8 @@ from __future__ import annotations
 from typing import *
 from anathema.lib.morphism import *
 
+from anathema.gui.views.alignment import Snap, Layout, LayoutType
+
 if TYPE_CHECKING:
     from gui.screen import Screen
     from tcod.event import KeyboardEvent
@@ -9,7 +11,7 @@ if TYPE_CHECKING:
 
 class View:
     
-    def __init__(self, parent: Optional[View] = None) -> None:
+    def __init__(self, parent: Optional[View | Screen] = None) -> None:
         self.screen: Screen | None = None
         self.is_responder: bool = False
         self.parent = parent
@@ -92,7 +94,9 @@ class View:
         pass
 
     def update(self) -> None:
-        pass
+        if self.children:
+            for child in self.children:
+                child.update()
 
     def handle_input(self, event: KeyboardEvent) -> bool:
         """Override in subclasses to handle inputs from the core input event bus."""
