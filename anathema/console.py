@@ -4,11 +4,12 @@ from contextlib import contextmanager
 
 import tcod
 import tcod.constants
-from anathema.lib.morphism import (Rect, Point, Size)  # type: ignore
+from anathema.lib.morphism import (Rect, Point, Size)
 
 import anathema.prepare as prepare
 
 if TYPE_CHECKING:
+    from anathema.typedefs import Color
     from numpy import ndarray
 
 
@@ -43,13 +44,13 @@ class Console:
         yield
         self._offset = previous
 
-    def clear_area(self, rect: Rect) -> None:
+    def clear_area(self, rect: Rect, bg: Color = (21, 21, 21)) -> None:
         computed = Rect(rect.origin + self._offset, rect.size)
         self.draw_rect(
             computed,
             ch=32,
             fg=self.console.default_fg,
-            bg=self.console.default_bg,
+            bg=bg,
         )
 
     def draw_frame(

@@ -62,27 +62,22 @@ class Commander(tcod.event.EventDispatch[Any]):
 
     def ev_keydown(self, event: KeyDown) -> Any:
         if self.client.screens.active_screen:
+            screen = self.client.screens.active_screen
+            command_set = self._commands[screen.name]
             self.client.screens.active_screen.handle_input(event)
-            self.process_global(event)
-            self.process_move_key(event)
+            if event.sym in command_set:
+                try:
+                    func = getattr(screen, f"cmd_{command_set[event.sym]}")
+                    return func()
+                except AttributeError as e:
+                    print(e)
+            elif event.sym in self._move_keys:
+                try:
+                    func = getattr(self.client.screens.active_screen, "cmd_move")
+                    return func(self._move_keys[event.sym])
+                except AttributeError:
+                    pass
 
-    def process_global(self, event: KeyDown) -> Any:
-        screen = self.client.screens.active_screen
-        command_set = self._commands[screen.name]
-        if event.sym in command_set:
-            try:
-                func = getattr(screen, f"cmd_{command_set[event.sym]}")
-                return func()
-            except AttributeError as e:
-                print(e)
-
-    def process_move_key(self, event: KeyDown) -> Any:
-        try:
-            func = getattr(self.client.screens.active_screen, "cmd_move")
-            return func(self._move_keys[event.sym])
-        except AttributeError:
-            pass
-            
     def update(self) -> Optional[Any]:
         for event in tcod.event.get():
             value = self.dispatch(event)
