@@ -28,8 +28,6 @@ class ScreenManager:
         self.push_screen(screen)
 
     def push_screen(self, screen: Screen) -> None:
-        if self.active_screen:
-            self.active_screen.resign_active()
         self._stack.append(screen)
         screen.on_enter()
 
@@ -37,9 +35,6 @@ class ScreenManager:
         if self._stack:
             last_screen = self._stack.pop()
             last_screen.on_leave()
-
-        if self.active_screen:
-            self.active_screen.become_active()
         elif may_exit:
             self.should_continue = False
 

@@ -42,9 +42,13 @@ class Screen:
         return Rect(Point(0, 0), Size(*CONSOLE_SIZE))
 
     def add_view_class(self, view: Type[View]) -> None:
-        self.add_view(view(self))
+        _view = view()
+        _view.screen = self
+        self.add_view(_view)
 
     def add_view(self, view: View) -> None:
+        if view.screen is None:
+            view.screen = self
         self.views.append(view)
         if view.can_become_responder:
             self.responders.append(view)
@@ -88,7 +92,7 @@ class Screen:
 
         try:
             i = responders.index(existing_responder)
-            if i == len(responders) - 1:
+            if i == 0:
                 self.set_responder(responders[-1])
             else:
                 self.set_responder(responders[i - 1])

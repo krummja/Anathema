@@ -9,9 +9,8 @@ if TYPE_CHECKING:
 
 class View:
     
-    def __init__(self, screen: Screen, handler: bool = False) -> None:
-        self.is_input_handler = handler
-        self.screen = screen
+    def __init__(self) -> None:
+        self.screen: Screen | None = None
         self.is_responder: bool = False
         self._bounds: Rect = Rect(Point(0, 0), Size(0, 0))
 
@@ -38,6 +37,9 @@ class View:
         self.is_responder = False
 
     def perform_draw(self) -> None:
+        pass
+
+    def update(self) -> None:
         pass
 
     def handle_input(self, event: KeyboardEvent) -> bool:

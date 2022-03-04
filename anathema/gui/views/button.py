@@ -16,9 +16,8 @@ class Button(View):
 
     def __init__(
             self,
-            screen: Screen,
-            point: Point,
             text: str,
+            point: Point = Point(0, 0),
             framed: bool = True,
             filled: bool = False,
             fg: Color = (255, 255, 255),
@@ -26,8 +25,7 @@ class Button(View):
             sel: Color = (0xde, 0x9c, 0x21),
             callback: Callable[..., Optional[Any]] = (lambda: print("Not implemented!"))
         ) -> None:
-        super().__init__(screen, handler = True)
-        self.point = point
+        super().__init__()
         self.text = text
         self.framed = framed
         self.filled = filled
@@ -36,11 +34,18 @@ class Button(View):
         self.sel = sel
         self.callback = callback
 
+        _point = Point(point.x, point.y)
+        _size = Size(len(self.text) + 2, 3)
+        self._bounds = Rect(_point, _size)
+
     @property
     def bounds(self) -> Rect:
-        point = Point(self.point.x - 1, self.point.y - 1)
-        size = Size(len(self.text) + 2, 3)
-        return Rect(point, size)
+        return self._bounds
+
+    @bounds.setter
+    def bounds(self, value: Rect) -> None:
+        new_pos = value.point
+        self._bounds = Rect(new_pos, self.bounds.size)
 
     @property
     def can_become_responder(self) -> bool:
@@ -64,8 +69,11 @@ class Button(View):
 
     def perform_draw(self) -> None:
         if self.framed:
+            x = self.bounds.x - 1
+            y = self.bounds.y - 1
+            frame = Rect(Point(x, y), self.bounds.size)
             console.draw_frame(
-                self.bounds,
+                frame,
                 fg=(255, 255, 255),
                 bg=(21, 21, 21))
-        self.screen.console.print(self.point, self.text, self.fg, self.bg)
+        self.screen.console.print(self.bounds.point, self.text, self.fg, self.bg)

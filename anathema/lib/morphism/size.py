@@ -18,7 +18,7 @@ class Size(Shape):
 
     def __add__(self, other: Union[Size, Real]) -> Union[Size, Real]:
         if isinstance(other, Size):
-            return self.area + other.area
+            return Size(self.width + other.width, self.height + other.height)
         else:
             return Size(self.width + other, self.height + other)
 

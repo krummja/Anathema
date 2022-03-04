@@ -235,6 +235,10 @@ class Rect(Shape):
         """Point at the bottom right corner of this rect"""
         return self.origin + self.size - Point(1, 1)
 
+    @property
+    def point(self) -> Point:
+        return self.origin
+
     def distance_to(self, other: Rect) -> float:
         """Return an approximate distance from this rect to another."""
         x, y = self.center

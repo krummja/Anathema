@@ -13,8 +13,8 @@ if TYPE_CHECKING:
 
 class TestView(View):
     
-    def __init__(self, screen: Screen) -> None:
-        super().__init__(screen, True)
+    def __init__(self) -> None:
+        super().__init__()
         
     def perform_draw(self) -> None:
         console.draw_frame(Rect(Point(0, 0), Size(20, 3)), fg=(255, 255, 255), bg=(21, 21, 21))
@@ -25,8 +25,8 @@ class TestView(View):
 
 class TestView2(View):
     
-    def __init__(self, screen: Screen) -> None:
-        super().__init__(screen, True)
+    def __init__(self) -> None:
+        super().__init__()
         self._bounds = Rect(Point(21, 0), Size(20, 20))
 
     def perform_draw(self) -> None:

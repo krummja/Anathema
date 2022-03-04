@@ -12,6 +12,7 @@ from anathema.console import console
 from anathema.commander import Commander
 from anathema.engine.engine import EngineLoop
 from anathema.gui.screens.test_screen import TestScreen
+from anathema.gui.screens.main_menu import MainMenu
 from anathema.gui.views.text_field import TextField
 from anathema.gui.views.button import Button
 
@@ -43,8 +44,8 @@ class Client:
         self.loop = EngineLoop(self, session)
         self.session = session
         
-        test_screen = TestScreen(self)
-        self.screens.replace_screen(test_screen)
+        main_menu = MainMenu(self)
+        self.screens.replace_screen(main_menu)
 
     def teardown(self):
         pass

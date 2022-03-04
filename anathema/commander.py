@@ -27,7 +27,10 @@ class Commander(tcod.event.EventDispatch[Any]):
     def __init__(self, client: Client) -> None:
         self.client = client
         self._commands: Dict[str, Dict[int, str]] = {
-            'TestScreen': {
+            'MainMenu': {
+                tcod.event.K_ESCAPE: "quit"
+            },
+            'Stage': {
                 tcod.event.K_ESCAPE: "quit"
             }
         }
@@ -60,7 +63,6 @@ class Commander(tcod.event.EventDispatch[Any]):
     def ev_keydown(self, event: KeyDown) -> Any:
         self.process_global(event)
         self.process_move_key(event)
-
         if self.client.screens.active_screen:
             self.client.screens.active_screen.handle_input(event)
 
@@ -86,4 +88,3 @@ class Commander(tcod.event.EventDispatch[Any]):
             value = self.dispatch(event)
             if value:
                 return value
-        return None
