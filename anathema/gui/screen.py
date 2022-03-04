@@ -5,6 +5,7 @@ import logging
 
 import tcod.event
 
+import prepare
 from anathema.console import console
 from anathema.lib.morphism import *
 from anathema.prepare import CONSOLE_SIZE
@@ -148,7 +149,7 @@ class Screen:
         # console.draw_frame(self.bounds.with_size(Size(*CONSOLE_SIZE)))
         console.clear_area(self.bounds.with_size(Size(*CONSOLE_SIZE)))
         for view in self.views:
-            view.perform_draw()
+            view.draw()
         self.post_update()
         return True
 

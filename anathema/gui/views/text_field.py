@@ -13,8 +13,8 @@ class TextField(View):
 
     def __init__(
             self,
-            point: Point,
             text: str,
+            point: Point = Point(0, 0),
             fg: Optional[Color] = None,
             bg: Optional[Color] = None,
         ) -> None:

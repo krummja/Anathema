@@ -126,3 +126,6 @@ class HorizontalGroup(View):
     def update(self):
         self.compute_inner()
         self.compute_item_properties()
+
+    def perform_draw(self) -> None:
+        console.draw_frame(self.bounds)

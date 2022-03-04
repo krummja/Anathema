@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import *
 
+import math
 from anathema.gui.view import View
 from anathema.lib.morphism import *
 from anathema.prepare import CONSOLE_SIZE
@@ -10,23 +11,21 @@ if TYPE_CHECKING:
     from anathema.gui.screen import Screen
 
 
-class RectView(View):
+class Grid(View):
 
     def __init__(
             self,
-            point: Point = Point(0, 0),
-            size: Size = Size(*CONSOLE_SIZE),
+            rows: int,
+            cols: int,
             fg: Optional[Color] = None,
             bg: Optional[Color] = None,
         ) -> None:
         super().__init__()
-        if size.width == -1:
-            size = Size(CONSOLE_SIZE[0], size.height)
-        if size.height == -1:
-            size = Size(size.width, CONSOLE_SIZE[1])
+        self.rows = rows
+        self.cols = cols
         self.fg = fg if fg else (255, 255, 255)
         self.bg = bg if bg else (21, 21, 21)
-        self._bounds = Rect(point, size)
+        self._bounds = Rect(Point(0, 0), Size(*CONSOLE_SIZE))
 
     @property
     def bounds(self) -> Rect:
@@ -38,4 +37,14 @@ class RectView(View):
         self._bounds = Rect(new_pos, self.bounds.size)
 
     def perform_draw(self) -> None:
-        self.screen.console.draw_frame(self.bounds, fg=self.fg, bg=self.bg)
+        height = math.floor(CONSOLE_SIZE[0] / self.rows)
+        width = math.floor(CONSOLE_SIZE[1] / self.cols)
+        i = 0
+        for _ in range(0, CONSOLE_SIZE[1]):
+            self.screen.console.vline(Point(i, 0), height = CONSOLE_SIZE[1])
+            i += width
+
+        j = 0
+        for _ in range(0, CONSOLE_SIZE[0]):
+            self.screen.console.hline(Point(0, j), width = CONSOLE_SIZE[0])
+            j += height
