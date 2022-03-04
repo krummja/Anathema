@@ -32,9 +32,13 @@ class ScreenManager:
         screen.on_enter()
 
     def pop_screen(self, may_exit: bool = False) -> None:
+        if self.active_screen:
+            self.active_screen.resign_active()
         if self._stack:
             last_screen = self._stack.pop()
             last_screen.on_leave()
+        if self.active_screen:
+            self.active_screen.become_active()
         elif may_exit:
             self.should_continue = False
 

@@ -121,6 +121,12 @@ class Screen:
         can_resign = self.responders and self.responder.can_resign_responder
         return self.handle_input_after_responder(event, can_resign)
 
+    def become_active(self) -> None:
+        pass
+
+    def resign_active(self) -> None:
+        pass
+
     def on_enter(self, *args: List[Any]) -> None:
         """Lifecycle hook run when the Screen becomes active."""
         pass
