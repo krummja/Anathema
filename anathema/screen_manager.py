@@ -3,6 +3,10 @@ from __future__ import annotations
 from typing import List, Optional
 
 from gui.screen import Screen
+from gui.screens.main_menu import MainMenu
+from gui.screens.character_creation import CharacterCreation
+from gui.screens.stage import Stage
+from anathema.console import console
 
 
 class ScreenManager:
@@ -12,9 +16,14 @@ class ScreenManager:
     does the actual work at runtime.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, client: Client) -> None:
         self._stack: List[Screen] = []
         self.should_continue: bool = True
+        self.screens = {
+            "main": MainMenu(client),
+            "character": CharacterCreation(client),
+            "stage": Stage(client)
+        }
 
     @property
     def active_screen(self) -> Optional[Screen]:
@@ -22,10 +31,15 @@ class ScreenManager:
             return self._stack[-1]
         return None
 
-    def replace_screen(self, screen: Screen) -> None:
+    def replace_screen(self, screen: Screen | str) -> None:
+        if isinstance(screen, str):
+            _screen = self.screens[screen]
+        else:
+            _screen = screen
         if self._stack:
             self.pop_screen(may_exit=False)
-        self.push_screen(screen)
+        console.clear()
+        self.push_screen(_screen)
 
     def push_screen(self, screen: Screen) -> None:
         self._stack.append(screen)

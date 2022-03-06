@@ -58,7 +58,7 @@ class Snap:
         self.view.update()
         return self
 
-    def center(self) -> None:
+    def center(self, offset: int = 0) -> None:
         width = self.view.bounds.width
         height = self.view.bounds.height
 
@@ -71,5 +71,5 @@ class Snap:
         else:
             x = math.floor(self.container.width / 2) - math.floor(width / 2)
             y = math.floor(self.container.height / 2) - math.floor(height / 2)
-            point = Point(x, y)
-        self.view.bounds = Rect(point, self.view.bounds.size)
+            point = Point(x + offset, y + offset)
+        self.view.bounds = Rect(point, Size(width - (offset * 2), height - (offset * 2)))

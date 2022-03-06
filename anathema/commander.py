@@ -33,10 +33,28 @@ class Commander(tcod.event.EventDispatch[Any]):
                 tcod.event.K_d: "close",
             },
             'Stage': {
-                tcod.event.K_ESCAPE: "quit"
+                tcod.event.K_ESCAPE: "quit",
+                tcod.event.K_c: "character",
+                tcod.event.K_i: "inventory",
+                tcod.event.K_e: "equipment",
             },
             'CharacterCreation': {
                 tcod.event.K_ESCAPE: "quit"
+            },
+            "InventoryScreen": {
+                tcod.event.K_ESCAPE: "quit",
+                tcod.event.K_c: "character",
+                tcod.event.K_e: "equipment",
+            },
+            "CharacterScreen": {
+                tcod.event.K_ESCAPE: "quit",
+                tcod.event.K_i: "inventory",
+                tcod.event.K_e: "equipment",
+            },
+            "EquipmentScreen": {
+                tcod.event.K_ESCAPE: "quit",
+                tcod.event.K_c: "character",
+                tcod.event.K_i: "inventory",
             }
         }
 
@@ -62,7 +80,7 @@ class Commander(tcod.event.EventDispatch[Any]):
         }
 
     def ev_textinput(self, event: TextInput) -> None:
-        if self.client.screens.active_screen:
+        if self.client.screens.active_screen and self.client.screens.active_screen.responder:
             self.client.screens.active_screen.handle_textinput(event)
 
     def ev_keydown(self, event: KeyDown) -> Any:
@@ -85,6 +103,12 @@ class Commander(tcod.event.EventDispatch[Any]):
 
     def update(self) -> Optional[Any]:
         for event in tcod.event.get():
+            if event.type == "QUIT":
+                raise SystemExit()
+            if isinstance(event, tcod.event.WindowResized):
+                # pass
+                # print(self.client.context.sdl_window.size)
+                self.client.context.sdl_window.size = (160 * 16, 128 * 16)
             value = self.dispatch(event)
             if value:
                 return value

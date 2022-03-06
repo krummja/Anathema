@@ -21,9 +21,9 @@ class AnathemaConfig:
             populate_config(cfg, temp._sections)  # type: ignore
 
         # [display]
-        console_width = cfg.getint("display", "console_width")
-        console_height = cfg.getint("display", "console_height")
-        self.console_dims = console_width, console_height
+        console_columns = cfg.getint("display", "console_columns")
+        console_rows = cfg.getint("display", "console_rows")
+        self.console_dims = console_columns, console_rows
         self.tileset = cfg.get("display", "tileset")
         self.window_name = cfg.get("display", "window_name")
         self.vsync = cfg.getboolean("display", "vsync")
@@ -52,8 +52,8 @@ def get_defaults() -> OrderedDict[str, Any]:
                 "display",
                 OrderedDict(
                     (
-                        ("console_width", 110),
-                        ("console_height", 65),
+                        ("console_columns", 112),
+                        ("console_rows", 64),
                         ("tileset", "font_16.png"),
                         ("window_name", "Anathema"),
                         ("vsync", True),

@@ -18,8 +18,10 @@ class RectView(View):
             size: Size = Size(*CONSOLE_SIZE),
             fg: Optional[Color] = None,
             bg: Optional[Color] = None,
+            title: Optional[str] = None
         ) -> None:
         super().__init__()
+        self.title = title
         if size.width == -1:
             size = Size(CONSOLE_SIZE[0], size.height)
         if size.height == -1:
@@ -38,3 +40,7 @@ class RectView(View):
 
     def perform_draw(self) -> None:
         self.screen.console.draw_frame(self.bounds, fg=self.fg, bg=self.bg)
+        if self.title is not None:
+            _title = f"┤ {self.title} ├"
+            _point = Point(self.bounds.point.x + 2, self.bounds.point.y)
+            self.screen.console.print(_point, _title, self.fg, self.bg)

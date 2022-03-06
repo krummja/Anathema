@@ -3,9 +3,10 @@ from typing import *
 
 from gui.screen import Screen
 from anathema.gui.screens.character_creation import CharacterCreation
-from anathema.gui.screens.stage import Stage
+
 from anathema.gui.views import *
 from anathema.lib.morphism import *
+from anathema.console import console
 
 if TYPE_CHECKING:
     from anathema.client import Client
@@ -42,7 +43,7 @@ class MainMenu(Screen):
         self.load_menu = RectView(size = Size(30, 40))
 
     def start(self) -> None:
-        # self.client.screens.push_screen(CharacterCreation(self.client))
+        # TODO Separate this out into a world generation sequence
         area = self.client.loop.world.create_prefab("ForestArea", {
             "EnvTilemap": {
                 "width": 120,
@@ -55,19 +56,7 @@ class MainMenu(Screen):
         area["EnvTilemap"].setup_terrain()
 
         self.client.loop.initialize()
-        self.client.session.world.create_prefab("Player", {
-            "position": {
-                "x": 0, "y": 0
-            },
-            "renderable": {
-                "char": "@",
-                "fg": (255, 255, 255)
-            },
-            "moniker": {
-                "name": "Test Player"
-            }
-        }, uid = "PLAYER")
-        self.client.screens.push_screen(Stage(self.client))
+        self.client.screens.replace_screen("character")
 
     def new(self) -> None:
         pass

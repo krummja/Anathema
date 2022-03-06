@@ -11,7 +11,6 @@ import anathema.prepare as prepare
 from anathema.console import console
 from anathema.commander import Commander
 from anathema.engine.engine import EngineLoop
-from anathema.gui.screens.main_menu import MainMenu
 
 if TYPE_CHECKING:
     from anathema.session import Session
@@ -30,7 +29,7 @@ class Client:
 
     def __init__(self) -> None:
         super().__init__()
-        self.screens = ScreenManager()
+        self.screens = ScreenManager(self)
         self.commander: Commander = Commander(self)
         self.loop: Optional[EngineLoop] = None
         self.session: Optional[Session] = None
@@ -38,9 +37,7 @@ class Client:
     def initialize(self, session: Session) -> None:
         self.loop = EngineLoop(self, session)
         self.session = session
-        
-        main_menu = MainMenu(self)
-        self.screens.replace_screen(main_menu)
+        self.screens.replace_screen("main")
 
     def teardown(self):
         pass

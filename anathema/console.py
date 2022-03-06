@@ -44,6 +44,9 @@ class Console:
         yield
         self._offset = previous
 
+    def clear(self, bg: Color = (21, 21, 21)) -> None:
+        self.console.clear(bg = bg)
+
     def clear_area(self, rect: Rect, bg: Color = (21, 21, 21)) -> None:
         computed = Rect(rect.origin + self._offset, rect.size)
         self.draw_rect(

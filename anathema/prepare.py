@@ -47,14 +47,15 @@ with open(paths.USER_CONFIG_PATH, "w") as fp:
     CONFIG.cfg.write(fp)
 
 
-CONSOLE_SIZE = CONFIG.console_dims
-STAGE_PANEL_WIDTH = math.floor(CONSOLE_SIZE[0] * 0.7)
-STAGE_PANEL_HEIGHT = math.floor(CONSOLE_SIZE[1] * 0.8)
-HP_COLOR = (112, 248, 168)
-XP_COLOR = (248, 245, 71)
-TILE_SIZE = [16, 16]
+COLUMNS = 10
+ROWS = 8
+
+TILE_SIZE = 16
+CONSOLE_SIZE = (100, 60)
+STAGE_PANEL_WIDTH = 76
+STAGE_PANEL_HEIGHT = 48
 TILESET = tcod.tileset.load_tilesheet(fetch_asset(CONFIG.tileset), 32, 8, tcod.tileset.CHARMAP_CP437)
 VSYNC = CONFIG.vsync
 
-# SAVE_PATH = os.path.join(paths.USER_GAME_SAVE_DIR, "slot")
+SAVE_PATH = os.path.join(paths.USER_GAME_SAVE_DIR, "slot")
 SAVE_METHOD = ("JSON", "CBOR")[0]

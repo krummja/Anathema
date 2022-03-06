@@ -39,7 +39,6 @@ def start() -> None:
 
     # Set up Session
     session = Session.new()
-    # session = setup_session(session)
     client.initialize(session)
 
     # Let 'er rip!
