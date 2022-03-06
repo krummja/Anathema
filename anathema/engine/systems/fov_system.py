@@ -14,7 +14,7 @@ class FOVSystem(BaseSystem):
         # current_area = self.queries["area"].result[0]["EnvTilemap"]
         current_area = self.loop.area_system.current_area["EnvTileMap"]
 
-        current_area.visible = tcod.map.compute_fov(
+        current_area.is_visible = tcod.map.compute_fov(
             transparency = current_area.tiles["transparent"],
             pov = player["Position"].ij,
             radius = player["Eyes"].sight_range,
@@ -22,7 +22,7 @@ class FOVSystem(BaseSystem):
             algorithm = tcod.FOV_RESTRICTIVE
         )
 
-        current_area.explored |= current_area.visible
+        current_area.is_explored |= current_area.is_visible
 
     def update(self):
         self.loop.camera.camera_pos = self.queries["pov"].result[0]["Position"].xy

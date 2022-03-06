@@ -3,6 +3,7 @@ from typing import *
 
 from anathema.gui.view import View
 from anathema.lib.morphism import *
+from anathema.console import console
 
 if TYPE_CHECKING:
     from anathema.typedefs import Color

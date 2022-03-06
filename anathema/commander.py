@@ -28,9 +28,14 @@ class Commander(tcod.event.EventDispatch[Any]):
         self.client = client
         self._commands: Dict[str, Dict[int, str]] = {
             'MainMenu': {
-                tcod.event.K_ESCAPE: "quit"
+                tcod.event.K_ESCAPE: "quit",
+                tcod.event.K_a: "open",
+                tcod.event.K_d: "close",
             },
             'Stage': {
+                tcod.event.K_ESCAPE: "quit"
+            },
+            'CharacterCreation': {
                 tcod.event.K_ESCAPE: "quit"
             }
         }

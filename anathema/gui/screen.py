@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import *
+from collections import OrderedDict
 
 import logging
 
@@ -31,8 +32,9 @@ class Screen:
         self.client = client
         self.views: List[View] = []
         self.covers_screen: bool = True
-        self.responders: List[View] = []
+        self.responders: OrderedDict[int, List[View]] = OrderedDict({0: []})
         self.responder: Optional[View] = None
+        self.group: int = 0
 
     @property
     def name(self) -> str:
@@ -52,13 +54,18 @@ class Screen:
             view.screen = self
         self.views.append(view)
         if view.can_become_responder:
-            self.responders.append(view)
-            self.set_responder(self.responders[0])
+            try:
+                self.responders[view.responder_group].append(view)
+            except KeyError:
+                self.responders[view.responder_group] = [view]
+            self.set_responder(self.responders[0][0])
 
     def remove_view(self, view: View) -> None:
         if view not in self.views:
             return
         self.views.remove(view)
+        if view.can_become_responder:
+            self.responders[view.responder_group].remove(view)
 
     def set_responder(self, value: Optional[View]) -> None:
         if self.responder:
@@ -67,11 +74,39 @@ class Screen:
         if self.responder:
             self.responder.on_become_responder()
 
+    def find_next_group(self) -> None:
+        if self.responder.responder_group == -1:
+            return
+        try:
+            i = self.responder.responder_group + 1
+            if i >= len(self.responders):
+                self.set_responder(self.responders[0][0])
+                self.group = 0
+            else:
+                self.set_responder(self.responders[i][0])
+                self.group = i
+        except KeyError:
+            pass
+
+    def find_previous_group(self) -> None:
+        if self.responder.responder_group == -1:
+            return
+        try:
+            i = self.responder.responder_group - 1
+            if i < 0:
+                self.set_responder(self.responders[len(self.responders) - 1][0])
+                self.group = len(self.responders) - 1
+            else:
+                self.set_responder(self.responders[i][0])
+                self.group = i
+        except KeyError:
+            pass
+
     def find_next_responder(self) -> None:
         existing_responder = self.responder
         if self.responder is None:
-            existing_responder = self.responders[0]
-        responders = [v for v in self.responders if v.can_become_responder]
+            existing_responder = self.responders[self.group][0]
+        responders = [v for v in self.responders[self.group] if v.can_become_responder]
 
         try:
             i = responders.index(existing_responder)
@@ -88,8 +123,8 @@ class Screen:
     def find_prev_responder(self) -> None:
         existing_responder = self.responder
         if self.responder is None:
-            existing_responder = self.responders[0]
-        responders = [v for v in self.responders if v.can_become_responder]
+            existing_responder = self.responders[self.group][0]
+        responders = [v for v in self.responders[self.group] if v.can_become_responder]
 
         try:
             i = responders.index(existing_responder)
@@ -113,13 +148,16 @@ class Screen:
                 return True
         return False
 
+    def handle_textinput(self, event: TextInput) -> bool:
+        return self.responder.handle_textinput(event)
+
     def handle_input(self, event: KeyboardEvent) -> bool:
         handled = self.responder and self.responder.handle_input(event)
         if self.responder and not handled:
-            for responder in self.responders:
+            for responder in self.responders[self.group]:
                 if responder.handle_input(event):
                     return True
-        can_resign = self.responders and self.responder.can_resign_responder
+        can_resign = self.responders[self.group] and self.responder.can_resign_responder
         return self.handle_input_after_responder(event, can_resign)
 
     def become_active(self) -> None:
@@ -146,10 +184,9 @@ class Screen:
         In general, do not override this method.
         """
         self.pre_update()
-        console.clear_area(self.bounds.with_size(Size(*CONSOLE_SIZE)))
+        # console.clear_area(self.bounds.with_size(Size(*CONSOLE_SIZE)))
         for view in self.views:
             view.draw()
-            view.update()
         self.post_update()
         return True
 

@@ -29,12 +29,12 @@ class Renderer:
     def select_area_mask(tile_map: EnvTilemap, world_view: Tuple[slice, slice]) -> np.ndarray:
         UNKNOWN = np.asarray((0, (21, 21, 21), (21, 21, 21)), dtype=tile_graphic)
 
-        if_visible = tile_map.visible[world_view]
-        if_explored = tile_map.explored[world_view]
+        if_visible = tile_map.is_visible[world_view]
+        if_explored = tile_map.is_explored[world_view]
         lit_tiles = tile_map.tiles["light"][world_view]
         unlit_tiles = tile_map.tiles["dark"][world_view]
 
         condlist = (if_visible, if_explored)
         choicelist = (lit_tiles, unlit_tiles)
 
-        return np.select(condlist, choicelist, UNKNOWN)  # type: ignore
+        return np.select(condlist, choicelist, UNKNOWN)

@@ -11,12 +11,7 @@ import anathema.prepare as prepare
 from anathema.console import console
 from anathema.commander import Commander
 from anathema.engine.engine import EngineLoop
-from anathema.gui.screens.test_screen import TestScreen
 from anathema.gui.screens.main_menu import MainMenu
-from anathema.gui.views.text_field import TextField
-from anathema.gui.views.button import Button
-
-from anathema.gui.views.test_view import TestView, TestView2
 
 if TYPE_CHECKING:
     from anathema.session import Session

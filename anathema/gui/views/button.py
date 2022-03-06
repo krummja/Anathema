@@ -23,6 +23,7 @@ class Button(View):
             fg: Color = (255, 255, 255),
             bg: Color = (21, 21, 21),
             sel: Color = (0xde, 0x9c, 0x21),
+            group: int = 0,
             callback: Callable[..., Optional[Any]] = (lambda: print("Not implemented!"))
         ) -> None:
         super().__init__()
@@ -32,6 +33,7 @@ class Button(View):
         self.fg = self._fg_cached = fg
         self.bg = self._bg_cached = bg
         self.sel = sel
+        self.responder_group = group
         self.callback = callback
 
         _point = Point(point.x, point.y)

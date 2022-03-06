@@ -94,19 +94,19 @@ class EnvTilemap(Component):
         return self._tiles
 
     @property
-    def explored(self) -> np.ndarray:
+    def is_explored(self) -> np.ndarray:
         return self._explored
 
-    @explored.setter
-    def explored(self, value: np.ndarray) -> None:
+    @is_explored.setter
+    def is_explored(self, value: np.ndarray) -> None:
         self._explored = value
 
     @property
-    def visible(self) -> np.ndarray:
+    def is_visible(self) -> np.ndarray:
         return self._visible
 
-    @visible.setter
-    def visible(self, value: np.ndarray) -> None:
+    @is_visible.setter
+    def is_visible(self, value: np.ndarray) -> None:
         self._visible = value
 
     def is_blocked(self, x: int, y: int) -> bool:

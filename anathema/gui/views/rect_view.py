@@ -14,13 +14,12 @@ class RectView(View):
 
     def __init__(
             self,
-            parent: Optional[View | Screen] = None,
             point: Point = Point(0, 0),
             size: Size = Size(*CONSOLE_SIZE),
             fg: Optional[Color] = None,
             bg: Optional[Color] = None,
         ) -> None:
-        super().__init__(parent)
+        super().__init__()
         if size.width == -1:
             size = Size(CONSOLE_SIZE[0], size.height)
         if size.height == -1:
