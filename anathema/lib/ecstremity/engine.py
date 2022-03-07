@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, Any, Optional
+from typing import *
 
 from .component_registry import ComponentRegistry
 from .prefab_registry import PrefabRegistry
@@ -13,9 +13,12 @@ class Client:
     """Stub class to define the engine-internal Client type."""
 
 
-class Engine:
+C = TypeVar("Client")
 
-    def __init__(self, client: Optional[Client] = None):
+
+class Engine(Generic[C]):
+
+    def __init__(self, client: Optional[C] = None):
         self.client = client
         self.components: ComponentRegistry = ComponentRegistry(self)
         self.prefabs: PrefabRegistry = PrefabRegistry(self)

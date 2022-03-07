@@ -4,6 +4,7 @@ from .text_input import TextInputField, TextInputConfig
 from .text_field import TextField
 from .rect_view import RectView
 from .button import Button
+from .event_log import EventLog
 
 __all__ = [
     "Snap",
@@ -12,5 +13,6 @@ __all__ = [
     "TextInputConfig",
     "TextField",
     "RectView",
-    "Button"
+    "Button",
+    "EventLog"
 ]

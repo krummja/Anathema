@@ -20,6 +20,7 @@ class Stage(Screen):
     player: Entity
     sidebar: RectView
     messages: RectView
+    log: EventLog
 
     def __init__(self, client: Client) -> None:
         super().__init__(client)
@@ -81,6 +82,11 @@ class Stage(Screen):
             fg = (100, 100, 100),
             title = "Messages")
         self.add_view(self.messages)
+
+        self.log = EventLog(
+            message_rect.point + 1,
+            message_rect.size - 1)
+        self.add_view(self.log)
 
 
 class CharacterScreen(Screen):

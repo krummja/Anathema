@@ -1,5 +1,7 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
+
+import logging
+from typing import *
 import time
 
 from anathema.ecs import engine
@@ -14,10 +16,17 @@ from anathema.engine.systems.action_system import ActionSystem
 from anathema.engine.systems.render_system import RenderSystem
 from anathema.engine.systems.fov_system import FOVSystem
 from anathema.engine.systems.area_system import AreaSystem
+from anathema.engine.message import Message
+from anathema import log
+from anathema.print_utils import cprint, bcolors
 
 if TYPE_CHECKING:
+    from anathema.typedefs import Color
     from anathema.session import Session
     from anathema.client import Client
+
+
+logger = logging.getLogger(__file__)
 
 
 class IEngine:
@@ -27,6 +36,8 @@ class IEngine:
         self.client = client
         self.session = session
         self.world = session.world
+
+        self.log: List[Message] = []
 
         self.camera = None
         self.renderer = None
@@ -47,6 +58,9 @@ class IEngine:
         raise NotImplementedError
 
     def update(self):
+        raise NotImplementedError
+
+    def report(self, msg: str) -> None:
         raise NotImplementedError
 
 
@@ -111,3 +125,10 @@ class EngineLoop(IEngine):
                     self.fov_system.update()
                     self.render_system.update()
                     return
+
+    def report(self, msg: str, color: Optional[Color] = None) -> None:
+        logger.info(cprint(bcolors.OKGREEN, msg))
+        if self.log and self.log[-1].text == msg:
+            self.log[-1].count += 1
+        else:
+            self.log.append(Message(msg, color = color))

@@ -5,6 +5,7 @@ import logging
 from anathema.lib.ecstremity import Component
 
 if TYPE_CHECKING:
+    from anathema.client import Client
     from anathema.lib.ecstremity import EntityEvent
 
 
@@ -58,6 +59,11 @@ class Actor(Component):
     @property
     def has_energy(self) -> bool:
         return self._energy >= 0
+
+    def on_report(self, evt: EntityEvent) -> None:
+        client: Client = self.client
+        if evt.data.report:
+            client.loop.report(evt.data.report[0], evt.data.report[1])
 
     def on_energy_consumed(self, evt: EntityEvent) -> None:
         self.reduce_energy(int(evt.data.cost))
