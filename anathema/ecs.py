@@ -3,6 +3,9 @@ from typing import TYPE_CHECKING
 import os
 import json
 import importlib
+import logging
+
+from anathema.log import bcolors, cprint
 
 from anathema.data import components
 from anathema.lib.ecstremity import Engine
@@ -15,9 +18,13 @@ if TYPE_CHECKING:
 engine = Engine()
 
 
+logger = logging.getLogger(__file__)
+
+
 def load_components(engine: Engine) -> None:
     from anathema.data.components import components
     for component in components:
+        logger.info(cprint(bcolors.OKBLUE, f"   Loaded Component {component.comp_id}"))
         engine.register_component(component)
 
 
@@ -30,6 +37,7 @@ def load_prefabs(engine: Engine) -> None:
             definitions.append(definition)
     definitions.sort(key = (lambda definition: len(definition["inherit"])))
     for definition in definitions:
+        logger.info(cprint(bcolors.OKBLUE, f"   Loaded Prefab {definition['name']}"))
         engine.prefabs.register(definition)
 
 

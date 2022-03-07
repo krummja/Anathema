@@ -10,8 +10,12 @@ if TYPE_CHECKING:
 
 class Noun(Component):
 
-    def __init__(self) -> None:
-        self._noun_text: str = "<unset>"
+    def __init__(self, text: str) -> None:
+        self._noun_text: str = text
+
+    @property
+    def noun_text(self):
+        return self._noun_text
 
     @property
     def pronoun(self):

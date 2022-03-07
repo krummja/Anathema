@@ -11,6 +11,7 @@ from anathema.engine.camera import Camera
 from anathema.engine.renderer import Renderer
 from anathema.engine.clock import Clock
 from anathema.engine.player import Player
+from anathema.engine.messenger import Messenger
 
 from anathema.engine.systems.action_system import ActionSystem
 from anathema.engine.systems.render_system import RenderSystem
@@ -24,6 +25,7 @@ if TYPE_CHECKING:
     from anathema.typedefs import Color
     from anathema.session import Session
     from anathema.client import Client
+    from anathema.data.components.noun import Noun
 
 
 logger = logging.getLogger(__file__)
@@ -37,12 +39,11 @@ class IEngine:
         self.session = session
         self.world = session.world
 
-        self.log: List[Message] = []
-
         self.camera = None
         self.renderer = None
         self.clock = None
         self.player = None
+        self.messenger = None
 
         self.area_system = None
         self.action_system = None
@@ -60,7 +61,7 @@ class IEngine:
     def update(self):
         raise NotImplementedError
 
-    def report(self, msg: str) -> None:
+    def report(self, message: Message) -> None:
         raise NotImplementedError
 
 
@@ -77,6 +78,7 @@ class EngineLoop(IEngine):
         self.renderer = Renderer(self)
         self.clock = Clock(self)
         self.player = Player(self)
+        self.messenger = Messenger(self)
 
         self.area_system = AreaSystem(self)
         self.action_system = ActionSystem(self)
@@ -126,9 +128,6 @@ class EngineLoop(IEngine):
                     self.render_system.update()
                     return
 
-    def report(self, msg: str, color: Optional[Color] = None) -> None:
-        logger.info(cprint(bcolors.OKGREEN, msg))
-        if self.log and self.log[-1].text == msg:
-            self.log[-1].count += 1
-        else:
-            self.log.append(Message(msg, color = color))
+    def report(self, message: Message) -> None:
+        logger.info(cprint(bcolors.OKGREEN, message.text))
+        self.messenger.add_message(message)

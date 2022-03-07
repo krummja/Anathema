@@ -13,6 +13,11 @@ if TYPE_CHECKING:
     from anathema.typedefs import Color
 
 
+class LogFormatter:
+
+    pass
+
+
 class EventLog(View):
 
     def __init__(
@@ -26,7 +31,7 @@ class EventLog(View):
     def perform_draw(self) -> None:
         i: int = 0
         x, y = self.bounds.left + 1, self.bounds.bottom - 2
-        log: List[Message] = self.screen.client.loop.log
+        log: List[Message] = self.screen.client.loop.messenger.messages
 
         # Display the text that has scrolled up beyond the bottom line.
         for msg in log[-2::-1]:
@@ -40,12 +45,14 @@ class EventLog(View):
 
         for msg in log[::1]:
             text = self._format(msg.text, msg.count, msg.color)
+            trim_len = len(msg.text)
+            if msg.count > 1:
+                trim_len += 4
             self.screen.console.print_box(
                 Rect(Point(x, y), Size(self.bounds.width, 0)),
-                text + " " * (self.bounds.width - len(text) - 2))
+                text + " " * (self.bounds.width - trim_len - 2))
 
     def _format(self, text: str, count: int, col: Color, fade: bool = False) -> str:
-        # TODO Alright this is extremely messy but it works! Fix it up to be less ugly.
         wht = (255, 255, 255)
         if fade:
             col = (col[0] // 2, col[1] // 2, col[2] // 2)

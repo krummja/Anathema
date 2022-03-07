@@ -4,10 +4,12 @@ from typing import *
 import re
 import tcod
 from anathema.gui.ui_colors import RESET
+from anathema.data.components.noun import Pronoun
 
 if TYPE_CHECKING:
     from anathema.typedefs import Color
     from anathema.data.components.noun import Noun
+    from anathema.lib.ecstremity.component import Component
 
 
 class Message:
@@ -15,9 +17,9 @@ class Message:
     def __init__(
             self,
             text: str,
-            noun1: Optional[Noun] = None,
-            noun2: Optional[Noun] = None,
-            noun3: Optional[Noun] = None,
+            noun1: Optional[Component] = None,
+            noun2: Optional[Component] = None,
+            noun3: Optional[Component] = None,
             color: Optional[Color] = None
         ) -> None:
         self.text = self._format(text, noun1=noun1, noun2=noun2, noun3=noun3)

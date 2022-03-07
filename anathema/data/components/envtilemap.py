@@ -5,7 +5,6 @@ import json
 
 from anathema.lib.ecstremity import Component
 from anathema.engine.environments.tile import tile_dt
-from anathema.engine.environments.tile_defs import Tiles
 from anathema.data.tiles import tile_registry
 
 
@@ -110,10 +109,14 @@ class EnvTilemap(Component):
         self._visible = value
 
     def is_blocked(self, x: int, y: int) -> bool:
+        # Constraint movement to the area
         if not (0 <= x < self.width and 0 <= y < self.height):
             return True
+        # If no move_cost, we can't move through the tile
         if not self.tiles[y, x]["move_cost"]:
             return True
+        # If an actor occupies the tile, it's blocked
+        # TODO Make this so that you swap with the actor if friendly?
         if any(actor["Position"].xy == (x, y) for actor in self.actors):
             return True
         return False

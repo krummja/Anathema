@@ -131,7 +131,7 @@ class Component(metaclass=ComponentMeta):
         try:
             handler = getattr(self, f"on_{evt.name}")
             return handler(evt)
-        except AttributeError:
+        except AttributeError as e:
             return None
         except Exception:
             traceback.print_exc(file=sys.stderr)

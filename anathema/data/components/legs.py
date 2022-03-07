@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
+from typing import *
 
 from anathema.lib.ecstremity import Component
 from anathema.engine.message import Message
@@ -14,15 +14,15 @@ class Legs(Component):
         self.leg_count = leg_count
 
     def on_try_move(self, evt: EntityEvent) -> None:
+        # TODO At this step, retrieve the entity or tile that is occupying the target tile.
         if self.client.loop.area_system.current_area["EnvTilemap"].is_blocked(*evt.data.target):
-            evt.data.report = ("The way is blocked!", (255, 0, 0))
+            # evt.data.report = Message(f"{0} block[s] your path!", noun1 = self.entity["Noun"], color = (255, 0, 0))
+            evt.data.report = Message("Your way is blocked!", color=(255, 0, 0))
             self.entity.fire_event("report", evt.data)
         else:
             cost = (20 / (20 + 20)) * 1000
             evt.data.cost = cost
-            evt.data.report = ("Step!", (255, 0, 255))
             self.entity.fire_event("energy_consumed", evt.data)
-            self.entity.fire_event("report", evt.data)
             self.update_position(*evt.data.target)
             evt.handle()
 

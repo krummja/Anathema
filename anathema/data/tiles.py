@@ -2,7 +2,6 @@ from __future__ import annotations
 from typing import Tuple, Optional
 import numpy as np
 
-from anathema.engine.environments.tile_defs import tile
 from anathema.engine.environments.tile_type import TileType
 from anathema.constants.color import Color
 

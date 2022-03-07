@@ -36,6 +36,9 @@ class CharacterCreation(Screen):
             },
             "moniker": {
                 "name": "Test Player"
+            },
+            "noun": {
+                "text": "Test Player"
             }
         }, uid = "PLAYER")
         self.client.screens.replace_screen(Stage(self.client))

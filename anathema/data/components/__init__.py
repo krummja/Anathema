@@ -1,6 +1,11 @@
 import os
 import importlib
 import pprint
+import logging
+
+from anathema.log import bcolors, cprint
+
+logger = logging.getLogger(__file__)
 
 tree = os.listdir(os.path.dirname(os.path.abspath(__file__)))
 tree.remove("__init__.py")

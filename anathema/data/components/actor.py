@@ -63,7 +63,7 @@ class Actor(Component):
     def on_report(self, evt: EntityEvent) -> None:
         client: Client = self.client
         if evt.data.report:
-            client.loop.report(evt.data.report[0], evt.data.report[1])
+            client.loop.report(evt.data.report)
 
     def on_energy_consumed(self, evt: EntityEvent) -> None:
         self.reduce_energy(int(evt.data.cost))
