@@ -22,9 +22,9 @@ class MainMenu(Screen):
         self.add_view(start_button)
         Snap(start_button).bottom(14).left(5)
 
-        new_button = Button("New", callback = self.new, framed = False)
-        self.add_view(new_button)
-        Snap(new_button).bottom(10).left(5)
+        new_world_button = Button("New World", callback = self.new, framed = False)
+        self.add_view(new_world_button)
+        Snap(new_world_button).bottom(10).left(5)
 
         # Quit button
         quit_button = Button("Quit", callback = client.quit, framed = False)
