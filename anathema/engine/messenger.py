@@ -1,14 +1,11 @@
 from __future__ import annotations
+
 from typing import *
 
 from anathema.engine.message import Message
-from anathema import log
-from anathema.print_utils import cprint, bcolors
 
 if TYPE_CHECKING:
-    from anathema.typedefs import Color
-    from anathema.session import Session
-    from anathema.client import Client
+    pass
 
 
 class Messenger:

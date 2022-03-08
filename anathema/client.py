@@ -1,21 +1,18 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, Optional
 
 import logging
+from typing import Optional, TYPE_CHECKING
+
 import tcod
 
-from anathema.lib.morphism import *
-
-from screen_manager import ScreenManager
 import anathema.prepare as prepare
-from anathema.console import console
 from anathema.commander import Commander
+from anathema.console import console
 from anathema.engine.engine import EngineLoop
+from screen_manager import ScreenManager
 
 if TYPE_CHECKING:
     from anathema.session import Session
-    from tcod.event import KeyboardEvent
-    from tcod.console import Console
 
 logger = logging.getLogger(__file__)
 

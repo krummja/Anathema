@@ -43,11 +43,17 @@ class EventLog(View):
                 Rect(Point(x, y - i), Size(self.bounds.width, 0)),
                 text)
 
+        # And now display the most recent line.
         for msg in log[::1]:
+            # Pass the message to the formatter
             text = self._format(msg.text, msg.count, msg.color)
+
+            # Derive the value for the line clear length
             trim_len = len(msg.text)
             if msg.count > 1:
-                trim_len += 4
+                trim_len += 3 + len(str(msg.count))
+
+            # Print the message
             self.screen.console.print_box(
                 Rect(Point(x, y), Size(self.bounds.width, 0)),
                 text + " " * (self.bounds.width - trim_len - 2))

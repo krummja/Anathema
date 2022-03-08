@@ -1,12 +1,12 @@
 """Module responsible for booting the different parts of the game engine."""
 from __future__ import annotations
-from typing import TYPE_CHECKING
+
 import logging
-from anathema.print_utils import bcolors, cprint
+from typing import TYPE_CHECKING
 
 from anathema import log
-from anathema.ecs import load_prefabs, load_components, engine
-
+from anathema.ecs import engine, load_components, load_prefabs_from_json
+from anathema.print_utils import bcolors, cprint
 from anathema.session import Session
 
 if TYPE_CHECKING:
@@ -35,7 +35,7 @@ def start() -> None:
     load_components(engine)
 
     logger.info(cprint(bcolors.OKBLUE, "ECS: Registering Prefab definitions."))
-    load_prefabs(engine)
+    load_prefabs_from_json(engine)
 
     # Set up Session
     session = Session.new()

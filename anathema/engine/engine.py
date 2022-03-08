@@ -12,6 +12,7 @@ from anathema.engine.renderer import Renderer
 from anathema.engine.clock import Clock
 from anathema.engine.player import Player
 from anathema.engine.messenger import Messenger
+from anathema.engine.environments.world_manager import WorldManager
 
 from anathema.engine.systems.action_system import ActionSystem
 from anathema.engine.systems.render_system import RenderSystem
@@ -44,6 +45,7 @@ class IEngine:
         self.clock = None
         self.player = None
         self.messenger = None
+        self.world_manager = None
 
         self.area_system = None
         self.action_system = None
@@ -79,6 +81,7 @@ class EngineLoop(IEngine):
         self.clock = Clock(self)
         self.player = Player(self)
         self.messenger = Messenger(self)
+        self.world_manager = WorldManager(self)
 
         self.area_system = AreaSystem(self)
         self.action_system = ActionSystem(self)

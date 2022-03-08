@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from typing import List, Optional
 
-from gui.screen import Screen
-from gui.screens.main_menu import MainMenu
-from gui.screens.character_creation import CharacterCreation
-from gui.screens.stage import Stage
 from anathema.console import console
+from gui.screen import Screen
+from gui.screens.character_creation import CharacterCreation
+from gui.screens.main_menu import MainMenu
+from gui.screens.stage import Stage
 
 
 class ScreenManager:

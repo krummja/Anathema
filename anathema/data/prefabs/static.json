@@ -1,0 +1,12 @@
+{
+  "name": "Static",
+  "inherit": ["GameObject"],
+  "components": [
+    {
+      "type": "Noun",
+      "properties": {
+        "text": "<unset>"
+      }
+    }
+  ]
+}

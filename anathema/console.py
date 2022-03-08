@@ -1,12 +1,13 @@
 from __future__ import annotations
-from typing import *
+
 from contextlib import contextmanager
+from typing import *
 
 import tcod
 import tcod.constants
-from anathema.lib.morphism import (Rect, Point, Size)
 
 import anathema.prepare as prepare
+from anathema.lib.morphism import (Point, Rect)
 
 if TYPE_CHECKING:
     from anathema.typedefs import Color

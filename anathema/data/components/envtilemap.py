@@ -6,7 +6,8 @@ import json
 from anathema.lib.ecstremity import Component
 from anathema.engine.environments.tile import tile_dt
 from anathema.data.tiles import tile_registry
-
+from anathema.lib.morphism import *
+from dataclasses import dataclass
 
 if TYPE_CHECKING:
     from numpy.lib.index_tricks import IndexExpression
@@ -45,6 +46,15 @@ class AreaLocation(Location):
     def __init__(self, tile_map: TileMap, x: int, y: int) -> None:
         self.tile_map = tile_map
         super().__init__(x, y)
+
+
+@dataclass
+class TileData:
+    """Dataclass representing a point from the tile array."""
+    key: str
+    char: str
+    fore: Color
+    back: Optional[Color] = None
 
 
 class EnvTilemap(Component):
@@ -107,6 +117,21 @@ class EnvTilemap(Component):
     @is_visible.setter
     def is_visible(self, value: np.ndarray) -> None:
         self._visible = value
+
+    def get_tile_data_at_point(self, x: int, y: int) -> TileData:
+        _data = self.tiles[y][x]
+        return TileData(
+            key = tile_registry.index_to_key(_data["tid"]),
+            char = chr(_data["light"]["ch"]),
+            fore = tuple(_data["light"]["fg"])
+        )
+
+    def realize_entity_at_point(self, x: int, y: int) -> None:
+        _data = self.tiles[y, x]
+        print(tile_registry.index_to_key(_data[0]))
+        # tile_data = TileData(
+        #
+        # )
 
     def is_blocked(self, x: int, y: int) -> bool:
         # Constraint movement to the area

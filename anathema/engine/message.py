@@ -1,10 +1,12 @@
 from __future__ import annotations
-from typing import *
 
 import re
+from typing import *
+
 import tcod
-from anathema.gui.ui_colors import RESET
+
 from anathema.data.components.noun import Pronoun
+from anathema.gui.ui_colors import RESET
 
 if TYPE_CHECKING:
     from anathema.typedefs import Color

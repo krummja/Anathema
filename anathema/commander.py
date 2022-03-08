@@ -1,16 +1,6 @@
 from __future__ import annotations
-from typing import (
-    TYPE_CHECKING,
-    Dict,
-    List,
-    Tuple,
-    Optional,
-    Any,
-    Generic,
-    TypeVar,
-    Callable
-)
-from xml.dom.minidom import Attr
+
+from typing import (Any, Dict, Optional, TYPE_CHECKING, Tuple, TypeVar)
 
 import tcod
 

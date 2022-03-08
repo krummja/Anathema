@@ -2,7 +2,7 @@ import logging
 import sys
 
 from anathema import prepare
-from print_utils import cprint, bcolors
+from print_utils import bcolors, cprint
 
 
 def configure() -> None:

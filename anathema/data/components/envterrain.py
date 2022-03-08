@@ -31,7 +31,3 @@ class EnvTerrain(Component):
              (40, tile_registry["Tall Grass"])]
         )
         self.entity.fire_event("finalize", data = {"tiles": tiles})
-
-    def on_get_entity_at_position(self, evt: EntityEvent):
-        position = evt.data.position
-        # self.entity.fire_event("found_entity", data = {"entity": })

@@ -1,9 +1,8 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING, Any, Optional, Tuple
 
 import configparser
 from collections import OrderedDict
-import tcod
+from typing import Any, Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
     from configparser import ConfigParser

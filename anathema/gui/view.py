@@ -1,8 +1,8 @@
 from __future__ import annotations
-from typing import *
-from anathema.lib.morphism import *
 
-from anathema.gui.views import *
+from typing import *
+
+from anathema.lib.morphism import *
 
 if TYPE_CHECKING:
     from gui.screen import Screen

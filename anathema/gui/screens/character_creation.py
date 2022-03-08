@@ -28,7 +28,7 @@ class CharacterCreation(Screen):
     def ui_continue(self) -> None:
         self.client.session.world.create_prefab("Player", {
             "position": {
-                "x": 0, "y": 0
+                "x": 25, "y": 25
             },
             "renderable": {
                 "char": "@",

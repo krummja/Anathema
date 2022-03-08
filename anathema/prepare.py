@@ -4,23 +4,17 @@ as display resolution, scale, etc.
 """
 
 from __future__ import annotations
-from typing import TYPE_CHECKING, Any, List, Optional
-import logging
-import math
+
 import os.path
-import re
+from typing import TYPE_CHECKING
 
-from functools import partial
-
-import anathema.lib.ecstremity
-import tcod
 import tcod.console
 
 import anathema.config as config
 import anathema.constants.paths as paths
 
 if TYPE_CHECKING:
-    import anathema.console
+    pass
 
 
 if not os.path.isdir(paths.USER_STORAGE_DIR):
