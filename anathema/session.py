@@ -9,6 +9,7 @@ from typing import Any, Dict, List, Optional, TYPE_CHECKING
 from anathema import ecs
 from anathema.constants import paths
 from anathema.prepare import SAVE_METHOD
+from anathema.print_utils import bcolors, cprint
 
 if TYPE_CHECKING:
     from anathema.lib.ecstremity import World
@@ -36,30 +37,6 @@ def setup_session(session: Session) -> Session:
         session_data = open_save_file(os.path.join(paths.USER_GAME_SAVE_DIR, last_saved))
         session = session.restore(session_data)
     return session
-
-
-# SESSION -> DATA DICT
-def serialize_session_data(session: Session) -> Dict[str, Any]:
-    """Get Session state dict, write new time info and return."""
-    save_data: Dict[str, Any] = session.serialize()
-    return save_data
-
-
-def write_to_file(save_data: Dict[str, Any]) -> None:
-    """Write Session data dict to JSON format and save to file."""
-    save_data["time"] = datetime.datetime.now().strftime(TIME_FORMAT)
-    save_data["name"] = save_data["time"]
-    file_name: str = save_data["name"] + ".save"
-
-    if SAVE_METHOD == "CBOR":
-        text = cbor.dumps(save_data)
-    else:
-        text = json.dumps(save_data, indent=4, separators=(",", ": "))
-
-    with open(os.path.join(SAVE_PATH, file_name), "w") as f:
-        logger.info(f"Saving data to save file: {SAVE_PATH}/{file_name}")
-        f.write(text)
-        f.close()
 
 
 def open_save_file(save_data: str) -> Optional[Any]:
@@ -91,6 +68,7 @@ class Session:
 
     @classmethod
     def new(cls) -> Session:
+        logger.info(cprint(bcolors.OKBLUE, f"Instancing {cls.__name__}"))
         world = ecs.new_world()
         date_time = datetime.datetime.now().strftime(TIME_FORMAT)
         session = cls(world, date_time)
@@ -99,6 +77,7 @@ class Session:
     @classmethod
     def restore(cls, session_data: Dict[str, Any]) -> Session:
         """Constructor. Deserialize save data and create a Session object."""
+        logger.info(cprint(bcolors.OKBLUE, f"Restoring session data"))
         world = ecs.new_world()
         world.deserialize(session_data["world"])
         date_time = session_data["time"]
@@ -106,8 +85,20 @@ class Session:
         return session
 
     def save(self):
-        save_data = serialize_session_data(self)
-        write_to_file(save_data)
+        save_data: Dict[str, Any] = self.serialize()
+        save_data["time"] = datetime.datetime.now().strftime(TIME_FORMAT)
+        save_data["name"] = save_data["time"]
+        file_name: str = save_data["name"] + ".save"
+
+        if SAVE_METHOD == "CBOR":
+            text = cbor.dumps(save_data)
+        else:
+            text = json.dumps(save_data, indent = 4, separators = (",", ": "))
+
+        with open(os.path.join(SAVE_PATH, file_name), "w") as f:
+            logger.info(f"Saving data to save file: {SAVE_PATH}/{file_name}")
+            f.write(text)
+            f.close()
 
     def serialize(self) -> Dict[str, Any]:
         """Serialize ECS Data and return as a dict."""

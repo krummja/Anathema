@@ -1,5 +1,4 @@
 
 if __name__ == '__main__':
-    from anathema import prepare, start
-    config = prepare.CONFIG
-    start.start()
+    from anathema import main
+    main.start()

@@ -10,6 +10,7 @@ from anathema.commander import Commander
 from anathema.console import console
 from anathema.engine.engine import EngineLoop
 from screen_manager import ScreenManager
+from anathema.print_utils import bcolors, cprint
 
 if TYPE_CHECKING:
     from anathema.session import Session
@@ -25,21 +26,20 @@ class Client:
     context: tcod.context.Context
 
     def __init__(self) -> None:
-        super().__init__()
+        logger.info(cprint(bcolors.OKBLUE, f"Instancing {self.__class__.__name__}"))
         self.screens = ScreenManager(self)
         self.commander: Commander = Commander(self)
         self.loop: Optional[EngineLoop] = None
         self.session: Optional[Session] = None
 
     def initialize(self, session: Session) -> None:
-        self.loop = EngineLoop(self, session)
+        logger.info(cprint(bcolors.OKBLUE, f"Binding {session.__class__.__name__} to {self.__class__.__name__}"))
         self.session = session
+        self.loop = EngineLoop(self, session)
         self.screens.replace_screen("main")
 
-    def teardown(self):
-        pass
-
     def main(self) -> None:
+        logger.info(cprint(bcolors.OKBLUE, "Starting main loop"))
         with tcod.context.new(
             columns=prepare.CONSOLE_SIZE[0],
             rows=prepare.CONSOLE_SIZE[1],

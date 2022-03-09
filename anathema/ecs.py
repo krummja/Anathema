@@ -14,19 +14,21 @@ if TYPE_CHECKING:
     from ecstremity import World
 
 
-engine = Engine()
-
-
 logger = logging.getLogger(__file__)
 
 
+engine = Engine()
+
+
 def load_components(engine: Engine) -> None:
+    logger.info(cprint(bcolors.OKBLUE, "Registering Component definitions:"))
     for component in components:
-        logger.info(cprint(bcolors.OKBLUE, f"   Loaded Component {component.comp_id}"))
+        logger.info(cprint(bcolors.OKBLUE, f"     Loaded Component {component.comp_id}"))
         engine.register_component(component)
 
 
 def load_prefabs_from_json(engine: Engine) -> None:
+    logger.info(cprint(bcolors.OKBLUE, "Registering Prefab definitions:"))
     prefabs = [f for f in os.listdir(PREFABS) if f.endswith(".json")]
     definitions = []
     for prefab in prefabs:
@@ -35,7 +37,7 @@ def load_prefabs_from_json(engine: Engine) -> None:
             definitions.append(definition)
     definitions.sort(key = (lambda definition: len(definition["inherit"])))
     for definition in definitions:
-        logger.info(cprint(bcolors.OKBLUE, f"   Loaded Prefab {definition['name']}"))
+        logger.info(cprint(bcolors.OKBLUE, f"     Loaded Prefab {definition['name']}"))
         engine.prefabs.register(definition)
 
 
