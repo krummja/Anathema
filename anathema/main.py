@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING
 from anathema import log
 from anathema.ecs import engine, load_components, load_prefabs_from_json
 from anathema.print_utils import bcolors, cprint
-from anathema.session import Session
 
 if TYPE_CHECKING:
     pass
@@ -31,10 +30,7 @@ def start() -> None:
     # Load ECS stuff.
     load_components(engine)
     load_prefabs_from_json(engine)
-
-    # Set up Session
-    session = Session.new()
-    client.initialize(session)
+    client.initialize(engine.create_world())
 
     # Let 'er rip!
     client.main()

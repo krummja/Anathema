@@ -26,7 +26,7 @@ class CharacterCreation(Screen):
         Snap(continue_button).bottom(6).left(5)
 
     def ui_continue(self) -> None:
-        self.client.session.world.create_prefab("Player", {
+        self.client.loop.world.create_prefab("Player", {
             "position": {
                 "x": 25, "y": 25
             },
@@ -41,6 +41,7 @@ class CharacterCreation(Screen):
                 "text": "Test Player"
             }
         }, uid = "PLAYER")
+
         self.client.screens.replace_screen(Stage(self.client))
 
     def cmd_quit(self) -> None:

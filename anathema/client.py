@@ -13,7 +13,7 @@ from screen_manager import ScreenManager
 from anathema.print_utils import bcolors, cprint
 
 if TYPE_CHECKING:
-    from anathema.session import Session
+    from anathema.lib.ecstremity.world import World
 
 logger = logging.getLogger(__file__)
 
@@ -30,12 +30,9 @@ class Client:
         self.screens = ScreenManager(self)
         self.commander: Commander = Commander(self)
         self.loop: Optional[EngineLoop] = None
-        self.session: Optional[Session] = None
 
-    def initialize(self, session: Session) -> None:
-        logger.info(cprint(bcolors.OKBLUE, f"Binding {session.__class__.__name__} to {self.__class__.__name__}"))
-        self.session = session
-        self.loop = EngineLoop(self, session)
+    def initialize(self, world: World) -> None:
+        self.loop = EngineLoop(self, world)
         self.screens.replace_screen("main")
 
     def main(self) -> None:

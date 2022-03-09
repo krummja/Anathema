@@ -26,7 +26,7 @@ class Stage(Screen):
         super().__init__(client)
 
     def on_enter(self, *args: List[Any]) -> None:
-        self.player = self.client.session.world.get_entity("PLAYER")
+        self.player = self.client.loop.world.get_entity("PLAYER")
         self.player_name = self.player["Moniker"].name
 
         self.client.loop.is_running = True

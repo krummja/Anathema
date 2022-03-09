@@ -28,7 +28,7 @@ class AnathemaConfig:
         self.vsync = cfg.getboolean("display", "vsync")
 
         # [game]
-        self.data = cfg.get("game", "data")
+        self.data = cfg.get("game", "world")
         self.starting_zone = cfg.get("game", "starting_zone")
         self.zone_size = cfg.getint("game", "zone_size")
         self.debug = cfg.get("game", "debug")
@@ -63,7 +63,7 @@ def get_defaults() -> OrderedDict[str, Any]:
                 "game",
                 OrderedDict(
                     (
-                        ("data", "anathema"),
+                        ("world", "anathema"),
                         ("starting_zone", "dev_starting_zone"),
                         ("zone_size", 512),
                         ("debug", False)

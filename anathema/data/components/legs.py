@@ -18,7 +18,7 @@ class Legs(Component):
         area: EnvTilemap = self.client.loop.area_system.current_area["EnvTilemap"]
 
         if area.is_blocked(*evt.data.target):
-            # TODO Handle the case that there is no tile data...
+            # TODO Handle the case that there is no tile world...
             tile_data = area.get_tile_data_at_point(*evt.data.target)
             entity = self.client.loop.world_manager.realize_virtual_entity(*evt.data.target, data = tile_data)
             evt.data.report = Message(f"{0} block[s] your path!", noun1 = entity["Noun"], color = (255, 0, 0))

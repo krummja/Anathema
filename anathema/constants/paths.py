@@ -33,7 +33,7 @@ USER_CONFIG_PATH = os.path.join(USER_STORAGE_DIR, CONFIG_FILE)
 logger.debug("user config: %s", USER_CONFIG_PATH)
 
 USER_GAME_DATA_DIR = os.path.join(USER_STORAGE_DIR, "data")
-logger.debug("user data: %s", USER_GAME_DATA_DIR)
+logger.debug("user world: %s", USER_GAME_DATA_DIR)
 
 USER_GAME_SAVE_DIR = os.path.join(USER_GAME_DATA_DIR, "saves")
 logger.debug("save games: %s", USER_GAME_SAVE_DIR)

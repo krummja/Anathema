@@ -41,9 +41,5 @@ def load_prefabs_from_json(engine: Engine) -> None:
         engine.prefabs.register(definition)
 
 
-def load_prefabs_from_xml(engine: Engine) -> None:
-    prefabs = []
-
-
 def new_world() -> World:
     return engine.create_world()

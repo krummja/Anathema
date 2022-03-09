@@ -154,7 +154,7 @@ class EnvTilemap(Component):
         })
 
     def on_finalize(self, evt):
-        self._tiles = evt.data.tiles
+        self._tiles = evt.world.tiles
 
     def __getitem__(self, key: Tuple[int, int]) -> AreaLocation:
         return AreaLocation(self, *key)

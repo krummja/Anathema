@@ -24,7 +24,7 @@ if not os.path.isdir(paths.USER_STORAGE_DIR):
 if not os.path.isdir(paths.USER_GAME_DATA_DIR):
     os.makedirs(paths.USER_GAME_DATA_DIR)
 
-# Create game data dir if missing
+# Create game world dir if missing
 if not os.path.isdir(paths.USER_GAME_SAVE_DIR):
     os.makedirs(paths.USER_GAME_SAVE_DIR)
 

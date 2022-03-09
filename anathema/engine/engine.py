@@ -24,9 +24,9 @@ from anathema.print_utils import cprint, bcolors
 
 if TYPE_CHECKING:
     from anathema.typedefs import Color
-    from anathema.session import Session
     from anathema.client import Client
     from anathema.data.components.noun import Noun
+    from anathema.lib.ecstremity.world import World
 
 
 logger = logging.getLogger(__file__)
@@ -34,11 +34,10 @@ logger = logging.getLogger(__file__)
 
 class IEngine:
 
-    def __init__(self, client: Client, session: Session) -> None:
+    def __init__(self, client: Client, world: World) -> None:
         self.is_running: bool = False
         self.client = client
-        self.session = session
-        self.world = session.world
+        self.world = world
 
         self.camera = None
         self.renderer = None
@@ -69,11 +68,11 @@ class IEngine:
 
 class EngineLoop(IEngine):
 
-    def __init__(self, client: Client, session: Session) -> None:
+    def __init__(self, client: Client, world: World) -> None:
         """Core engine class.
         Handles the actual game modules and runs the game loop.
         """
-        super().__init__(client, session)
+        super().__init__(client, world)
 
     def initialize(self):
         self.camera = Camera(self)

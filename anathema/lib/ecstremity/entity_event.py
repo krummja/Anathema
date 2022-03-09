@@ -38,8 +38,8 @@ class EntityEvent:
         `Entity.fire_event("get_data")`, then some Component on that Entity
         must have a corresponding method `on_get_data`.
 
-        Event data is optional, and is simply passed in as a dict. The event
-        data may be accessed inside of a listener by grabbing the `data`
+        Event world is optional, and is simply passed in as a dict. The event
+        world may be accessed inside of a listener by grabbing the `world`
         attribute of the Event:
 
             class SomeComponent(Component):
@@ -51,9 +51,9 @@ class EntityEvent:
 
             class OtherComponent(Component):
                 def on_get_data(self, evt: EntityEvent) -> None:
-                    if evt.data.foo >= 5:
+                    if evt.world.foo >= 5:
                         # do something
-                    if evt.data.bar:
+                    if evt.world.bar:
                         # do another thing
                     evt.handle()
         """
