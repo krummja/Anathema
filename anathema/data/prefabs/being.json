@@ -6,6 +6,17 @@
       "type": "Actor"
     },
     {
+      "type": "Attributes",
+      "properties": {
+        "base_might": 0,
+        "base_finesse": 0,
+        "base_vitality": 0,
+        "base_piety": 0,
+        "base_cunning": 0,
+        "base_knowledge": 0
+      }
+    },
+    {
       "type": "Eyes"
     },
     {
@@ -13,6 +24,12 @@
     },
     {
       "type": "Noun"
+    },
+    {
+      "type": "Inventory"
+    },
+    {
+      "type": "Equipment"
     }
   ]
 }

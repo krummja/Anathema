@@ -17,9 +17,9 @@ class CharacterCreation(Screen):
     def __init__(self, client: Client) -> None:
         super().__init__(client)
 
-        test = LabeledInputField(self, label = "Test: ", point = Point(5, 5), width = 20)
-        self.add_view(test)
-        Snap(test).top(20).left(20)
+        self.name_field = LabeledInputField(self, label = "Name: ", point = Point(5, 5), width = 20)
+        self.add_view(self.name_field)
+        Snap(self.name_field).top(20).left(20)
 
         continue_button = Button("Continue", callback = self.ui_continue, framed = False)
         self.add_view(continue_button)
@@ -34,14 +34,13 @@ class CharacterCreation(Screen):
                 "char": "@",
                 "fg": (255, 255, 255)
             },
-            "moniker": {
-                "name": "Test Player"
-            },
             "noun": {
-                "text": "Test Player"
+                "text": self.name_field.field_value
+            },
+            "level": {
+                "value": 1
             }
         }, uid = "PLAYER")
-
         self.client.screens.replace_screen(Stage(self.client))
 
     def cmd_quit(self) -> None:

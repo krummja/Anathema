@@ -32,9 +32,6 @@ class WorldManager:
                 "char": data.char,
                 "fg": data.fore
             },
-            "moniker": {
-                "name": data.key
-            },
             "noun": {
                 "text": data.key
             }

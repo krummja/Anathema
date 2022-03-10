@@ -12,10 +12,13 @@
       }
     },
     {
-      "type": "Moniker",
+      "type": "Noun",
       "properties": {
-        "name": "<unset>"
+        "text": "<unset>"
       }
+    },
+    {
+      "type": "Level"
     }
   ]
 }

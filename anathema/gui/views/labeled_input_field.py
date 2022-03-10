@@ -29,11 +29,14 @@ class LabeledInputField(View):
         self._frame = RectView()
         self._frame.bounds = self._bounds
 
+        self._value: str = ""
+
         _x = point.x
         _y = point.y
         self._text_field = TextInputField(
             point = point + Point(1, 1) + Point(len(label), 0),
-            size = Size(width - 2, 1)
+            size = Size(width - 2, 1),
+            callback = (lambda t: self.set_field_value(t))
         )
 
         self._label_field = TextField(label, point = point + Point(1, 1))
@@ -41,6 +44,13 @@ class LabeledInputField(View):
         screen.add_view(self._frame)
         screen.add_view(self._text_field)
         screen.add_view(self._label_field)
+
+    @property
+    def field_value(self) -> str:
+        return self._value
+
+    def set_field_value(self, value: str) -> None:
+        self._value = value
 
     def perform_draw(self) -> None:
         if self._frame.screen is None:

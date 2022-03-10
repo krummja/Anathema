@@ -21,22 +21,20 @@ class Stage(Screen):
     sidebar: RectView
     messages: RectView
     log: EventLog
+    attributes: AttributesView
 
     def __init__(self, client: Client) -> None:
         super().__init__(client)
 
     def on_enter(self, *args: List[Any]) -> None:
         self.player = self.client.loop.world.get_entity("PLAYER")
-        self.player_name = self.player["Moniker"].name
 
         self.client.loop.is_running = True
-
         self.client.loop.camera.camera_pos = self.client.loop.player.position
         self.client.loop.camera.view_rect = Rect(Point(21, 0), Size(CONSOLE_SIZE[0] - 20, CONSOLE_SIZE[1] - 16))
         self.client.loop.area_system.update()
         self.client.loop.fov_system.update_fov()
         self.client.loop.render_system.update()
-
         self._setup_ui()
 
     def on_leave(self, *args: List[Any]) -> None:
@@ -61,31 +59,59 @@ class Stage(Screen):
         self.client.screens.replace_screen("main")
 
     def _setup_ui(self) -> None:
-        sidebar_rect: Rect = Rect(
-            Point(STAGE_PANEL_WIDTH, 0),
-            Size(CONSOLE_SIZE[0] - STAGE_PANEL_WIDTH, CONSOLE_SIZE[1]))
+        SIDEBAR_WIDTH: int = 24
+        SIDEBAR_X = STAGE_PANEL_WIDTH
 
-        message_rect: Rect = Rect(
+        _sidebar: Rect = Rect(
+            Point(SIDEBAR_X, 0),
+            Size(SIDEBAR_WIDTH, CONSOLE_SIZE[1]))
+
+        _log: Rect = Rect(
             Point(0, STAGE_PANEL_HEIGHT),
             Size(STAGE_PANEL_WIDTH, CONSOLE_SIZE[1] - STAGE_PANEL_HEIGHT))
 
+        # SIDEBAR =============================================================
+
+        # Sidebar Rect Frame
         self.sidebar = RectView(
-            sidebar_rect.point,
-            Size(sidebar_rect.width, CONSOLE_SIZE[1]),
+            _sidebar.point,
+            Size(_sidebar.width, CONSOLE_SIZE[1]),
             fg = (100, 100, 100),
-            title = self.player_name)
+            title = self.player["Noun"].noun_text)
         self.add_view(self.sidebar)
 
+        # Level + Profession Field
+        self.profession = TextField(
+            f"Lv. {self.player['Level'].value}  {self.player['Profession'].name}",
+            Point(_sidebar.point.x + 2, _sidebar.point.y + 2))
+        self.add_view(self.profession)
+
+        # Character Attributes
+        self.attributes = AttributesView(
+            Point(_sidebar.point.x + 2, _sidebar.point.y + 6),
+            self.player)
+        self.add_view(self.attributes)
+
+        # Species Field
+        self.species = TextField(
+            f"{self.player['Species'].name}",
+            Point(_sidebar.point.x + 10, _sidebar.point.y + 6))
+        self.add_view(self.species)
+
+        # MESSAGE LOG =========================================================
+
+        # Message Log Rect Frame
         self.messages = RectView(
-            message_rect.point,
-            message_rect.size,
+            _log.point,
+            _log.size,
             fg = (100, 100, 100),
             title = "Messages")
         self.add_view(self.messages)
 
+        # Message Log Display
         self.log = EventLog(
-            message_rect.point + 1,
-            message_rect.size - 1)
+            _log.point + 1,
+            _log.size - 1)
         self.add_view(self.log)
 
 

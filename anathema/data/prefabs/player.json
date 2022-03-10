@@ -4,6 +4,15 @@
   "components": [
     {
       "type": "IsPlayer"
+    },
+    {
+      "type": "Species",
+      "properties": {
+          "key": "HUMAN"
+      }
+    },
+    {
+      "type": "Profession"
     }
   ]
 }

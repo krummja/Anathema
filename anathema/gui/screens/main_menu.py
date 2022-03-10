@@ -17,19 +17,19 @@ class MainMenu(Screen):
     def __init__(self, client: Client) -> None:
         super().__init__(client)
 
+        logo = Logo()
+        self.add_view(logo)
+        Snap(logo).top().center()
+
         # Start button
         start_button = Button("Start", callback = self.start, framed = False)
         self.add_view(start_button)
-        Snap(start_button).bottom(14).left(5)
-
-        new_world_button = Button("New World", callback = self.new, framed = False)
-        self.add_view(new_world_button)
-        Snap(new_world_button).bottom(10).left(5)
+        Snap(start_button).bottom(8).left(5)
 
         # Quit button
         quit_button = Button("Quit", callback = client.quit, framed = False)
         self.add_view(quit_button)
-        Snap(quit_button).bottom(6).left(5)
+        Snap(quit_button).bottom(4).left(5)
 
         # Help text
         help_str = ""

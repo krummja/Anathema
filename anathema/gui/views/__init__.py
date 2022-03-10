@@ -5,6 +5,8 @@ from .text_field import TextField
 from .rect_view import RectView
 from .button import Button
 from .event_log import EventLog
+from .logo import Logo
+from .attributes_view import AttributesView
 
 __all__ = [
     "Snap",
@@ -14,5 +16,7 @@ __all__ = [
     "TextField",
     "RectView",
     "Button",
-    "EventLog"
+    "EventLog",
+    "Logo",
+    "AttributesView"
 ]
