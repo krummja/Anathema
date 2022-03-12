@@ -1,12 +1,9 @@
 from __future__ import annotations
-from math import floor, ceil
 from random import randint
 import numpy as np
 
 import tcod
-from tcod.loader import lib, ffi
-
-from anathema.engine.world.planet.tcod_heightmap import *
+from .tcod_heightmap import *
 
 
 class Heightmap:

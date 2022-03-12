@@ -1,16 +1,12 @@
 from __future__ import annotations
 from typing import *
-import tcod
-import numpy as np
 
 from anathema.engine.behavior.goal_action_result import *
-from anathema.data.directions import direction_delta
 from .goal_type import GoalType
 from .move_goal_type import MoveGoalType
 
 if TYPE_CHECKING:
-    from anathema.engine.world.tilemap import TileMap
-    from ecstremity import Engine, Entity
+    from ecstremity import Entity
 
 
 class KillSomethingGoalType(GoalType):

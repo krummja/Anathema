@@ -45,6 +45,9 @@ class Commander(tcod.event.EventDispatch[Any]):
                 tcod.event.K_ESCAPE: "quit",
                 tcod.event.K_c: "character",
                 tcod.event.K_i: "inventory",
+            },
+            "WorldCreation": {
+                tcod.event.K_ESCAPE: "quit",
             }
         }
 

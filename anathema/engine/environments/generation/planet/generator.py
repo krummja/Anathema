@@ -3,13 +3,9 @@ from typing import *
 from random import randint, uniform
 import numpy as np
 import tcod
-from tcod.color import Color
-from anathema.engine.world.planet.heightmap import *
-from anathema.engine.world.tile import tile_graphic
-from anathema.engine.core.options import Options
-
-if TYPE_CHECKING:
-    pass
+from engine.environments.tile import tile_graphic
+from .heightmap import Heightmap
+from .tcod_heightmap import *
 
 
 world_tile = np.dtype([
@@ -24,7 +20,7 @@ world_tile = np.dtype([
 
 class PlanetGenerator:
 
-    def __init__(self, height: int, width: int) -> None:
+    def __init__(self, width: int, height: int) -> None:
         """
         height      world map height in tiles
         width       world map width in tiles
@@ -389,7 +385,7 @@ class PlanetView:
     @staticmethod
     def tile_to_coord(lat_long: int, tile: int) -> str:
         suf = (("N", "S"), ("W", "E"))[lat_long]
-        coord = (tile * 360) / (Options.WORLD_HEIGHT, Options.WORLD_WIDTH)[lat_long]
+        coord = (tile * 360) / (100, 50)[lat_long]
         if coord < 180:
             return "{:4}".format(str(int(180 - coord))) + suf[0]
         if coord > 180:

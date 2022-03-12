@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import *
 from anathema.lib.morphism import *
 from dataclasses import dataclass
+from .generation import PlanetGenerator, PlanetView
 
 if TYPE_CHECKING:
     from anathema.lib.ecstremity import Entity
@@ -14,19 +15,5 @@ class WorldManager:
 
     def __init__(self, loop: EngineLoop) -> None:
         self.world = loop.world
-        self.generator = None
-
-    def realize_virtual_entity(self, x: int, y: int, data: TileData) -> Entity | None:
-        return self.world.create_prefab("Static", {
-            "position": {
-                "x": x,
-                "y": y
-            },
-            "renderable": {
-                "char": data.char,
-                "fg": data.fore
-            },
-            "noun": {
-                "text": data.key
-            }
-        })
+        self.generator = PlanetGenerator(200, 100)
+        self.viewer = PlanetView(self.generator)

@@ -1,8 +1,5 @@
-bearlibterminal~=0.15.7
-nocterminal~=0.0.1
 numpy~=1.20.2
 setuptools~=56.0.0
 tcod~=13.6.0
 uuid~=1.30
 DateTime~=4.3
-cbor

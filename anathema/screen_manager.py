@@ -7,6 +7,7 @@ from gui.screen import Screen
 from gui.screens.character_creation import CharacterCreation
 from gui.screens.main_menu import MainMenu
 from gui.screens.stage import Stage
+from gui.screens.world_creation import WorldCreation
 
 
 class ScreenManager:
@@ -22,7 +23,8 @@ class ScreenManager:
         self.screens = {
             "main": MainMenu(client),
             "character": CharacterCreation(client),
-            "stage": Stage(client)
+            "stage": Stage(client),
+            "world": WorldCreation(client),
         }
 
     @property
