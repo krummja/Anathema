@@ -11,7 +11,6 @@ class FOVSystem(BaseSystem):
 
     def update_fov(self):
         player = self.queries["pov"].result[0]
-        # current_area = self.queries["area"].result[0]["EnvTilemap"]
         current_area = self.loop.area_system.current_area["EnvTileMap"]
 
         current_area.is_visible = tcod.map.compute_fov(

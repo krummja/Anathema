@@ -1,5 +1,0 @@
-#+TITLE: Layout
-
-#+begin_src python
-
-#+end_src

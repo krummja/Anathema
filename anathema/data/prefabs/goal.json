@@ -1,0 +1,9 @@
+{
+  "name": "Goal",
+  "inherit": [],
+  "components": [
+    {
+      "type": "Goal"
+    }
+  ]
+}

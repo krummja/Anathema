@@ -13,17 +13,11 @@ if TYPE_CHECKING:
 class WorldManager:
 
     def __init__(self, loop: EngineLoop) -> None:
-        self.loop = loop
+        self.world = loop.world
         self.generator = None
 
-    def define_virtual_entity(self, data: TileData, **kwargs) -> None:
-        entity_def = {
-
-        }
-        entity_def.update(kwargs)
-
     def realize_virtual_entity(self, x: int, y: int, data: TileData) -> Entity | None:
-        return self.loop.world.create_prefab("Static", {
+        return self.world.create_prefab("Static", {
             "position": {
                 "x": x,
                 "y": y

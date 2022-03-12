@@ -8,7 +8,6 @@ from anathema.ecs import engine
 from anathema.console import console
 
 from anathema.engine.camera import Camera
-from anathema.engine.renderer import Renderer
 from anathema.engine.clock import Clock
 from anathema.engine.player import Player
 from anathema.engine.messenger import Messenger
@@ -40,7 +39,6 @@ class IEngine:
         self.world = world
 
         self.camera = None
-        self.renderer = None
         self.clock = None
         self.player = None
         self.messenger = None
@@ -76,7 +74,6 @@ class EngineLoop(IEngine):
 
     def initialize(self):
         self.camera = Camera(self)
-        self.renderer = Renderer(self)
         self.clock = Clock(self)
         self.player = Player(self)
         self.messenger = Messenger(self)

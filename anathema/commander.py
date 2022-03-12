@@ -95,10 +95,10 @@ class Commander(tcod.event.EventDispatch[Any]):
         for event in tcod.event.get():
             if event.type == "QUIT":
                 raise SystemExit()
-            if isinstance(event, tcod.event.WindowResized):
-                # pass
+            # TODO Figure out a better way to handle resizing...
+            # if isinstance(event, tcod.event.WindowResized):
                 # print(self.client.context.sdl_window.size)
-                self.client.context.sdl_window.size = (160 * 16, 128 * 16)
+                # self.client.context.sdl_window.size = (160 * 16, 128 * 16)
             value = self.dispatch(event)
             if value:
                 return value

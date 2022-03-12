@@ -69,6 +69,7 @@ class EnvTilemap(Component):
         self._tiles = np.zeros(self.shape, dtype=tile_dt)
         self._explored = np.zeros(self.shape, dtype=bool)
         self._visible = np.zeros(self.shape, dtype=bool)
+        self._light = np.zeros(self.shape, dtype=float)
         self._actors = set()
 
     def __getstate__(self):
@@ -101,6 +102,10 @@ class EnvTilemap(Component):
     @property
     def tiles(self) -> np.ndarray:
         return self._tiles
+
+    @property
+    def light(self) -> np.ndarray:
+        return self._light
 
     @property
     def is_explored(self) -> np.ndarray:

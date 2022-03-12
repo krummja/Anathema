@@ -1,6 +1,7 @@
 from __future__ import annotations
 from typing import *
 
+from anathema.data.spawnables import wanderer
 from anathema.lib.morphism import *
 from gui.screen import Screen
 from anathema.gui.screens.stage import Stage
@@ -26,6 +27,7 @@ class CharacterCreation(Screen):
         Snap(continue_button).bottom(6).left(5)
 
     def ui_continue(self) -> None:
+        wanderer.create_spawnable(self.client)(12, 12)
         self.client.loop.world.create_prefab("Player", {
             "position": {
                 "x": 25, "y": 25

@@ -266,16 +266,16 @@ class Rect(Shape):
             return self.height
         raise ValueError("Expected an orthogonal Direction.")
 
-    def edge_span(self, edge: Direction) -> Span:
+    def edge_span(self, edge: Tuple[int, int]) -> Span:
         """Use a Direction to get a Span that starts and ends at
-        opposite edges and crosses the centerpoint of this Rect."""
+        opposite edges and crosses the center point of this Rect."""
         if edge is Direction.up or edge is Direction.down:
             return self.horizontal_span
         if edge is Direction.left or edge is Direction.right:
             return self.vertical_span
         raise ValueError("Expected an orthogonal Direction.")
 
-    def edge_point(self, edge: Direction, parallel: int, orthogonal: int) -> Point:
+    def edge_point(self, edge: Tuple[int, int], parallel: int, orthogonal: int) -> Point:
         """Return a point, relative to a particular edge.
         `parallel` is the absolute coordinate parallel to the given edge. For
         example, if `edge` is `Direction.top`, then `parallel` is the
@@ -294,7 +294,8 @@ class Rect(Shape):
             return Point(parallel, self.right - parallel)
         raise ValueError("Expected an orthogonal direction.")
 
-    def replace(self, *,
+    def replace(
+            self, *,
             top: Optional[int] = None,
             bottom: Optional[int] = None,
             left: Optional[int] = None,
@@ -317,7 +318,8 @@ class Rect(Shape):
             right = self.right
         return type(self).from_edges(top=top, bottom=bottom, left=left, right=right)
 
-    def shift(self, *,
+    def shift(
+            self, *,
             top: int = 0,
             bottom: int = 0,
             left: int = 0,
@@ -356,10 +358,10 @@ class Rect(Shape):
         a Direction object encoding the side of the given edge.
 
         Returns diagonal Directions for the corners of the Rect."""
-        for x in range(self.left + 1, int(self.right)):
+        for x in range(int(self.left), int(self.right)):
             yield Point(x, self.top), Direction.up
             yield Point(x, self.bottom), Direction.down
-        for y in range(self.top + 1, int(self.bottom)):
+        for y in range(int(self.top), int(self.bottom)):
             yield Point(self.left, y), Direction.left
             yield Point(self.right, y), Direction.right
 

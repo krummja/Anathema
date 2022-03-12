@@ -77,7 +77,7 @@ class Circ(Shape):
         return dist_from_center <= self.radius - 1
 
     @property
-    def outer(self):
+    def outer_mask(self):
         """Get a NumPy mask array for the points inside the circle.
         Based on: https://stackoverflow.com/a/44874588
         """
@@ -85,6 +85,11 @@ class Circ(Shape):
         x, y = np.ogrid[:256, :256]
         dist_from_center = np.sqrt((x - xc)**2 + (y - yc)**2)
         return dist_from_center <= self.radius
+
+    @property
+    def outer(self):
+        # TODO Implementation
+        return
 
     @property
     def floored(self):

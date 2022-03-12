@@ -1,11 +1,14 @@
 from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 import numpy as np
 
-from anathema.lib.ecstremity import Component
-from anathema.engine.environments.generation import array_tools, automata
 from anathema.data.tiles import tile_registry
+from anathema.engine.environments.generation import array_tools, automata
+from anathema.engine.environments.generation.structures import build_room
+from anathema.lib.ecstremity import Component
+from anathema.lib.morphism import *
 
 if TYPE_CHECKING:
     from anathema.lib.ecstremity import EntityEvent
@@ -30,4 +33,7 @@ class EnvTerrain(Component):
              (20, tile_registry["Grass"]),
              (40, tile_registry["Tall Grass"])]
         )
+
+        tiles = build_room(tiles, Point(5, 5), Size(15, 15))
+
         self.entity.fire_event("finalize", data = {"tiles": tiles})

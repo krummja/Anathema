@@ -1,9 +1,12 @@
 from __future__ import annotations
-from typing import Tuple, Optional
+from typing import *
 import numpy as np
 
 from anathema.engine.environments.tile_type import TileType
 from anathema.constants.color import Color
+
+if TYPE_CHECKING:
+    from anathema.engine.environments.world_manager import WorldManager
 
 
 class TileRegistry:

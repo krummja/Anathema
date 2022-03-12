@@ -37,11 +37,18 @@ class Stage(Screen):
         self.client.loop.render_system.update()
         self._setup_ui()
 
+        self.position = TextField("(0, 0)")
+        self.add_view(self.position)
+        Snap(self.position).top(2).left(2)
+
     def on_leave(self, *args: List[Any]) -> None:
         self.client.loop.teardown()
 
     def pre_update(self) -> None:
         self.client.loop.update()
+
+    def post_update(self) -> None:
+        self.position.text = str(self.player["Position"].xy)
 
     def cmd_inventory(self) -> None:
         self.client.screens.push_screen(InventoryScreen(self.client))
