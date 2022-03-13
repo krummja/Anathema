@@ -44,19 +44,19 @@ class MainMenu(Screen):
 
     def start(self) -> None:
         # TODO Separate this out into a world generation sequence
-        # area = self.client.loop.world.create_prefab("ForestArea", {
-        #     "EnvTilemap": {
-        #         "width": 120,
-        #         "height": 120
-        #     },
-        #     "EnvTerrain": {}
-        # }, uid = "TEST_AREA")
-        #
-        # area.add("EnvIsCurrent", {})
-        # area["EnvTilemap"].setup_terrain()
+        area = self.client.loop.world.create_prefab("ForestArea", {
+            "EnvTilemap": {
+                "width": 120,
+                "height": 120
+            },
+            "EnvTerrain": {}
+        }, uid = "TEST_AREA")
+
+        area.add("EnvIsCurrent", {})
+        area["EnvTilemap"].setup_terrain()
 
         self.client.loop.initialize()
-        self.client.screens.replace_screen("world")
+        self.client.screens.replace_screen("character")
 
     def new(self) -> None:
         pass

@@ -17,3 +17,18 @@ class WorldManager:
         self.world = loop.world
         self.generator = PlanetGenerator(200, 100)
         self.viewer = PlanetView(self.generator)
+
+    def realize_virtual_entity(self, x: int, y: int, data: TileData) -> Entity | None:
+        return self.world.create_prefab("Static", {
+            "position": {
+                "x": x,
+                "y": y
+            },
+            "renderable": {
+                "char": data.char,
+                "fg": data.fore
+            },
+            "noun": {
+                "text": data.key
+            }
+        })

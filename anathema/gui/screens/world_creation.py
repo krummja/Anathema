@@ -2,6 +2,8 @@ from __future__ import annotations
 from typing import *
 from anathema.lib.morphism import *
 
+from anathema.gui.views import *
+import asyncio
 from gui.screen import Screen
 import numpy as np
 from math import ceil
@@ -46,6 +48,24 @@ class WorldCreation(Screen):
         }
         self.view: PlanetView | None = None
 
+        self.info_panel = RectView(size = Size(-1, 4))
+        self.add_view(self.info_panel)
+        Snap(self.info_panel).top().center()
+
+        self.lat_label = TextField(text="")
+        self.add_view(self.lat_label)
+        Snap(self.lat_label).top(1).left(2)
+
+        self.long_label = TextField(text="")
+        self.add_view(self.long_label)
+        Snap(self.long_label).top(2).left(2)
+
+        self.biome_label = TextField(text="")
+        self.add_view(self.biome_label)
+
+        # self.temperature_label = TextField(text="")
+        # self.add_view(self.temperature_label)
+
     @property
     def x(self):
         return self.position[0]
@@ -69,8 +89,13 @@ class WorldCreation(Screen):
         self.client.loop.console.root.rgb[["fg", "bg"]][y][x] = (0, 0, 0), (255, 0, 0)
 
     def post_update(self) -> None:
-        pass
-        # world_data = self.view.world_data
+        world_data = self.view.world_data
+        self.lat_label.update_label(self.tile_to_coord(0, self.y))
+        self.long_label.update_label(self.tile_to_coord(1, self.x))
+        self.biome_label.update_label(self.biome_name(world_data[self.y][self.x]['biome_id']))
+        Snap(self.biome_label).top(1).right(len(self.biome_label.text) + 2)
+        # self.temperature_label.update_label(str(round(world_data[self.y][self.x]['temperature'], 2)))
+        # Snap(self.temperature_label).top(2).right(len(self.temperature_label.text) + 2)
 
     def cmd_move(self, direction):
         WIDTH = self.client.loop.world_manager.generator.width
@@ -82,13 +107,11 @@ class WorldCreation(Screen):
             self.client.loop.camera.camera_pos = self.position
 
     def set_option(self, key, value):
-        pass
+        self.configuration[key] = value
 
     def generate(self):
-        self.client.loop.world_manager.generator.generate()
-        self.view.generate_standard_view(
-            RENDER_CONFIGURATION["Palette"][self.configuration["Palette"]]
-        )
+        asyncio.run(self.client.loop.world_manager.generator.generate())
+        self.get_current_view()
         self.client.loop.console.clear(bg=(21, 21, 21))
 
     def get_current_view(self):
@@ -97,7 +120,34 @@ class WorldCreation(Screen):
                 RENDER_CONFIGURATION["Palette"][self.configuration["Palette"]]
             )
 
+    @staticmethod
+    def tile_to_coord(lat_long: int, tile: int) -> str:
+        suf = (("N", "S"), ("W", "E"))[lat_long]
+        coord = (tile * 360) / (100, 200)[lat_long]
+        if coord < 180:
+            return "{:4}".format(str(int(180 - coord))) + suf[0]
+        if coord > 180:
+            return "{:4}".format(str(int(coord - 180))) + suf[1]
+        return ("- EQUATOR -", "- MERIDIAN -")[lat_long]
+
+    @staticmethod
+    def biome_name(biome_id: int) -> str:
+        return {
+            0: "ice cap",
+            1: "tundra",
+            2: "subarctic",
+            3: "dry steppe",
+            4: "dry desert",
+            5: "highland",
+            6: "humid continental",
+            7: "dry summer subtropic",
+            8: "tropical wet & dry",
+            9: "marine west coast",
+            10: "humid subtropical",
+            11: "wet tropics",
+            12: "ocean",
+            13: "shallow ocean"
+        }[biome_id]
+
     def cmd_quit(self):
         self.client.screens.replace_screen("main")
-
-

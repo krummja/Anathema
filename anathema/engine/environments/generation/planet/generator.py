@@ -1,11 +1,18 @@
 from __future__ import annotations
-from typing import *
+
 from random import randint, uniform
-import numpy as np
+import asyncio
+import logging
+
 import tcod
+
 from engine.environments.tile import tile_graphic
 from .heightmap import Heightmap
 from .tcod_heightmap import *
+from anathema.print_utils import bcolors, cprint
+
+
+logger = logging.getLogger(__name__)
 
 
 world_tile = np.dtype([
@@ -31,30 +38,30 @@ class PlanetGenerator:
         self.world_data = np.zeros((height, width), world_tile, order="C")
         self.messages = []
 
-    def generate(self):
-        print("Initializing")
-        self.initialize_map()
+    async def generate(self):
+        logger.info(cprint(bcolors.OKBLUE, "Initializing map data"))
+        await self.initialize_map()
         print("Generating Polar Regions...")
-        self.pole_generator(0)
-        self.pole_generator(1)
+        await self.pole_generator(0)
+        await self.pole_generator(1)
         print("Tectonic Simulation: Pass 1")
-        self.tectonic_generator(0)
+        await self.tectonic_generator(0)
         print("Tectonic Simulation: Pass 2")
-        self.tectonic_generator(1)
+        await self.tectonic_generator(1)
         print("Simulating Rain Erosion")
         self.heightmap.rain_erode()
         print("Initializing World Data...")
-        self.initialize_world_data()
+        await self.initialize_world_data()
         print("Done!")
         # self.river_gen()
 
-    def initialize_map(self):
+    async def initialize_map(self):
         self.heightmap.add_mountains(250)
         self.heightmap.add_hills(1000)
         self.heightmap.normalize()
         self.heightmap.apply_simplex_noise()
 
-    def initialize_world_data(self):
+    async def initialize_world_data(self):
         self.world_data["height"][:] = self.heightmap._array[:]
         self.temperature()
         self.precipitation()
@@ -122,7 +129,7 @@ class PlanetGenerator:
                 if 0.2 < self.world_data[y][x]["height"] <= 0.3:
                     self.world_data[y][x]["biome_id"] = 13  # shallow ocean
 
-    def pole_generator(self, ns: int):
+    async def pole_generator(self, ns: int):
         if ns == 0:
             rng = randint(2, 5)
             for i in range(self.width):  # across the entire width of the map ...
@@ -139,7 +146,7 @@ class PlanetGenerator:
                 rng += randint(1, 3) - 2
                 rng = min(max(2, rng), 5)
 
-    def tectonic_generator(self, hor):
+    async def tectonic_generator(self, hor):
         tectonic_tiles = [[0 for _ in range(self.height)] for _ in range(self.width)]
 
         if hor == 1:

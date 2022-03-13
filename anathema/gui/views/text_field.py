@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import *
 
 from anathema.gui.view import View
+from anathema.gui.views.alignment import Snap
 from anathema.lib.morphism import *
 from anathema.console import console
 
@@ -37,3 +38,6 @@ class TextField(View):
 
     def perform_draw(self) -> None:
         self.screen.console.print(self.bounds.point, self.text, self.fg, self.bg)
+
+    def update_label(self, text: str) -> None:
+        self.text = text

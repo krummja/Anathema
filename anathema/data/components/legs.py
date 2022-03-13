@@ -17,10 +17,11 @@ class Legs(Component):
     def on_try_move(self, evt: EntityEvent) -> None:
         area: EnvTilemap = self.client.loop.area_system.current_area["EnvTilemap"]
 
-        if area.is_blocked(*evt.data.target):
+        if area.is_blocked(*evt.data.target) and self.entity.has("IsPlayer"):
             # TODO Handle the case that there is no tile world...
             tile_data = area.get_tile_data_at_point(*evt.data.target)
-            # entity = self.client.loop.world_manager.realize_virtual_entity(*evt.data.target, data = tile_data)
+            # TODO Refactor the engine to use basic entities for all tiles from the outset.
+            entity = self.client.loop.world_manager.realize_virtual_entity(*evt.data.target, data = tile_data)
             evt.data.report = Message(f"{0} block[s] your path!", noun1 = entity["Noun"], color = (255, 0, 0))
             self.entity.fire_event("report", evt.data)
 

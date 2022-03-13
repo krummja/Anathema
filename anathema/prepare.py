@@ -12,6 +12,8 @@ import tcod.console
 
 import anathema.config as config
 import anathema.constants.paths as paths
+from anathema.constants import SHEET_COLS, SHEET_ROWS
+from anathema.character_map import CharacterMap
 
 if TYPE_CHECKING:
     pass
@@ -48,7 +50,8 @@ TILE_SIZE = 16
 CONSOLE_SIZE = (100, 60)
 STAGE_PANEL_WIDTH = 76
 STAGE_PANEL_HEIGHT = 48
-TILESET = tcod.tileset.load_tilesheet(fetch_asset(CONFIG.tileset), 32, 8, tcod.tileset.CHARMAP_CP437)
+
+TILESET = tcod.tileset.load_tilesheet(fetch_asset(CONFIG.tileset), SHEET_COLS, SHEET_ROWS, CharacterMap().as_array)
 VSYNC = CONFIG.vsync
 
 SAVE_PATH = os.path.join(paths.USER_GAME_SAVE_DIR, "slot")

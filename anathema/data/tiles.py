@@ -82,3 +82,8 @@ tile_registry.add_tile("Grass", "░", Color.lima, open = True)
 tile_registry.add_tile("Tall Grass", "√", Color.pea_green, obfuscated = True)
 tile_registry.add_tile("Evergreen Tree", "▲", Color.sherwood, solid = True)
 tile_registry.add_tile("Shallow Water", "≈", Color.light_blue, open = True)
+
+# (19, 9)
+tile_registry.add_tile("Flowers", chr(57344+19), (255, 0, 255), open = True)
+
+tile_registry.add_tile("PUA END", chr(57855), Color.white, open = True)
