@@ -58,6 +58,9 @@ class TileData:
 
 
 class EnvTilemap(Component):
+    """Component on an area Entity that contains the area's tile state.
+    Implements __getstate__ and __setstate__ methods for serialization.
+    """
 
     def __init__(
             self,
@@ -131,13 +134,6 @@ class EnvTilemap(Component):
             fore = tuple(_data["light"]["fg"])
         )
 
-    def realize_entity_at_point(self, x: int, y: int) -> None:
-        _data = self.tiles[y, x]
-        print(tile_registry.index_to_key(_data[0]))
-        # tile_data = TileData(
-        #
-        # )
-
     def is_blocked(self, x: int, y: int) -> bool:
         # Constraint movement to the area
         if not (0 <= x < self.width and 0 <= y < self.height):
@@ -152,7 +148,7 @@ class EnvTilemap(Component):
         return False
 
     def setup_terrain(self):
-        evt = self.entity.fire_event("setup_terrain", data = {
+        self.entity.fire_event("setup_terrain", data = {
             "tiles": self.tiles,
             "width": self.width,
             "height": self.height

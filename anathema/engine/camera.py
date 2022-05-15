@@ -15,7 +15,7 @@ class Camera:
     def __init__(self, loop: EngineLoop):
         self.loop = loop
         self._camera_pos: Tuple[int, int] = (0, 0)
-        self.centered: bool = True
+        self.centered: bool = False
         if self.centered:
             self._view_rect: Rect = Rect(Point(0, 0), Size(*prepare.CONSOLE_SIZE))
         else:

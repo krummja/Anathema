@@ -43,11 +43,11 @@ class MainMenu(Screen):
         self.load_menu = RectView(size = Size(30, 40))
 
     def start(self) -> None:
-        # TODO Separate this out into a world generation sequence
+
         area = self.client.loop.world.create_prefab("ForestArea", {
             "EnvTilemap": {
-                "width": 120,
-                "height": 120
+                "width": 512,
+                "height": 512
             },
             "EnvTerrain": {}
         }, uid = "TEST_AREA")

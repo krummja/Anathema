@@ -15,6 +15,7 @@ if TYPE_CHECKING:
 
 
 class EnvTerrain(Component):
+    """Component on an area Entity responsible for generating terrain data."""
 
     def on_setup_terrain(self, evt: EntityEvent):
         tiles = evt.data.tiles
@@ -30,14 +31,12 @@ class EnvTerrain(Component):
             tile_registry["unformed"],
             tile_registry["Packed Dirt"],
             [
-                (10, tile_registry["Tall Grass"]),
-                (20, tile_registry["Evergreen Tree"]),
+                (10, tile_registry["Grass"]),
+                # (20, tile_registry["Evergreen Tree"]),
                 (70, tile_registry["Grass"]),
                 (80, tile_registry["Flowers"]),
              ]
         )
-
         tiles = build_room(tiles, Point(5, 5), Size(15, 15))
-        # tiles[10:12, 10:12] = tile_registry["Test Tile 2"].make()
 
         self.entity.fire_event("finalize", data = {"tiles": tiles})

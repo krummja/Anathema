@@ -16,11 +16,11 @@ logger = logging.getLogger(__name__)
 
 
 world_tile = np.dtype([
+    ("biome_id", np.uint8),
     ("height", np.float32),
     ("temperature", np.float32),
     ("precipitation", np.float32),
     ("drainage", np.float32),
-    ("biome_id", np.uint8),
     ("has_river", np.bool),
 ])
 

@@ -48,6 +48,7 @@ class Commander(tcod.event.EventDispatch[Any]):
             },
             "WorldCreation": {
                 tcod.event.K_ESCAPE: "quit",
+                tcod.event.K_RETURN: "confirm",
             }
         }
 

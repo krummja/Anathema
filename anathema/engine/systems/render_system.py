@@ -6,17 +6,12 @@ from typing import *
 import numpy as np
 import tcod
 
-from anathema.lib.morphism import *
 from anathema.engine.environments.tile import tile_graphic
 from anathema.engine.systems.base_system import BaseSystem
-from anathema.data.components.position import Position
-from anathema.prepare import STAGE_PANEL_WIDTH, STAGE_PANEL_HEIGHT
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
-    from anathema.data.components.envtilemap import EnvTilemap
-    from anathema.console import Console
-    from anathema.engine.engine import EngineLoop
+    from data.components.environment.envtilemap import EnvTilemap
     from anathema.lib.ecstremity import Entity
 
 

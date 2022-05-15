@@ -97,15 +97,6 @@ class WorldCreation(Screen):
         # self.temperature_label.update_label(str(round(world_data[self.y][self.x]['temperature'], 2)))
         # Snap(self.temperature_label).top(2).right(len(self.temperature_label.text) + 2)
 
-    def cmd_move(self, direction):
-        WIDTH = self.client.loop.world_manager.generator.width
-        HEIGHT = self.client.loop.world_manager.generator.height
-        target_x = self.x + direction[0]
-        target_y = self.y + direction[1]
-        if 0 <= target_x < WIDTH and 0 <= target_y < HEIGHT:
-            self.position = (target_x, target_y)
-            self.client.loop.camera.camera_pos = self.position
-
     def set_option(self, key, value):
         self.configuration[key] = value
 
@@ -120,8 +111,7 @@ class WorldCreation(Screen):
                 RENDER_CONFIGURATION["Palette"][self.configuration["Palette"]]
             )
 
-    @staticmethod
-    def tile_to_coord(lat_long: int, tile: int) -> str:
+    def tile_to_coord(self, lat_long: int, tile: int) -> str:
         suf = (("N", "S"), ("W", "E"))[lat_long]
         coord = (tile * 360) / (100, 200)[lat_long]
         if coord < 180:
@@ -130,8 +120,7 @@ class WorldCreation(Screen):
             return "{:4}".format(str(int(coord - 180))) + suf[1]
         return ("- EQUATOR -", "- MERIDIAN -")[lat_long]
 
-    @staticmethod
-    def biome_name(biome_id: int) -> str:
+    def biome_name(self, biome_id: int) -> str:
         return {
             0: "ice cap",
             1: "tundra",
@@ -148,6 +137,23 @@ class WorldCreation(Screen):
             12: "ocean",
             13: "shallow ocean"
         }[biome_id]
+
+    def cmd_move(self, direction):
+        WIDTH = self.client.loop.world_manager.generator.width
+        HEIGHT = self.client.loop.world_manager.generator.height
+        target_x = self.x + direction[0]
+        target_y = self.y + direction[1]
+        if 0 <= target_x < WIDTH and 0 <= target_y < HEIGHT:
+            self.position = (target_x, target_y)
+            self.client.loop.camera.camera_pos = self.position
+
+    def cmd_confirm(self):
+        environs = {}
+        for y in range(self.y - 1, self.y + 1):
+            for x in range(self.x - 1, self.x + 1):
+                environs[(y, x)] = self.view.world_data[y][x]
+        selection = environs[(self.y, self.x)]
+        self.client.loop.world_manager.region_builder.new_region(selection, environs)
 
     def cmd_quit(self):
         self.client.screens.replace_screen("main")

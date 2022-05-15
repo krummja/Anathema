@@ -5,7 +5,7 @@ from anathema.lib.ecstremity import Component
 from anathema.engine.message import Message
 
 if TYPE_CHECKING:
-    from anathema.data.components.envtilemap import EnvTilemap
+    from data.components.environment.envtilemap import EnvTilemap
     from anathema.lib.ecstremity import EntityEvent
 
 
@@ -24,6 +24,9 @@ class Legs(Component):
             entity = self.client.loop.world_manager.realize_virtual_entity(*evt.data.target, data = tile_data)
             evt.data.report = Message(f"{0} block[s] your path!", noun1 = entity["Noun"], color = (255, 0, 0))
             self.entity.fire_event("report", evt.data)
+
+        elif area.is_blocked(*evt.data.target):
+            pass
 
         else:
             cost = (20 / (20 + 20)) * 1000
