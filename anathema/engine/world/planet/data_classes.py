@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import *
 from dataclasses import dataclass
-from anathema.engine.core.options import Options
+# from anathema.engine.core.options import Options
 
 
 CIVILIZATIONS = 4

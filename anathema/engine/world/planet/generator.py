@@ -5,8 +5,9 @@ import numpy as np
 import tcod
 from tcod.color import Color
 from anathema.engine.world.planet.heightmap import *
-from anathema.engine.world.tile import tile_graphic
-from anathema.engine.core.options import Options
+# from anathema.engine.world.tile import tile_graphic
+from anathema.engine.environments.tile import tile_graphic
+# from anathema.engine.core.options import Options
 
 if TYPE_CHECKING:
     pass
@@ -389,7 +390,7 @@ class PlanetView:
     @staticmethod
     def tile_to_coord(lat_long: int, tile: int) -> str:
         suf = (("N", "S"), ("W", "E"))[lat_long]
-        coord = (tile * 360) / (Options.WORLD_HEIGHT, Options.WORLD_WIDTH)[lat_long]
+        coord = (tile * 360) / (160, 240)[lat_long]
         if coord < 180:
             return "{:4}".format(str(int(180 - coord))) + suf[0]
         if coord > 180:
